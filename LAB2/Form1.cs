@@ -24,5 +24,10 @@ namespace LAB2
             menu.Show();
             Close();
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            menu.Close();
+        }
     }
 }
