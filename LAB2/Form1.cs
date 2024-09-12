@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace LAB2
 {
@@ -42,23 +43,29 @@ namespace LAB2
                 {
                     pictureBox1.Image = new Bitmap(dlg.FileName);
 
+                    // Перевод в оттенки серого
                     Bitmap bitmap1 = new Bitmap(pictureBox1.Image);
                     pictureBox2.Image = bitmap1;
-                    grayscaleNTSC(bitmap1);
+                    GrayscaleNTSC(bitmap1);
 
                     Bitmap bitmap2 = new Bitmap(pictureBox1.Image);
                     pictureBox3.Image = bitmap2;
-                    grayscaleSRGB(bitmap2);
+                    GrayscaleSRGB(bitmap2);
 
+                    // Разность изображений
                     Bitmap bitmap3 = new Bitmap(pictureBox1.Image);
                     pictureBox4.Image = bitmap3;
-                    imageDifference(bitmap1, bitmap2, bitmap3);
+                    ImageDifference(bitmap1, bitmap2, bitmap3);
+
+                    // Гистограммы интенсивности
+                    DrawHistogram(bitmap1, chart1);
+                    DrawHistogram(bitmap2, chart2);
                 }
             }
         }
 
         // Переводит изображение в оттенки серого NTSC
-        private void grayscaleNTSC(Bitmap bitmap)
+        private void GrayscaleNTSC(Bitmap bitmap)
         {
             // Проходимся по всем пикселям
             for (var x = 0; x < bitmap.Width; x++)
@@ -73,7 +80,7 @@ namespace LAB2
         }
 
         // Переводит изображение в оттенки серого NTSC
-        private void grayscaleSRGB(Bitmap bitmap)
+        private void GrayscaleSRGB(Bitmap bitmap)
         {
             // Проходимся по всем пикселям
             for (var x = 0; x < bitmap.Width; x++)
@@ -88,7 +95,7 @@ namespace LAB2
         }
 
         // Считает разницу полутоновых изображений
-        private void imageDifference(Bitmap bitmap1, Bitmap bitmap2, Bitmap result)
+        private void ImageDifference(Bitmap bitmap1, Bitmap bitmap2, Bitmap result)
         {
             // Проходимся по всем пикселям
             for (var x = 0; x < result.Width; x++)
@@ -100,6 +107,30 @@ namespace LAB2
                     int diff = 255 - Math.Abs(color1.R - color2.R); // Считаем абсолютную разницу (вычитаем из белого, так как на черном фоне ужасно видно)
                     result.SetPixel(x, y, Color.FromArgb(diff, diff, diff)); // Обновляем результирующий пиксель
                 }
+            }
+        }
+
+        // Рисует гистограмму интенсивности цвета
+        private void DrawHistogram(Bitmap bitmap, Chart chart)
+        {
+            chart.Series[0].Points.Clear(); // Очистка старых данных
+
+            int[] brightness = new int[256]; // Количество пикселей каждого оттенка
+
+            // Проход по всем пикселям
+            for (var x = 0; x < bitmap.Width; x++)
+            {
+                for (var y = 0; y < bitmap.Height; y++)
+                {
+                    Color color = bitmap.GetPixel(x, y);
+                    ++brightness[color.R];
+                }
+            }
+
+            // Отрисовка гистограммы
+            for(int i = 0; i < 256; ++i)
+            {
+                chart.Series[0].Points.AddXY(i, brightness[i]);
             }
         }
     }
