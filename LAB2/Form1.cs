@@ -28,7 +28,7 @@ namespace LAB2
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            menu.Close();
+            menu.Show();
         }
 
         // Загружает и обрабатывает изображение
