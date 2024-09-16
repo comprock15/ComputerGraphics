@@ -8,8 +8,6 @@ namespace LAB2 {
         private readonly MainForm menu;
         Bitmap source;
 
-        private Label labelProcessing;
-
         public Form2(MainForm menu) {
             InitializeComponent();
             this.menu = menu;
