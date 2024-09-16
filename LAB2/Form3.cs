@@ -129,67 +129,67 @@ namespace LAB2
         {
             double r, g, b;
 
-            //var f = hue / 60 - Math.Floor(hue / 60);
-            //var p = val * (1 - sat) * 255;
-            //var q = val * (1 - f * sat) * 255;
-            //var t = val * (1 - (1 - f) * sat) * 255;
+            var f = hue / 60.0 - Math.Floor(hue / 60.0);
+            var p = val * (1 - sat);
+            var q = val * (1 - f * sat);
+            var t = val * (1 - (1 - f) * sat);
 
-            //switch (Math.Floor(hue / 60) % 6)
+            switch (Math.Floor(hue / 60.0) % 6)
+            {
+                case 0:
+                    r = val; g = t; b = p;
+                    break;
+                case 1:
+                    r = q; g = val; b = p;
+                    break;
+                case 2:
+                    r = p; g = val; b = t;
+                    break;
+                case 3:
+                    r = p; g = q; b = val;
+                    break;
+                case 4:
+                    r = t; g = p; b = val;
+                    break;
+                default:
+                    r = val; g = p; b = q;
+                    break;
+            }
+
+            //var c = val * sat;
+            //var x = c * (1 - Math.Abs((hue / 60) % 2 - 1));
+            //var m = val - c;
+
+            //if (hue < 60)
             //{
-            //    case 0:
-            //        r = val; g = t; b = p;
-            //        break;
-            //    case 1:
-            //        r = q; g = val; b = p;
-            //        break;
-            //    case 2:
-            //        r = p; g = val; b = t;
-            //        break;
-            //    case 3:
-            //        r = p; g = q; b = val;
-            //        break;
-            //    case 4:
-            //        r = t; g = p; b = val;
-            //        break;
-            //    default:
-            //        r = val; g = p; b = q;
-            //        break;
+            //    r = c; g = x; b = 0;
+            //}
+            //else if (hue < 120)
+            //{
+            //    r = x; g = c; b = 0;
+            //}
+            //else if(hue < 180)
+            //{
+            //    r = 0; g = c; b = x;
+            //}
+            //else if(hue < 240)
+            //{
+            //    r = 0; g = x; b = c;
+            //}
+            //else if(hue < 300)
+            //{
+            //    r = x; g = 0; b = c;
+            //}
+            //else
+            //{
+            //    r = c; g = 0; b = x;
             //}
 
-            var c = val * sat;
-            var x = c * (1 - Math.Abs((hue / 60) % 2 - 1));
-            var m = val - c;
+            //r = (r + m);
+            //g = (g + m);
+            //b = (b + m);
 
-            if (hue < 60)
-            {
-                r = c; g = x; b = 0;
-            }
-            else if (hue < 120)
-            {
-                r = x; g = c; b = 0;
-            }
-            else if(hue < 180)
-            {
-                r = 0; g = c; b = x;
-            }
-            else if(hue < 240)
-            {
-                r = 0; g = x; b = c;
-            }
-            else if(hue < 300)
-            {
-                r = x; g = 0; b = c;
-            }
-            else
-            {
-                r = c; g = 0; b = x;
-            }
-
-            r = (r + m) * 255;
-            g = (g + m) * 255;
-            b = (b + m) * 255;
-
-            return Color.FromArgb((int)r,(int)g,(int)b);
+            return Color.FromArgb(255, (int)(r*255), (int)(g*255), (int)(b*255));
         }
 
         private void button1_Click_1(object sender, EventArgs e)
