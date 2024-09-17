@@ -34,7 +34,6 @@
             this.trackBar_Hue = new System.Windows.Forms.TrackBar();
             this.trackBar_Saturation = new System.Windows.Forms.TrackBar();
             this.trackBar_Value = new System.Windows.Forms.TrackBar();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox_Hue = new System.Windows.Forms.TextBox();
@@ -47,7 +46,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Hue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Saturation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Value)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -83,49 +81,41 @@
             this.trackBar_Hue.BackColor = System.Drawing.SystemColors.Control;
             this.trackBar_Hue.Enabled = false;
             this.trackBar_Hue.Location = new System.Drawing.Point(243, 12);
-            this.trackBar_Hue.Maximum = 360;
+            this.trackBar_Hue.Maximum = 720;
             this.trackBar_Hue.Name = "trackBar_Hue";
             this.trackBar_Hue.Size = new System.Drawing.Size(248, 45);
             this.trackBar_Hue.TabIndex = 4;
             this.trackBar_Hue.TickFrequency = 0;
             this.trackBar_Hue.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar_Hue.Value = 360;
-            this.trackBar_Hue.Scroll += new System.EventHandler(this.trackBar_Hue_Scroll);
+            this.trackBar_Hue.Scroll += new System.EventHandler(this.trackBar_Scroll);
+            this.trackBar_Hue.ValueChanged += new System.EventHandler(this.trackBar_Hue_ValueChanged);
             // 
             // trackBar_Saturation
             // 
             this.trackBar_Saturation.Enabled = false;
             this.trackBar_Saturation.Location = new System.Drawing.Point(564, 12);
-            this.trackBar_Saturation.Maximum = 100;
+            this.trackBar_Saturation.Maximum = 200;
             this.trackBar_Saturation.Name = "trackBar_Saturation";
             this.trackBar_Saturation.Size = new System.Drawing.Size(248, 45);
             this.trackBar_Saturation.TabIndex = 5;
             this.trackBar_Saturation.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar_Saturation.Value = 50;
-            this.trackBar_Saturation.Scroll += new System.EventHandler(this.trackBar_Saturation_Scroll);
+            this.trackBar_Saturation.Value = 100;
+            this.trackBar_Saturation.Scroll += new System.EventHandler(this.trackBar_Scroll);
+            this.trackBar_Saturation.ValueChanged += new System.EventHandler(this.trackBar_Saturation_ValueChanged);
             // 
             // trackBar_Value
             // 
             this.trackBar_Value.Enabled = false;
             this.trackBar_Value.Location = new System.Drawing.Point(564, 40);
-            this.trackBar_Value.Maximum = 100;
+            this.trackBar_Value.Maximum = 200;
             this.trackBar_Value.Name = "trackBar_Value";
             this.trackBar_Value.Size = new System.Drawing.Size(248, 45);
             this.trackBar_Value.TabIndex = 6;
             this.trackBar_Value.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar_Value.Value = 50;
-            this.trackBar_Value.Scroll += new System.EventHandler(this.trackBar_Value_Scroll);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Image = global::LAB2.Properties.Resources.HueScale1;
-            this.pictureBox2.Location = new System.Drawing.Point(251, 40);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(231, 23);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 7;
-            this.pictureBox2.TabStop = false;
+            this.trackBar_Value.Value = 100;
+            this.trackBar_Value.Scroll += new System.EventHandler(this.trackBar_Scroll);
+            this.trackBar_Value.ValueChanged += new System.EventHandler(this.trackBar_Value_ValueChanged);
             // 
             // pictureBox1
             // 
@@ -206,7 +196,7 @@
             // 
             this.button1.Location = new System.Drawing.Point(174, 40);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(52, 23);
+            this.button1.Size = new System.Drawing.Size(317, 23);
             this.button1.TabIndex = 14;
             this.button1.Text = "Сброс";
             this.button1.UseVisualStyleBackColor = true;
@@ -225,7 +215,6 @@
             this.Controls.Add(this.textBox_Hue);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.trackBar_Value);
             this.Controls.Add(this.trackBar_Saturation);
             this.Controls.Add(this.trackBar_Hue);
@@ -237,7 +226,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Hue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Saturation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_Value)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -252,7 +240,6 @@
         private System.Windows.Forms.TrackBar trackBar_Hue;
         private System.Windows.Forms.TrackBar trackBar_Saturation;
         private System.Windows.Forms.TrackBar trackBar_Value;
-        private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox_Hue;
         private System.Windows.Forms.TextBox textBox_Saturation;
