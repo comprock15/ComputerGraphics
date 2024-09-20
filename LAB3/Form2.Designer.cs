@@ -1,4 +1,7 @@
 ﻿namespace LAB3 {
+    /// <summary>
+    /// Рисование отрезков.
+    /// </summary>
     partial class Form2 {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Button button1;
@@ -8,6 +11,10 @@
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.Button buttonUndo;
 
+        /// <summary>
+        /// Освобождает ресурсы, используемые формой.
+        /// </summary>
+        /// <param name="disposing">Указывает, нужно ли освобождать управляемые ресурсы.</param>
         protected override void Dispose(bool disposing) {
             if (disposing && (components != null))
                 components.Dispose();
