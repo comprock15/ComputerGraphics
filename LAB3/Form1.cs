@@ -108,6 +108,11 @@ namespace LAB3
                 // Заливаем область, считая, что в месте клика будет центр изображения-заливки
                 FillByImage(e.X, e.Y, imageToFillFrom.Width/2, imageToFillFrom.Height/2, bitmap.GetPixel(e.X, e.Y));
             }
+            // Включен режим выделения границы связной области
+            else if (radioButton4.Checked)
+            {
+                FindBorder(e.X, e.Y);
+            }
         }
 
         /// <summary>
@@ -265,6 +270,156 @@ namespace LAB3
             {
                 imageTo.SetPixel(x, y, imageFrom.GetPixel(CalculateCyclicX(ix + x - x1, imageFrom), iy));
             }
+        }
+
+        /// <summary>
+        /// Возможные направления движения при обходе границы
+        /// </summary>
+        enum Direction { RIGHT, UP_RIGHT, UP, UP_LEFT, LEFT, DOWN_LEFT, DOWN, DOWN_RIGHT };
+
+        /// <summary>
+        /// Получить следующий пиксель по направлению
+        /// </summary>
+        /// <param name="x">Текущий X</param>
+        /// <param name="y">Текущий Y</param>
+        /// <param name="dir">Текущее направление</param>
+        /// <returns>Следующий пиксель</returns>
+        Point GetNextPixel(int x, int y, Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.RIGHT:
+                    x += 1;
+                    break;
+                case Direction.UP_RIGHT:
+                    x += 1;
+                    y -= 1;
+                    break;
+                case Direction.UP:
+                    y -= 1;
+                    break;
+                case Direction.UP_LEFT:
+                    x -= 1;
+                    y -= 1;
+                    break;
+                case Direction.LEFT:
+                    x -= 1;
+                    break;
+                case Direction.DOWN_LEFT:
+                    x -= 1;
+                    y += 1;
+                    break;
+                case Direction.DOWN:
+                    y += 1;
+                    break;
+                case Direction.DOWN_RIGHT:
+                    x += 1;
+                    y += 1;
+                    break;
+            }
+            return new Point(x, y);
+        }
+
+        /// <summary>
+        /// Найти границу связной области
+        /// </summary>
+        /// <param name="x">Координата X точки внутри области</param>
+        /// <param name="y">Координата Y точки внутри области</param>
+        private void FindBorder(int x, int y)
+        {
+            // Сохраняем цвет внутренней области
+            Color innerColor = bitmap.GetPixel(x, y);
+
+            // Идём вправо до пикселя границы, его будем считать начальным
+            ++x;
+            for (; x < bitmap.Width && bitmap.GetPixel(x, y) == innerColor; ++x);
+
+            // Если не нашли границу - выходим
+            if (x >= bitmap.Width)
+                return;
+
+            // Сохраняем цвет границы
+            Color borderColor = bitmap.GetPixel(x, y);
+
+            // Запомним координаты начальной точки границы
+            int startX = x;
+            int startY = y;
+
+            // Список точек границы
+            LinkedList<Point> border = new LinkedList<Point>();
+            border.AddLast(new Point(x, y));
+
+            // Множество пройденных точек границы
+            HashSet<Point> checkedPixels = new HashSet<Point>();
+            checkedPixels.Add(new Point(x, y));
+
+            // Первое направление - вниз
+            Direction direction = Direction.DOWN;
+
+            // Встретили ли начальную точку границы
+            bool startPixelFound = false;
+
+            while (true)
+            {
+                startPixelFound = false;
+
+                // Нашли ли следующий непроверенный пиксель границы
+                bool nextPixelfound = false;
+
+                // Просматриваем все направления
+                for (int i = 0; i < 8; i++)
+                {
+                    // Координаты следующего пикселя
+                    Point pixel = GetNextPixel(x, y, (Direction)(((int)direction + i) % 8));
+
+                    // Вышли за границы - пропускаем
+                    if (pixel.X < 0 || pixel.X >= bitmap.Width || pixel.Y < 0 || pixel.Y >= bitmap.Height)
+                        continue;
+
+                    // Если нашли пиксель границы, которого еще не было
+                    if (bitmap.GetPixel(pixel.X, pixel.Y) == borderColor && !checkedPixels.Contains(pixel))
+                    {
+                        // Добавляем к списку точек границы
+                        border.AddLast(pixel);
+                        // Добавляем к множеству проверенных точек границы
+                        checkedPixels.Add(pixel);
+                        // Следующее направление: 90 градусов по часовой стрелке от направления, по которому мы пришли
+                        direction = (Direction)(((int)direction + i + 6) % 8);
+                        // Обновляем координаты текущего пикселя
+                        x = pixel.X; y = pixel.Y;
+
+                        nextPixelfound = true;
+                        break;
+                    }
+
+                    // Если встретили стартовый пиксель
+                    if (pixel.X == startX && pixel.Y == startY)
+                        startPixelFound = true;
+                }
+
+                // Если не нашли новых пикселей границы - выходим
+                if (!nextPixelfound)
+                    break;
+
+            }
+
+            // Если граница замкнутая - рисуем
+            if (startPixelFound)
+            {
+                foreach (Point p in border)
+                {
+                    bitmap.SetPixel(p.X, p.Y, Color.Red);
+                }
+                pictureBox1.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Вывод подсказки к выделению границы
+        /// </summary>
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            label1.Visible = !label1.Visible;
         }
 
         /// <summary>
