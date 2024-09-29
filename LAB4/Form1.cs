@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LAB4
 {
@@ -76,6 +77,8 @@ namespace LAB4
                     {
                         isPointOnLeftSide(e.Location);                        
                     }
+                    break;
+                case taskType.P_CLASS_POLY:
                     break;
                 default:
                     if (e.Button == MouseButtons.Right)
@@ -227,7 +230,19 @@ namespace LAB4
                     label13.Text = selectedItemPath;
                     textBox2.Text = "Выберите точку на экране";
                 }
+                else
+                { 
+                    textBox2.Text = "Ребро не выбрано!";
+                    radioButton3.Checked = false;
+                    radioButton4.Checked = true;
+                }
+                    
             }
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            cur_mode = taskType.DRAWING;
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -236,6 +251,12 @@ namespace LAB4
             treeView1.Nodes.Clear();
             polygons.Clear();
             polygon_drawing = false;
+
+            selectedItemType = selectType.NONE;
+            selectedItemPath = "";
+
+            label13.Text = "";
+            cur_mode = taskType.DRAWING;
         }
 
     }
