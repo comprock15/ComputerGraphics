@@ -72,6 +72,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
@@ -455,9 +456,9 @@
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(220, 17);
             this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
             this.radioButton3.Text = "Положение точки относительно ребра";
             this.radioButton3.UseVisualStyleBackColor = true;
+            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
             // 
             // radioButton2
             // 
@@ -466,7 +467,6 @@
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(240, 17);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Принадлежит ли заданная точка полигону";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
@@ -477,7 +477,6 @@
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(214, 17);
             this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Поиск точки пересечения двух ребер";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
@@ -518,17 +517,27 @@
             this.radioButton4.Checked = true;
             this.radioButton4.Location = new System.Drawing.Point(6, 271);
             this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(112, 17);
+            this.radioButton4.Size = new System.Drawing.Size(136, 17);
             this.radioButton4.TabIndex = 17;
             this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Без инструмента";
+            this.radioButton4.Text = "Рисование полигонов";
             this.radioButton4.UseVisualStyleBackColor = true;
+            this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(349, 623);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 17;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1130, 622);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -601,6 +610,7 @@
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
