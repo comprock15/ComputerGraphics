@@ -69,6 +69,9 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.treeView1 = new System.Windows.Forms.TreeView();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown9)).BeginInit();
@@ -93,7 +96,7 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(472, 13);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(646, 535);
+            this.pictureBox1.Size = new System.Drawing.Size(646, 597);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseClick);
@@ -346,6 +349,9 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox2.Controls.Add(this.radioButton4);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.textBox4);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.textBox3);
@@ -360,7 +366,7 @@
             this.groupBox2.Controls.Add(this.radioButton1);
             this.groupBox2.Location = new System.Drawing.Point(12, 311);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(276, 239);
+            this.groupBox2.Size = new System.Drawing.Size(276, 301);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Инструменты";
@@ -393,7 +399,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(28, 207);
+            this.label10.Location = new System.Drawing.Point(28, 230);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(40, 13);
             this.label10.TabIndex = 11;
@@ -401,7 +407,7 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(74, 204);
+            this.textBox2.Location = new System.Drawing.Point(74, 230);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(193, 20);
             this.textBox2.TabIndex = 10;
@@ -483,16 +489,46 @@
             this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.treeView1.Location = new System.Drawing.Point(294, 13);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(172, 535);
+            this.treeView1.Size = new System.Drawing.Size(172, 597);
             this.treeView1.TabIndex = 16;
             this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeSelect);
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(32, 207);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(100, 13);
+            this.label12.TabIndex = 15;
+            this.label12.Text = "Выбранное ребро:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(139, 207);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 16;
+            this.label13.Text = "label13";
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Checked = true;
+            this.radioButton4.Location = new System.Drawing.Point(6, 271);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(112, 17);
+            this.radioButton4.TabIndex = 17;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "Без инструмента";
+            this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1130, 560);
+            this.ClientSize = new System.Drawing.Size(1130, 622);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -562,6 +598,9 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
     }
 }
 
