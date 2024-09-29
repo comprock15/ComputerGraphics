@@ -14,6 +14,7 @@ namespace LAB4
     public partial class Form1 : Form
     {
         enum selectType { NONE, VERTEX, EDGE, POLY };
+        enum taskType { DRAWING, P_CLASS_EDGE, P_CLASS_POLY, FIND_CROSS_POINT}
         bool polygon_drawing;
         List<Polygon> polygons;
         Graphics g;
@@ -21,6 +22,8 @@ namespace LAB4
 
         selectType selectedItemType;
         string selectedItemPath;
+        taskType cur_mode;
+
 
         public Form1()
         {
@@ -34,6 +37,9 @@ namespace LAB4
 
             selectedItemType = selectType.NONE;
             selectedItemPath = "";
+
+            label13.Text = "";
+            cur_mode = taskType.DRAWING;
         }
 
         public void RedrawField()
@@ -62,40 +68,54 @@ namespace LAB4
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            switch (cur_mode)
             {
-                polygon_drawing = false;
-                TreeNode new_edge = new TreeNode("Edge " + (treeView1.Nodes[polygons.Count - 1].Nodes.Count + 1).ToString());
-                
-                new_edge.Nodes.Add(new TreeNode("Vertex " + (polygons.Last().vertices_count).ToString()));
-                new_edge.Nodes.Add(new TreeNode("Vertex 1"));
+                case taskType.FIND_CROSS_POINT:
+                    break;
+                case taskType.P_CLASS_EDGE:
+                    {
+                        isPointOnLeftSide(e.Location);                        
+                    }
+                    break;
+                default:
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        polygon_drawing = false;
+                        TreeNode new_edge = new TreeNode("Edge " + (treeView1.Nodes[polygons.Count - 1].Nodes.Count + 1).ToString());
 
-                treeView1.Nodes[polygons.Count - 1].Nodes.Add(new_edge);
-                polygons.Last().AddVertex(polygons.Last().vertices[0]);
+                        new_edge.Nodes.Add(new TreeNode("Vertex " + (polygons.Last().vertices_count).ToString()));
+                        new_edge.Nodes.Add(new TreeNode("Vertex 1"));
 
-                //TODO проверка чтоб новые появившиеся грани не пересекали уже существующие!!
+                        treeView1.Nodes[polygons.Count - 1].Nodes.Add(new_edge);
+                        polygons.Last().AddVertex(polygons.Last().vertices[0]);
+
+                        //TODO проверка чтоб новые появившиеся грани не пересекали уже существующие!!
+                    }
+                    else
+                    {
+                        if (!polygon_drawing)
+                        {
+                            polygon_drawing = true;
+                            polygons.Add(new Polygon(e.Location));
+                            treeView1.Nodes.Add(new TreeNode("Polygon " + polygons.Count.ToString())); ;
+                        }
+                        else
+                        {
+                            polygons.Last().AddVertex(e.Location);
+
+                            TreeNode new_edge = new TreeNode("Edge " + (treeView1.Nodes[polygons.Count - 1].Nodes.Count + 1).ToString());
+                            new_edge.Nodes.Add(new TreeNode("Vertex " + (polygons.Last().vertices_count - 1).ToString()));
+                            new_edge.Nodes.Add(new TreeNode("Vertex " + (polygons.Last().vertices_count).ToString()));
+
+                            treeView1.Nodes[polygons.Count - 1].Nodes.Add(new_edge);
+
+                        }
+                        RedrawField();
+                    }
+                    break;
+
             }
-            else
-            {
-                if (!polygon_drawing)
-                {
-                    polygon_drawing = true;
-                    polygons.Add(new Polygon(e.Location));
-                    treeView1.Nodes.Add(new TreeNode("Polygon " + polygons.Count.ToString())); ;
-                }
-                else
-                {
-                    polygons.Last().AddVertex(e.Location);
-
-                    TreeNode new_edge = new TreeNode("Edge " + (treeView1.Nodes[polygons.Count - 1].Nodes.Count+1).ToString());
-                    new_edge.Nodes.Add(new TreeNode("Vertex " + (polygons.Last().vertices_count - 1).ToString()));
-                    new_edge.Nodes.Add(new TreeNode("Vertex " + (polygons.Last().vertices_count).ToString()));
-
-                    treeView1.Nodes[polygons.Count - 1].Nodes.Add(new_edge);
-                    
-                }
-                RedrawField();
-            }    
+                
         }
 
         public void ShowSelectedItem(Pen p)
@@ -157,6 +177,57 @@ namespace LAB4
         private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
             RedrawField();
+        }
+
+
+        private void isPointOnLeftSide(Point point)
+        {
+            var ItemPath = label13.Text;
+            var poly = polygons[int.Parse(ItemPath.Split(' ')[1]) - 1];
+            var p1 = poly.vertices[int.Parse(ItemPath.Split(' ')[3]) - 1];
+            var p2 = poly.vertices[int.Parse(ItemPath.Split(' ')[3])];
+
+            //var p = p1.Y > p2.Y ? p1 : p2;
+
+            //if ( point.Y * p.X - point.X * p.Y > 0)
+            //{
+            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра";
+            //}
+            //else 
+            //{
+            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
+            //}
+
+            if (Math.Max(point.X, Math.Max(p1.X, p2.X)) == point.X)
+            {
+                textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра";
+                return;
+            }
+            if (Math.Min(point.X, Math.Min(p1.X, p2.X)) == point.X)
+            {
+                textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
+                return;
+            }
+
+            var x = (point.Y - p2.Y) * (p1.X - p2.X) / (float)(p1.Y - p2.Y) + p2.X;
+            var y = (point.X - p2.X) * (p1.Y - p2.Y) / (float)(p1.X - p2.X) + p2.Y;
+
+            if (point.X > x)
+            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра"; }
+            else
+            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра"; }
+        }
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton3.Checked)
+            {
+                if (selectedItemType == selectType.EDGE)
+                {
+                    cur_mode = taskType.P_CLASS_EDGE;
+                    label13.Text = selectedItemPath;
+                    textBox2.Text = "Выберите точку на экране";
+                }
+            }
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
