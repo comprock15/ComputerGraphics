@@ -15,7 +15,7 @@ namespace LAB4
     public partial class Form1 : Form
     {
         enum selectType { NONE, VERTEX, EDGE, POLY };
-        enum taskType { DRAWING, P_CLASS_EDGE, P_CLASS_POLY, FIND_CROSS_POINT}
+        enum taskType { DRAWING, P_CLASS_EDGE, P_CLASS_POLY, FIND_CROSS_POINT, SET_ROTATION_POINT, SET_SCALE_POINT }
         bool polygon_drawing;
         List<Polygon> polygons;
         Graphics g;
@@ -79,6 +79,18 @@ namespace LAB4
                     }
                     break;
                 case taskType.P_CLASS_POLY:
+                    break;
+                case taskType.SET_ROTATION_POINT:
+                    affineRotationPointX.Value = e.X;
+                    affineRotationPointY.Value = e.Y;
+                    cur_mode = taskType.DRAWING;
+                    pictureBox1.Cursor = Cursors.Default;
+                    break;
+                case taskType.SET_SCALE_POINT:
+                    affineScalePointX.Value = e.X;
+                    affineScalePointY.Value = e.Y;
+                    cur_mode = taskType.DRAWING;
+                    pictureBox1.Cursor = Cursors.Default;
                     break;
                 default:
                     if (e.Button == MouseButtons.Right)
@@ -243,6 +255,75 @@ namespace LAB4
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             cur_mode = taskType.DRAWING;
+        }
+
+        /// <summary>
+        /// Применить афинное преобразование к полигону
+        /// </summary>
+        private void buttonApplyTransform_Click(object sender, EventArgs e)
+        {
+            if (treeView1.SelectedNode == null || !treeView1.SelectedNode.Text.Contains("Polygon"))
+            {
+                // TODO: Сообщить пользователю, что надо выбрать полигон
+                return;
+            };
+
+            Polygon polygon = polygons[int.Parse(treeView1.SelectedNode.Text.Split(' ')[1]) - 1];
+
+            // Смещение
+            if (checkBoxOffset.Checked)
+            {
+                AffineTransformations.TransformOffset(ref polygon, 
+                                                      (double)affineOffsetDx.Value, 
+                                                      (double)affineOffsetDy.Value);
+            }
+
+            // Поворот вокруг заданной пользователем точки
+            if (checkBoxRotationPoint.Checked)
+            {
+                AffineTransformations.TransformRotationPoint(ref polygon,
+                                                             (double)affineRotationPointAngle.Value,
+                                                             (double)affineRotationPointX.Value,
+                                                             (double)affineRotationPointY.Value);
+            }
+
+            // Поворот вокруг своего центра
+            if (checkBoxRotationCenter.Checked)
+            {
+                AffineTransformations.TransformRotationCenter(ref polygon,
+                                                             (double)affineRotationCenterAngle.Value);
+            }
+
+            // Масштабирование относительно заданной пользователем точки
+            if (checkBoxScalePoint.Checked)
+            {
+                AffineTransformations.TransformScalePoint(ref polygon,
+                                                          (double)affineScalePoint.Value,
+                                                          (double)affineScalePointX.Value,
+                                                          (double)affineScalePointY.Value);
+            }
+
+            // Масштабирование относительно своего центра
+            if (checkBoxScaleCenter.Checked)
+            {
+                AffineTransformations.TransformScaleCenter(ref polygon,
+                                                          (double)affineScaleCenter.Value);
+            }
+
+            RedrawField();
+            ShowSelectedItem(p_red);
+        }
+
+        private void buttonSetRotationPoint_Click(object sender, EventArgs e)
+        {
+            cur_mode = taskType.SET_ROTATION_POINT;
+            pictureBox1.Cursor = Cursors.Cross;
+        }
+
+        private void buttonSetScalePoint_Click(object sender, EventArgs e)
+        {
+            cur_mode = taskType.SET_SCALE_POINT;
+            pictureBox1.Cursor = Cursors.Cross;
         }
 
         private void buttonClear_Click(object sender, EventArgs e)

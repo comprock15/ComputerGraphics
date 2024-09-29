@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AffineTransformations.cs" />
     <Compile Include="Polygon.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
