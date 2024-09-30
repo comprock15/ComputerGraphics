@@ -277,16 +277,38 @@
             // 
             // affineScaleCenter
             // 
+            this.affineScaleCenter.DecimalPlaces = 2;
+            this.affineScaleCenter.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.affineScaleCenter.Location = new System.Drawing.Point(287, 244);
             this.affineScaleCenter.Margin = new System.Windows.Forms.Padding(4);
+            this.affineScaleCenter.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
             this.affineScaleCenter.Name = "affineScaleCenter";
             this.affineScaleCenter.Size = new System.Drawing.Size(69, 22);
             this.affineScaleCenter.TabIndex = 13;
             // 
             // affineScalePoint
             // 
+            this.affineScalePoint.DecimalPlaces = 2;
+            this.affineScalePoint.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
             this.affineScalePoint.Location = new System.Drawing.Point(287, 137);
             this.affineScalePoint.Margin = new System.Windows.Forms.Padding(4);
+            this.affineScalePoint.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
             this.affineScalePoint.Name = "affineScalePoint";
             this.affineScalePoint.Size = new System.Drawing.Size(69, 22);
             this.affineScalePoint.TabIndex = 12;
@@ -299,7 +321,7 @@
             this.checkBoxScaleCenter.Name = "checkBoxScaleCenter";
             this.checkBoxScaleCenter.Size = new System.Drawing.Size(253, 38);
             this.checkBoxScaleCenter.TabIndex = 11;
-            this.checkBoxScaleCenter.Text = "Масштабирование относительно \r\nсвоего центра на";
+            this.checkBoxScaleCenter.Text = "Масштабирование относительно \r\nсвоего центра в\r\n";
             this.checkBoxScaleCenter.UseVisualStyleBackColor = true;
             // 
             // checkBoxScalePoint
@@ -310,31 +332,43 @@
             this.checkBoxScalePoint.Name = "checkBoxScalePoint";
             this.checkBoxScalePoint.Size = new System.Drawing.Size(253, 38);
             this.checkBoxScalePoint.TabIndex = 10;
-            this.checkBoxScalePoint.Text = "Масштабирование относительно \r\nзаданной точки на";
+            this.checkBoxScalePoint.Text = "Масштабирование относительно \r\nзаданной точки в";
             this.checkBoxScalePoint.UseVisualStyleBackColor = true;
             // 
             // affineRotationCenterAngle
             // 
+            this.affineRotationCenterAngle.DecimalPlaces = 2;
             this.affineRotationCenterAngle.Location = new System.Drawing.Point(287, 207);
             this.affineRotationCenterAngle.Margin = new System.Windows.Forms.Padding(4);
             this.affineRotationCenterAngle.Maximum = new decimal(new int[] {
-            359,
+            360,
             0,
             0,
             0});
+            this.affineRotationCenterAngle.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
             this.affineRotationCenterAngle.Name = "affineRotationCenterAngle";
             this.affineRotationCenterAngle.Size = new System.Drawing.Size(69, 22);
             this.affineRotationCenterAngle.TabIndex = 9;
             // 
             // affineRotationPointAngle
             // 
+            this.affineRotationPointAngle.DecimalPlaces = 2;
             this.affineRotationPointAngle.Location = new System.Drawing.Point(287, 58);
             this.affineRotationPointAngle.Margin = new System.Windows.Forms.Padding(4);
             this.affineRotationPointAngle.Maximum = new decimal(new int[] {
-            359,
+            360,
             0,
             0,
             0});
+            this.affineRotationPointAngle.Minimum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            -2147483648});
             this.affineRotationPointAngle.Name = "affineRotationPointAngle";
             this.affineRotationPointAngle.Size = new System.Drawing.Size(69, 22);
             this.affineRotationPointAngle.TabIndex = 8;
@@ -374,6 +408,7 @@
             // 
             // affineOffsetDx
             // 
+            this.affineOffsetDx.DecimalPlaces = 2;
             this.affineOffsetDx.Location = new System.Drawing.Point(175, 28);
             this.affineOffsetDx.Margin = new System.Windows.Forms.Padding(4);
             this.affineOffsetDx.Minimum = new decimal(new int[] {
@@ -407,6 +442,7 @@
             // 
             // affineOffsetDy
             // 
+            this.affineOffsetDy.DecimalPlaces = 2;
             this.affineOffsetDy.Location = new System.Drawing.Point(287, 28);
             this.affineOffsetDy.Margin = new System.Windows.Forms.Padding(4);
             this.affineOffsetDy.Minimum = new decimal(new int[] {

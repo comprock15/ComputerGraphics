@@ -145,13 +145,13 @@ namespace LAB4
                     break;
                 case selectType.EDGE:
                     var poly = polygons[int.Parse(selectedItemPath.Split(' ')[1]) - 1];
-                    Point pnt1 = poly.vertices[int.Parse(selectedItemPath.Split(' ')[3]) - 1];
-                    Point pnt2 = poly.vertices[int.Parse(selectedItemPath.Split(' ')[3])];
+                    PointF pnt1 = poly.vertices[int.Parse(selectedItemPath.Split(' ')[3]) - 1];
+                    PointF pnt2 = poly.vertices[int.Parse(selectedItemPath.Split(' ')[3])];
                     g.DrawLine(p, pnt1, pnt2);
                     break;
                 case selectType.VERTEX:
                     poly = polygons[int.Parse(selectedItemPath.Split(' ')[1]) - 1];
-                    Point pnt = poly.vertices[int.Parse(selectedItemPath.Split(' ')[3]) - 1];
+                    PointF pnt = poly.vertices[int.Parse(selectedItemPath.Split(' ')[3]) - 1];
                     g.DrawEllipse(p, pnt.X, pnt.Y, 5,5);
                     break;
                 default:
@@ -195,7 +195,7 @@ namespace LAB4
         }
 
 
-        private void isPointOnLeftSide(Point point)
+        private void isPointOnLeftSide(PointF point)
         {
             var ItemPath = label13.Text;
             var poly = polygons[int.Parse(ItemPath.Split(' ')[1]) - 1];
@@ -228,9 +228,9 @@ namespace LAB4
             var y = (point.X - p2.X) * (p1.Y - p2.Y) / (float)(p1.X - p2.X) + p2.Y;
 
             if (point.X > x)
-            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра"; }
+            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") справа от ребра"; }
             else
-            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра"; }
+            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра"; }
         }
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
