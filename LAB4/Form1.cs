@@ -21,10 +21,12 @@ namespace LAB4
         Graphics g;
         Pen p_black, p_red;
 
+        private PointF? tempLineStart = null;
+        private PointF? tempLineEnd = null;
+
         selectType selectedItemType;
         string selectedItemPath;
         taskType cur_mode;
-
 
         public Form1()
         {
@@ -63,22 +65,36 @@ namespace LAB4
                     //    g.DrawEllipse(p_black, point.X, point.Y, 3, 3);
                 }
             }
+
+            if (tempLineStart != null && tempLineEnd != null)
+                g.DrawLine(p_red, tempLineStart.Value, tempLineEnd.Value);
         }
 
-        
+        private void pictureBox1_MouseClick(object sender, MouseEventArgs e) {
+            switch (cur_mode) {
+                case taskType.FIND_CROSS_POINT: {
+                        if (tempLineStart == null) {
+                            tempLineStart = e.Location;
+                            tempLineEnd = null;
+                        }
+                        else if (tempLineEnd == null) {
+                            tempLineEnd = e.Location;
+                            RedrawField();
+                            g.DrawLine(p_red, tempLineStart.Value, tempLineEnd.Value);
+                            findCrossPoint(tempLineStart.Value, tempLineEnd.Value);
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
-        {
-            switch (cur_mode)
-            {
-                case taskType.FIND_CROSS_POINT:
-                    break;
-                case taskType.P_CLASS_EDGE:
-                    {
-                        isPointOnLeftSide(e.Location);                        
+                            tempLineStart = null;
+                            tempLineEnd = null;
+                        }
                     }
                     break;
-                case taskType.P_CLASS_POLY:
+                case taskType.P_CLASS_EDGE: {
+                        isPointOnLeftSide(e.Location);
+                    }
+                    break;
+                case taskType.P_CLASS_POLY: {
+                        checkPointBelonging(e.Location);
+                    }
                     break;
                 case taskType.SET_ROTATION_POINT:
                     affineRotationPointX.Value = e.X;
@@ -94,7 +110,7 @@ namespace LAB4
                     break;
                 default:
                     if (e.Button == MouseButtons.Right)
-                    {
+                        {
                         polygon_drawing = false;
                         TreeNode new_edge = new TreeNode("Edge " + (treeView1.Nodes[polygons.Count - 1].Nodes.Count + 1).ToString());
 
@@ -108,14 +124,12 @@ namespace LAB4
                     }
                     else
                     {
-                        if (!polygon_drawing)
-                        {
+                        if (!polygon_drawing) {
                             polygon_drawing = true;
                             polygons.Add(new Polygon(e.Location));
                             treeView1.Nodes.Add(new TreeNode("Polygon " + polygons.Count.ToString())); ;
                         }
-                        else
-                        {
+                        else {
                             polygons.Last().AddVertex(e.Location);
 
                             TreeNode new_edge = new TreeNode("Edge " + (treeView1.Nodes[polygons.Count - 1].Nodes.Count + 1).ToString());
@@ -128,9 +142,8 @@ namespace LAB4
                         RedrawField();
                     }
                     break;
-
             }
-                
+
         }
 
         public void ShowSelectedItem(Pen p)
@@ -194,7 +207,6 @@ namespace LAB4
             RedrawField();
         }
 
-
         private void isPointOnLeftSide(PointF point)
         {
             var ItemPath = label13.Text;
@@ -202,38 +214,101 @@ namespace LAB4
             var p1 = poly.vertices[int.Parse(ItemPath.Split(' ')[3]) - 1];
             var p2 = poly.vertices[int.Parse(ItemPath.Split(' ')[3])];
 
-            //var p = p1.Y > p2.Y ? p1 : p2;
-
-            //if ( point.Y * p.X - point.X * p.Y > 0)
-            //{
-            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра";
-            //}
-            //else 
-            //{
-            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
-            //}
-
-            //if (Math.Max(point.X, Math.Max(p1.X, p2.X)) == point.X)
-            //{
-            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра";
-            //    return;
-            //}
-            //if (Math.Min(point.X, Math.Min(p1.X, p2.X)) == point.X)
-            //{
-            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
-            //    return;
-            //}
-
             var x = (point.Y - p2.Y) * (p1.X - p2.X) / (float)(p1.Y - p2.Y) + p2.X;
             var y = (point.X - p2.X) * (p1.Y - p2.Y) / (float)(p1.X - p2.X) + p2.Y;
 
             if (point.X > x)
-            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") справа от ребра"; }
+            { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") справа от ребра"; }
             else
-            { textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра"; }
+            { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") слева от ребра"; }
         }
+
+        private void findCrossPoint(PointF p1, PointF p2) {
+            var ItemPath = label14.Text;
+            var poly = polygons[int.Parse(ItemPath.Split(' ')[1]) - 1];
+            var polyP1 = poly.vertices[int.Parse(ItemPath.Split(' ')[3]) - 1];
+            var polyP2 = poly.vertices[int.Parse(ItemPath.Split(' ')[3])];
+
+            float A1 = p2.Y - p1.Y;
+            float B1 = p1.X - p2.X;
+            float C1 = A1 * p1.X + B1 * p1.Y;
+
+            float A2 = polyP2.Y - polyP1.Y;
+            float B2 = polyP1.X - polyP2.X;
+            float C2 = A2 * polyP1.X + B2 * polyP1.Y;
+
+            float det = A1 * B2 - A2 * B1;
+
+            if (det == 0)
+                textBox4.Text = "Рёбра параллельны";
+            else {
+                int x = (int)((B2 * C1 - B1 * C2) / det);
+                int y = (int)((A1 * C2 - A2 * C1) / det);
+                textBox4.Text = $"({x}, {y})";
+                g.DrawEllipse(p_red, x - 2, y - 2, 5, 5);
+            }
+
+            textBox5.Text = "Готово";
+        }
+
+        private void checkPointBelonging(PointF point) {
+            var poly = polygons[int.Parse(label16.Text.Split(' ')[1]) - 1];
+            bool isInside = false;
+
+            int verticesCount = poly.vertices.Count;
+            for (int i = 0, j = verticesCount - 1; i < verticesCount; j = i++) {
+                PointF vertex1 = poly.vertices[i];
+                PointF vertex2 = poly.vertices[j];
+
+                if ((vertex1.Y > point.Y) != (vertex2.Y > point.Y) &&
+                    (point.X < (vertex2.X - vertex1.X) * (point.Y - vertex1.Y) / (vertex2.Y - vertex1.Y) + vertex1.X)) {
+                    isInside = !isInside;
+                }
+            }
+
+            textBox1.Text = isInside ? "Точка принадлежит полигону" : "Точка не принадлежит полигону";
+            textBox3.Text = $"({point.X}, {point.Y})";
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e) {
+            if (radioButton1.Checked) {
+                if (selectedItemType == selectType.EDGE) {
+                    cur_mode = taskType.FIND_CROSS_POINT;
+                    label14.Text = selectedItemPath;
+                    textBox5.Text = "Нарисуйте второе ребро";
+                }
+                else {
+                    textBox5.Text = "Ребро не выбрано!";
+                    radioButton1.Checked = false;
+                    radioButton4.Checked = true;
+                }
+            }
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e) {
+            tempLineStart = null;
+            tempLineEnd = null;
+            RedrawField();
+
+            if (radioButton2.Checked) {
+                if (selectedItemType == selectType.POLY) {
+                    cur_mode = taskType.P_CLASS_POLY;
+                    label16.Text = selectedItemPath;
+                }
+                else {
+                    textBox1.Text = "Полигон не выбран!";
+                    radioButton3.Checked = false;
+                    radioButton4.Checked = true;
+                }
+            }
+        }
+
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
+            tempLineStart = null;
+            tempLineEnd = null;
+            RedrawField();
+
             if (radioButton3.Checked)
             {
                 if (selectedItemType == selectType.EDGE)
@@ -324,6 +399,26 @@ namespace LAB4
         {
             cur_mode = taskType.SET_SCALE_POINT;
             pictureBox1.Cursor = Cursors.Cross;
+        }
+
+        private void label10_Click(object sender, EventArgs e) {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e) {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e) {
+
+        }
+
+        private void label12_Click(object sender, EventArgs e) {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e) {
+
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
