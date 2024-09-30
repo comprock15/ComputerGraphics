@@ -9,14 +9,14 @@ namespace LAB4
 {
     internal class Polygon
     {
-        public List<System.Drawing.Point> vertices;
+        public List<System.Drawing.PointF> vertices;
         public int vertices_count;
-        public Polygon(Point first_point)
+        public Polygon(PointF first_point)
         {
-            vertices = new List<Point>() { first_point };
+            vertices = new List<PointF>() { first_point };
             vertices_count = 1;
         }
-        public void AddVertex(Point new_vert)
+        public void AddVertex(PointF new_vert)
         {
             vertices.Add(new_vert);
             vertices_count++;
