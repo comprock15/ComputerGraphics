@@ -92,7 +92,9 @@ namespace LAB4
                         isPointOnLeftSide(e.Location);
                     }
                     break;
-                case taskType.P_CLASS_POLY:
+                case taskType.P_CLASS_POLY: {
+                        checkPointBelonging(e.Location);
+                    }
                     break;
                 case taskType.SET_ROTATION_POINT:
                     affineRotationPointX.Value = e.X;
@@ -249,6 +251,25 @@ namespace LAB4
             textBox5.Text = "Готово";
         }
 
+        private void checkPointBelonging(PointF point) {
+            var poly = polygons[int.Parse(label16.Text.Split(' ')[1]) - 1];
+            bool isInside = false;
+
+            int verticesCount = poly.vertices.Count;
+            for (int i = 0, j = verticesCount - 1; i < verticesCount; j = i++) {
+                PointF vertex1 = poly.vertices[i];
+                PointF vertex2 = poly.vertices[j];
+
+                if ((vertex1.Y > point.Y) != (vertex2.Y > point.Y) &&
+                    (point.X < (vertex2.X - vertex1.X) * (point.Y - vertex1.Y) / (vertex2.Y - vertex1.Y) + vertex1.X)) {
+                    isInside = !isInside;
+                }
+            }
+
+            textBox1.Text = isInside ? "Точка принадлежит полигону" : "Точка не принадлежит полигону";
+            textBox3.Text = $"({point.X}, {point.Y})";
+        }
+
         private void radioButton1_CheckedChanged(object sender, EventArgs e) {
             if (radioButton1.Checked) {
                 if (selectedItemType == selectType.EDGE) {
@@ -259,6 +280,24 @@ namespace LAB4
                 else {
                     textBox5.Text = "Ребро не выбрано!";
                     radioButton1.Checked = false;
+                    radioButton4.Checked = true;
+                }
+            }
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e) {
+            tempLineStart = null;
+            tempLineEnd = null;
+            RedrawField();
+
+            if (radioButton2.Checked) {
+                if (selectedItemType == selectType.POLY) {
+                    cur_mode = taskType.P_CLASS_POLY;
+                    label16.Text = selectedItemPath;
+                }
+                else {
+                    textBox1.Text = "Полигон не выбран!";
+                    radioButton3.Checked = false;
                     radioButton4.Checked = true;
                 }
             }
@@ -360,6 +399,26 @@ namespace LAB4
         {
             cur_mode = taskType.SET_SCALE_POINT;
             pictureBox1.Cursor = Cursors.Cross;
+        }
+
+        private void label10_Click(object sender, EventArgs e) {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e) {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e) {
+
+        }
+
+        private void label12_Click(object sender, EventArgs e) {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e) {
+
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
