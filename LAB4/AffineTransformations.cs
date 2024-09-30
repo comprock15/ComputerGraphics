@@ -81,7 +81,7 @@ namespace LAB4
             double[,] matrix = new double[3, 3] {
                 {  1,   0,   0 },
                 {  0,   1,   0 },
-                {-dx, -dy,   1 }
+                { dx,  -dy,   1 }
             };
 
             // Пересчитываем координаты всех точек
@@ -124,16 +124,37 @@ namespace LAB4
 
         }
 
+        /// <summary>
+        /// Масштабирование относительно заданной пользователем точки
+        /// </summary>
+        /// <param name="polygon">Полигон</param>
+        /// <param name="scale">Масштаб</param>
+        /// <param name="x">Координата x точки</param>
+        /// <param name="y">Координата y точки</param>
         public static void TransformScalePoint(ref Polygon polygon, double scale, double x, double y)
         {
-            // TODO: Масштабирование относительно заданной пользователем точки
+            // Задаём матрицу преобразования
+            double[,] matrix = new double[3, 3] {
+                {          scale,               0,  0 },
+                {              0,           scale,  0 },
+                {(1 - scale) * x, (1 - scale) * y,  1 }
+            };
+
+            // Пересчитываем координаты всех точек
+            RecalculateCoords(ref polygon, matrix);
         }
 
+        /// <summary>
+        /// Масштабирование относительно своего центра
+        /// </summary>
+        /// <param name="polygon">Полигон</param>
+        /// <param name="scale">Масштаб</param>
         public static void TransformScaleCenter(ref Polygon polygon, double scale)
         {
-            // TODO: Масштабирование относительно своего центра
-            // 1) Посчитать координаты центра
-            // 2) TransformScalePoint(ref polygon, scale, center_x, center_y)
+            // Считаем координаты центра
+            (double xCenter, double yCenter) = CalculateCenterCoords(ref polygon);
+            // Масштабируем относительно центра
+            TransformScalePoint(ref polygon, scale, xCenter, yCenter);
         }
     }
 }
