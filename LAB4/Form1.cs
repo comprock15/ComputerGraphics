@@ -213,16 +213,16 @@ namespace LAB4
             //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
             //}
 
-            if (Math.Max(point.X, Math.Max(p1.X, p2.X)) == point.X)
-            {
-                textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра";
-                return;
-            }
-            if (Math.Min(point.X, Math.Min(p1.X, p2.X)) == point.X)
-            {
-                textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
-                return;
-            }
+            //if (Math.Max(point.X, Math.Max(p1.X, p2.X)) == point.X)
+            //{
+            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") слева от ребра";
+            //    return;
+            //}
+            //if (Math.Min(point.X, Math.Min(p1.X, p2.X)) == point.X)
+            //{
+            //    textBox2.Text = "Точка (" + point.X + "," + point.Y + ") cправа от ребра";
+            //    return;
+            //}
 
             var x = (point.Y - p2.Y) * (p1.X - p2.X) / (float)(p1.Y - p2.Y) + p2.X;
             var y = (point.X - p2.X) * (p1.Y - p2.Y) / (float)(p1.X - p2.X) + p2.Y;
