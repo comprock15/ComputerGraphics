@@ -70,6 +70,8 @@ namespace LAB4
                 g.DrawLine(p_red, tempLineStart.Value, tempLineEnd.Value);
         }
 
+        private void Form1_Activated(object sender, EventArgs e) => RedrawField();
+
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e) {
             switch (cur_mode) {
                 case taskType.FIND_CROSS_POINT: {
