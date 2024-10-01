@@ -197,11 +197,13 @@ namespace LAB4
                 selectedItemType = selectType.EDGE;
                 selectedItemPath = selected_node.Parent.Text + " " + selectedItemPath;
                 label13.Text = selectedItemPath;
+                label14.Text = selectedItemPath;
                 ShowSelectedItem(p_red);
             }
             else if (selectedItemPath.Contains("Polygon"))
             {
                 selectedItemType = selectType.POLY;
+                label16.Text = selectedItemPath;
             }
             ShowSelectedItem(p_red);
         }
@@ -305,6 +307,7 @@ namespace LAB4
             tempLineStart = null;
             tempLineEnd = null;
             RedrawField();
+            ShowSelectedItem(p_red);
 
             if (radioButton2.Checked) {
                 if (selectedItemType == selectType.POLY) {
