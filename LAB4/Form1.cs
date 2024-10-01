@@ -196,6 +196,8 @@ namespace LAB4
             {
                 selectedItemType = selectType.EDGE;
                 selectedItemPath = selected_node.Parent.Text + " " + selectedItemPath;
+                label13.Text = selectedItemPath;
+                ShowSelectedItem(p_red);
             }
             else if (selectedItemPath.Contains("Polygon"))
             {
@@ -219,10 +221,22 @@ namespace LAB4
             var x = (point.Y - p2.Y) * (p1.X - p2.X) / (float)(p1.Y - p2.Y) + p2.X;
             var y = (point.X - p2.X) * (p1.Y - p2.Y) / (float)(p1.X - p2.X) + p2.Y;
 
-            if (point.X > x)
-            { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") справа от ребра"; }
-            else
-            { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") слева от ребра"; }
+            if (p2.Y < p1.Y) //проверка направления ребра
+            {
+                if (point.X > x)
+                { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") справа от ребра"; }
+                else
+                { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") слева от ребра"; }
+            }
+            else 
+            {
+                if (point.X > x)
+                { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") слева от ребра"; }
+                else
+                { textBox2.Text = "Точка (" + point.X + ", " + point.Y + ") справа от ребра"; }
+            }
+
+            
         }
 
         private void findCrossPoint(PointF p1, PointF p2) {
@@ -310,6 +324,7 @@ namespace LAB4
             tempLineStart = null;
             tempLineEnd = null;
             RedrawField();
+            ShowSelectedItem(p_red);
 
             if (radioButton3.Checked)
             {
