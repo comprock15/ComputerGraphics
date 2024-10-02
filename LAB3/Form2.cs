@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -168,21 +168,45 @@ namespace LAB3 {
             int dy = Math.Abs(p1.Y - p0.Y);
             int sx = p0.X < p1.X ? 1 : -1;
             int sy = p0.Y < p1.Y ? 1 : -1;
-            int err = dx - dy;
-
-            while (true) {
-                g.FillRectangle(new SolidBrush(color), p0.X, p0.Y, 1, 1);
-                if (p0.X == p1.X && p0.Y == p1.Y) break;
-                int e2 = 2 * err;
-                if (-dy < e2) {
-                    err -= dy;
+            if (dy == 0 || dx == 0)
+            {
+                g.DrawLine(new Pen(color), p0, p1);
+                return;
+            }
+            double m = dy / (double)dx;
+            if (m < 1)
+            {
+                int d = 2 * dy - dx;
+                for (int i = 0; i < dx; ++i)
+                {
+                    g.FillRectangle(new SolidBrush(color), p0.X, p0.Y, 1, 1);
+                    if (d < 0)
+                        d += 2 * dy;
+                    else
+                    {
+                        p0.Y += sy;
+                        d += 2 * (dy - dx);
+                    }
                     p0.X += sx;
                 }
-                if (e2 < dx) {
-                    err += dx;
+            }
+            else
+            {
+                int d = 2 * dx - dy;
+                for (int i = 0; i < dy; ++i)
+                {
+                    g.FillRectangle(new SolidBrush(color), p0.X, p0.Y, 1, 1);
+                    if (d < 0)
+                        d += 2 * dx;
+                    else
+                    {
+                        p0.X += sx;
+                        d += 2 * (dx - dy);
+                    }
                     p0.Y += sy;
                 }
             }
+            
         }
 
         /// <summary>
@@ -192,7 +216,8 @@ namespace LAB3 {
         /// <param name="p0">Начальная точка линии.</param>
         /// <param name="p1">Конечная точка линии.</param>
         /// <param name="color">Цвет линии.</param>
-        private void WuLine(Graphics g, Point p0, Point p1, Color color) {
+        private void WuLine(Graphics g, Point p0, Point p1, Color color)
+        {
             bool steep = Math.Abs(p1.Y - p0.Y) > Math.Abs(p1.X - p0.X);
 
             int x0 = p0.X;
@@ -200,12 +225,14 @@ namespace LAB3 {
             int x1 = p1.X;
             int y1 = p1.Y;
 
-            if (steep) {
+            if (steep)
+            {
                 Swap(ref x0, ref y0);
                 Swap(ref x1, ref y1);
             }
 
-            if (x0 > x1) {
+            if (x0 > x1)
+            {
                 Swap(ref x0, ref x1);
                 Swap(ref y0, ref y1);
             }
@@ -216,12 +243,15 @@ namespace LAB3 {
 
             float y = y0 + grad;
 
-            for (int x = x0; x <= x1; ++x) {
-                if (steep) {
+            for (int x = x0; x <= x1; ++x)
+            {
+                if (steep)
+                {
                     g.FillRectangle(new SolidBrush(Color.FromArgb((int)(255 * (1 - Frac(y))), color)), (int)y, x, 1, 1);
                     g.FillRectangle(new SolidBrush(Color.FromArgb((int)(255 * Frac(y)), color)), (int)y + 1, x, 1, 1);
                 }
-                else {
+                else
+                {
                     g.FillRectangle(new SolidBrush(Color.FromArgb((int)(255 * (1 - Frac(y))), color)), x, (int)y, 1, 1);
                     g.FillRectangle(new SolidBrush(Color.FromArgb((int)(255 * Frac(y)), color)), x, (int)y + 1, 1, 1);
                 }
