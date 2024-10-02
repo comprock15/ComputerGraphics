@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -259,11 +259,19 @@ namespace LAB4
 
             if (det == 0)
                 textBox4.Text = "Рёбра параллельны";
-            else {
+            else
+            {
                 int x = (int)((B2 * C1 - B1 * C2) / det);
                 int y = (int)((A1 * C2 - A2 * C1) / det);
                 textBox4.Text = $"({x}, {y})";
-                g.DrawEllipse(p_red, x - 2, y - 2, 5, 5);
+                if (x >= Math.Min(polyP1.X, polyP2.X) && x <= Math.Max(polyP1.X, polyP2.X) &&
+                    y >= Math.Min(polyP1.Y, polyP2.Y) && y <= Math.Max(polyP1.Y, polyP2.Y) &&
+                        x >= Math.Min(p1.X, p2.X) && x <= Math.Max(p1.X, p2.X) &&
+                    y >= Math.Min(p1.Y, p2.Y) && y <= Math.Max(p1.Y, p2.Y))
+                {
+                    g.DrawEllipse(p_red, x - 2, y - 2, 5, 5);
+                }
+
             }
 
             textBox5.Text = "Готово";
@@ -278,8 +286,7 @@ namespace LAB4
                 PointF vertex1 = poly.vertices[i];
                 PointF vertex2 = poly.vertices[j];
 
-                if ((vertex1.Y > point.Y) != (vertex2.Y > point.Y) &&
-                    (point.X < (vertex2.X - vertex1.X) * (point.Y - vertex1.Y) / (vertex2.Y - vertex1.Y) + vertex1.X)) {
+                if ((vertex1.Y > point.Y) != (vertex2.Y > point.Y) && (point.X <= (vertex2.X - vertex1.X) * (point.Y - vertex1.Y) / (vertex2.Y - vertex1.Y) + vertex1.X)) {
                     isInside = !isInside;
                 }
             }
