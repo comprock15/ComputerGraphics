@@ -55,11 +55,11 @@
             // 
             // nextStepButton
             // 
-            this.nextStepButton.Location = new System.Drawing.Point(501, 28);
+            this.nextStepButton.Location = new System.Drawing.Point(480, 29);
             this.nextStepButton.Name = "nextStepButton";
-            this.nextStepButton.Size = new System.Drawing.Size(75, 23);
+            this.nextStepButton.Size = new System.Drawing.Size(137, 23);
             this.nextStepButton.TabIndex = 3;
-            this.nextStepButton.Text = "Next";
+            this.nextStepButton.Text = "Далее";
             this.nextStepButton.UseVisualStyleBackColor = true;
             this.nextStepButton.Click += new System.EventHandler(this.nextStepButton_Click);
             // 
@@ -67,7 +67,7 @@
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(12, 29);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(150, 22);
             this.numericUpDown1.TabIndex = 4;
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.heightChanged);
             // 
@@ -76,24 +76,24 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 17);
+            this.label1.Size = new System.Drawing.Size(142, 17);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Left height";
+            this.label1.Text = "Высота левой точки";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(135, 9);
+            this.label2.Location = new System.Drawing.Point(168, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 17);
+            this.label2.Size = new System.Drawing.Size(150, 17);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Right height";
+            this.label2.Text = "Высота правой точки";
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(138, 29);
+            this.numericUpDown2.Location = new System.Drawing.Point(168, 29);
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown2.Size = new System.Drawing.Size(150, 22);
             this.numericUpDown2.TabIndex = 7;
             this.numericUpDown2.ValueChanged += new System.EventHandler(this.heightChanged);
             // 
@@ -105,7 +105,7 @@
             0,
             0,
             65536});
-            this.numericUpDown3.Location = new System.Drawing.Point(264, 29);
+            this.numericUpDown3.Location = new System.Drawing.Point(324, 29);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             2,
             0,
@@ -117,7 +117,7 @@
             0,
             -2147483648});
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown3.Size = new System.Drawing.Size(150, 22);
             this.numericUpDown3.TabIndex = 8;
             this.numericUpDown3.Value = new decimal(new int[] {
             2,
@@ -128,30 +128,30 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(261, 9);
+            this.label3.Location = new System.Drawing.Point(324, 9);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 17);
+            this.label3.Size = new System.Drawing.Size(108, 17);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Roughness";
+            this.label3.Text = "Шероховатость";
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(980, 27);
+            this.clearButton.Location = new System.Drawing.Point(960, 28);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(75, 23);
+            this.clearButton.Size = new System.Drawing.Size(95, 23);
             this.clearButton.TabIndex = 10;
-            this.clearButton.Text = "Clear";
+            this.clearButton.Text = "Очистить";
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(390, 29);
+            this.checkBox1.Location = new System.Drawing.Point(480, 8);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(105, 21);
+            this.checkBox1.Size = new System.Drawing.Size(137, 21);
             this.checkBox1.TabIndex = 11;
-            this.checkBox1.Text = "Draw Points";
+            this.checkBox1.Text = "Выделять точки";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form2
@@ -169,7 +169,7 @@
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.nextStepButton);
             this.Controls.Add(this.pictureBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Midpoint displacement";

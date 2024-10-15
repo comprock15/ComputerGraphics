@@ -47,7 +47,7 @@ namespace Lab5
                 points.Add(new PointF(0, (float)numericUpDown1.Value));
                 points.Add(new PointF(pictureBox1.Width - 1, (float)numericUpDown2.Value));
             }
-            else if (points.Count < pictureBox1.Width)
+            if (points.Count < pictureBox1.Width)
             {
                 List<PointF> newPoints = new List<PointF>(points);
 
@@ -79,6 +79,8 @@ namespace Lab5
                 if (checkBox1.Checked)
                     g.FillEllipse(new SolidBrush(Color.Red), points[i].X-3, points[i].Y-3, 6, 6);
             }
+            if (checkBox1.Checked)
+                g.FillEllipse(new SolidBrush(Color.Red), points[points.Count - 1].X - 3, points[points.Count - 1].Y - 3, 6, 6);
             pictureBox1.Invalidate();
         }
 
