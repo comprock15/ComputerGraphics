@@ -41,13 +41,18 @@
             this.cmbFractals.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFractals.FormattingEnabled = true;
             this.cmbFractals.Items.AddRange(new object[] {
-            "Кривая Коха",
-            "Квадратный остров Коха",
-            "Ковёр Серпинского",
-            "Наконечник Серпинского",
-            "Кривая Гильберта",
-            "Кривая дракона Хартера-Хейтуэя",
-            "Шестиугольная кривая Госпера"});
+                "Кривая Коха",
+                "Квадратный остров Коха",
+                "Ковёр Серпинского",
+                "Наконечник Серпинского",
+                "Кривая Гильберта",
+                "Кривая дракона Хартера-Хейтуэя",
+                "Шестиугольная кривая Госпера",
+                "Куст 1",
+                "Куст 2",
+                "Куст 3",
+                "Шестиугольная Мозаика",
+                "Случайное дерево"});
             this.cmbFractals.Location = new System.Drawing.Point(93, 12);
             this.cmbFractals.Name = "cmbFractals";
             this.cmbFractals.Size = new System.Drawing.Size(250, 21);
