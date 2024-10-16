@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -43,6 +43,13 @@ namespace Lab5 {
                 float scale = Math.Min(width, height) / 75f;
 
                 LSystemDrawer drawer = new LSystemDrawer(e.Graphics, lSystem.Angle);
+
+                if (cmbFractals.SelectedIndex == 11)
+                {
+                    startPoint.X = ClientSize.Width / 2;
+                    startPoint.Y = ClientSize.Height - 1;
+                    scale *= 0.5f;
+                }
                 drawer.Draw(lSystem.Generate(), startPoint, scale, lSystem.InitialDirection, lSystem.RandomBranching ? lSystem.Angle / 2 : 0);
             }
         }
@@ -153,24 +160,27 @@ namespace Lab5 {
             this.randomAngleRange = randomAngleRange;
 
             float initialThickness = randomAngleRange == 0 ? 1f : 10f;
-            float thicknessDecayFactor = randomAngleRange > 0 ? 0.99875f : 1.0f;
+            float thicknessDecayFactor = randomAngleRange > 0 ? 0.875f : 1.0f;
+
+            float currentThickness = initialThickness;
 
             foreach (var command in commands) {
                 switch (command) {
                     case 'F':
-                        float factor = randomAngleRange == 0 ? scale : scale * 0.2f;
+                        float factor = randomAngleRange == 0 ? scale : scale * 0.25f;
                         var newPosition = MoveForward(currentPosition, currentDirection, factor);
 
-                        Color lineColor = GetColor(initialThickness);
+                        Color lineColor = GetColor(currentThickness);
 
-                        graphics.DrawLine(new Pen(lineColor, initialThickness), currentPosition, newPosition);
+                        graphics.DrawLine(new Pen(lineColor, currentThickness), currentPosition, newPosition);
+
+                        if (randomAngleRange > 0)
+                        {
+                            currentThickness = (float)(initialThickness * Math.Pow(thicknessDecayFactor, positionStack.Count));
+                            if (currentThickness < 1) currentThickness = 1;
+                        }
 
                         currentPosition = newPosition;
-
-                        if (randomAngleRange > 0) {
-                            initialThickness *= thicknessDecayFactor;
-                            if (initialThickness < 1) initialThickness = 1;
-                        }
                         break;
 
                     case '+':
