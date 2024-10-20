@@ -53,6 +53,7 @@ namespace MonotonePolygonTriangulation
             this.triangulateButton.TabIndex = 1;
             this.triangulateButton.Text = "Триангуляция";
             this.triangulateButton.UseVisualStyleBackColor = true;
+            this.triangulateButton.Click += new System.EventHandler(this.triangulateButton_Click);
             // 
             // clearButton
             // 
