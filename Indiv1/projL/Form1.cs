@@ -14,7 +14,6 @@ namespace projL
     public partial class Form1 : Form
     {
         List<Point> points;
-        
         SolidBrush b;
         List<Point> shell;
         Graphics g;
@@ -24,7 +23,6 @@ namespace projL
         {
             InitializeComponent();
 
-
             g = pictureBox1.CreateGraphics();
             b = new SolidBrush(Color.Black);
             
@@ -32,11 +30,10 @@ namespace projL
             shell = new List<Point>() { };
             
             rand = new Random();
-            numericUpDown1.Maximum = Width-5;
+            numericUpDown1.Maximum = Width - 5;
             numericUpDown2.Maximum = Height - 5;
         }
 
-        
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -70,9 +67,14 @@ namespace projL
 
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
-           // g.Dispose();
-            g = pictureBox1.CreateGraphics();
-            RedrawImage();
+            if (g != null)
+            { 
+                g.Dispose();
+                g = pictureBox1.CreateGraphics();
+                RedrawImage();
+            }
+            
+            
             numericUpDown1.Maximum = Width - 5;
             numericUpDown2.Maximum = Height - 5;
         }
@@ -81,11 +83,9 @@ namespace projL
         {
             for (int i = 0; i < points.Count; i++)
             {
-                g.FillEllipse(b, points[i].X - 3, points[i].Y - 3, 10, 10);
+                g.FillEllipse(b, points[i].X - 5, points[i].Y - 5, 10, 10);
             }
         }
-
-        
 
         private void button_createShell_Click(object sender, EventArgs e)
         {
@@ -95,14 +95,13 @@ namespace projL
                 MakeShell();
                 DrawShell();
             }
-            
         }
 
         private void DrawShell()
         {
             g.Clear(Color.White);
             
-            Pen p = new Pen(Color.Blue, 3);
+            Pen p = new Pen(Color.Blue, 2);
             for (int i = 0; i < shell.Count-1; i++ )
             {
                 g.DrawLine(p, shell[i], shell[i + 1]);
@@ -132,8 +131,6 @@ namespace projL
                     points_bot.Add(points[i]);
             }
 
-            
-
             MakeShell_Recur(ref points_up, p_l, p_r, true);
 
             var shell1 = shell.OrderBy(p => p.X).ToList();
@@ -142,7 +139,6 @@ namespace projL
             MakeShell_Recur(ref points_bot, p_l, p_r, false);
 
             var shell2 = shell.OrderByDescending(p => p.X).ToList();
-
             shell.Clear();
 
             shell.Add(p_l);
@@ -533,9 +529,9 @@ namespace projL
 
         private void button1_Click(object sender, EventArgs e)
         {
-            shell.Clear();
+            //shell.Clear();
             //MakeShellWithAnim();
-            DrawShell();
+            //DrawShell();
         }
     }
 }

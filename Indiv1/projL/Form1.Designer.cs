@@ -54,7 +54,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(17, 86);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(943, 454);
             this.pictureBox1.TabIndex = 0;
@@ -65,7 +65,7 @@
             // 
             this.button_createShell.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_createShell.Location = new System.Drawing.Point(779, 15);
-            this.button_createShell.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button_createShell.Margin = new System.Windows.Forms.Padding(4);
             this.button_createShell.Name = "button_createShell";
             this.button_createShell.Size = new System.Drawing.Size(183, 28);
             this.button_createShell.TabIndex = 1;
@@ -76,7 +76,7 @@
             // button_addRandomPoint
             // 
             this.button_addRandomPoint.Location = new System.Drawing.Point(17, 15);
-            this.button_addRandomPoint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button_addRandomPoint.Margin = new System.Windows.Forms.Padding(4);
             this.button_addRandomPoint.Name = "button_addRandomPoint";
             this.button_addRandomPoint.Size = new System.Drawing.Size(292, 28);
             this.button_addRandomPoint.TabIndex = 2;
@@ -87,7 +87,7 @@
             // numericUpDown_countRandomP
             // 
             this.numericUpDown_countRandomP.Location = new System.Drawing.Point(385, 17);
-            this.numericUpDown_countRandomP.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDown_countRandomP.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown_countRandomP.Minimum = new decimal(new int[] {
             1,
             0,
@@ -106,7 +106,7 @@
             // 
             this.button_Reset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_Reset.Location = new System.Drawing.Point(779, 50);
-            this.button_Reset.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button_Reset.Margin = new System.Windows.Forms.Padding(4);
             this.button_Reset.Name = "button_Reset";
             this.button_Reset.Size = new System.Drawing.Size(183, 28);
             this.button_Reset.TabIndex = 4;
@@ -117,7 +117,7 @@
             // button_addPointByCoords
             // 
             this.button_addPointByCoords.Location = new System.Drawing.Point(17, 50);
-            this.button_addPointByCoords.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button_addPointByCoords.Margin = new System.Windows.Forms.Padding(4);
             this.button_addPointByCoords.Name = "button_addPointByCoords";
             this.button_addPointByCoords.Size = new System.Drawing.Size(292, 28);
             this.button_addPointByCoords.TabIndex = 5;
@@ -158,7 +158,7 @@
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(349, 54);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(73, 22);
             this.numericUpDown1.TabIndex = 9;
@@ -166,7 +166,7 @@
             // numericUpDown2
             // 
             this.numericUpDown2.Location = new System.Drawing.Point(476, 54);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(4);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(73, 22);
             this.numericUpDown2.TabIndex = 10;
@@ -174,12 +174,13 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(671, 15);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 64);
             this.button1.TabIndex = 11;
             this.button1.Text = "Построить оболочку с анимацией";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
@@ -199,7 +200,7 @@
             this.Controls.Add(this.button_addRandomPoint);
             this.Controls.Add(this.button_createShell);
             this.Controls.Add(this.pictureBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(781, 592);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
