@@ -22,7 +22,8 @@ namespace LAB6
             p = new Pen(Color.Black,2);
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
-            
+            comboBox3.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -163,31 +164,41 @@ namespace LAB6
 
         void MakeRotation()
         {
+            double angle = 0.0;
+
             if (checkBox4.Checked)
             {
-                double angle = 0.0;
                 double.TryParse(textBox4.Text, out angle);
                 AffineTransformations.RotationAboutXAxis(ref polyhedron, angle);
             }
             if (checkBox5.Checked)
             {
-                double angle = 0.0;
                 double.TryParse(textBox5.Text, out angle);
                 AffineTransformations.RotationAboutYAxis(ref polyhedron, angle);
             }
             if (checkBox6.Checked)
             {
-                double angle = 0.0;
                 double.TryParse(textBox6.Text, out angle);
                 AffineTransformations.RotationAboutZAxis(ref polyhedron, angle);
             }
-            if (checkBox7.Checked)
-            {
-                
+            if (checkBox7.Checked) {
+                double.TryParse(textBox7.Text, out angle);
+
+                switch (comboBox3.SelectedIndex) {
+                    case 0:
+                        AffineTransformations.RotateAroundCenter(ref polyhedron, angle, 0);
+                        break;
+                    case 1:
+                        AffineTransformations.RotateAroundCenter(ref polyhedron, angle, 1);
+                        break;
+                    case 2:
+                        AffineTransformations.RotateAroundCenter(ref polyhedron, angle, 2);
+                        break;
+                }
             }
             if (checkBox8.Checked)
             {
-                double angle, x1, x2, y1, y2, z1, z2;
+                double x1, x2, y1, y2, z1, z2;
                 if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) && double.TryParse(textBox9.Text, out z1) &&
                     double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2) && double.TryParse(textBox12.Text, out z2) &&
                     double.TryParse(textBox14.Text, out angle))
@@ -197,38 +208,67 @@ namespace LAB6
             }
         }
 
-        void MakeScaling()
-        {
+        void MakeScaling() {
+            double scaleX = 1, scaleY = 1, scaleZ = 1, scale = 1;
+
             if (checkBox12.Checked)
-            { }
+                double.TryParse(textBox17.Text, out scaleX);
             if (checkBox11.Checked)
-            { }
+                double.TryParse(textBox16.Text, out scaleY);
             if (checkBox10.Checked)
-            { }
-            if (checkBox13.Checked)
-            {
-                double scale = 100;
+                double.TryParse(textBox15.Text, out scaleZ);
+            if (checkBox13.Checked) {
                 double.TryParse(textBox18.Text, out scale);
                 AffineTransformations.Scale(ref polyhedron, scale);
             }
+
+            AffineTransformations.Scale(ref polyhedron, scaleX, scaleY, scaleZ);
         }
 
-        void MakeReflection()
-        {
-            
+        void MakeReflection() {
+            double[,] matrix = new double[4, 4];
+
+            switch (comboBox4.SelectedIndex) {
+                case 0:
+                    matrix = new double[,] {
+                        { 1, 0, 0, 0 },
+                        { 0, 1, 0, 0 },
+                        { 0, 0, -1, 0 },
+                        { 0, 0, 0, 1 }
+                    };
+                    break;
+                case 1:
+                    matrix = new double[,] {
+                        { -1, 0, 0, 0 },
+                        { 0, 1, 0, 0 },
+                        { 0, 0, 1, 0 },
+                        { 0, 0, 0, 1 }
+                    };
+                    break;
+                case 2:
+                    matrix = new double[,] {
+                        { 1, 0, 0, 0 },
+                        { 0, -1, 0, 0 },
+                        { 0, 0, 1, 0 },
+                        { 0, 0, 0, 1 }
+                    };
+                    break;
+            }
+
+            AffineTransformations.Reflect(ref polyhedron, matrix);
         }
 
         private void textBox_TextChanged(object sender, EventArgs e)
         {
             double num;
             if (double.TryParse((sender as TextBox).Text, out num) == false)
-            {
                 (sender as TextBox).BackColor = Color.Red;
-            }
             else
-            {
                 (sender as TextBox).BackColor = Color.White;
-            }
+        }
+
+        private void pictureBox1_SizeChanged(object sender, EventArgs e) {
+            
         }
     }
 }

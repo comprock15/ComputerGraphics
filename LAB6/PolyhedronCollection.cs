@@ -186,6 +186,5 @@ namespace LAB6
             };
             return new Polyhedron(vertices, edges);
         }
-
     }
 }

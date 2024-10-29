@@ -102,6 +102,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(531, 740);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
             // 
             // comboBox1
             // 
@@ -158,10 +159,7 @@
             // comboBox4
             // 
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
-            "Относительно плоскости Oxy",
-            "Относительно плоскости Oyz",
-            "Относительно плоскости Oxz"});
+            this.comboBox4.Items.AddRange(new object[] { "Относительно плоскости OXY", "Относительно плоскости OYZ", "Относительно плоскости OXZ"});
             this.comboBox4.Location = new System.Drawing.Point(10, 565);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(223, 21);
@@ -289,7 +287,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(128, 268);
+            this.label12.Location = new System.Drawing.Point(132, 268);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(32, 13);
             this.label12.TabIndex = 31;
@@ -309,27 +307,27 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(146, 243);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(20, 13);
+            this.label9.Size = new System.Drawing.Size(18, 13);
             this.label9.TabIndex = 29;
-            this.label9.Text = "Z2";
+            this.label9.Text = "z2";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(80, 243);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(20, 13);
+            this.label10.Size = new System.Drawing.Size(18, 13);
             this.label10.TabIndex = 28;
-            this.label10.Text = "Y2";
+            this.label10.Text = "y2";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(14, 243);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(20, 13);
+            this.label11.Size = new System.Drawing.Size(18, 13);
             this.label11.TabIndex = 27;
-            this.label11.Text = "X2";
+            this.label11.Text = "x2";
             // 
             // textBox12
             // 
@@ -363,9 +361,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(146, 218);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(20, 13);
+            this.label6.Size = new System.Drawing.Size(18, 13);
             this.label6.TabIndex = 17;
-            this.label6.Text = "Z1";
+            this.label6.Text = "z1";
             // 
             // textBox7
             // 
@@ -381,9 +379,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(80, 218);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(20, 13);
+            this.label7.Size = new System.Drawing.Size(18, 13);
             this.label7.TabIndex = 16;
-            this.label7.Text = "Y1";
+            this.label7.Text = "y1";
             // 
             // label5
             // 
@@ -399,9 +397,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(14, 218);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(20, 13);
+            this.label8.Size = new System.Drawing.Size(18, 13);
             this.label8.TabIndex = 15;
-            this.label8.Text = "X1";
+            this.label8.Text = "x1";
             // 
             // label4
             // 
@@ -443,10 +441,7 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "Ox",
-            "Oy",
-            "Oz"});
+            this.comboBox3.Items.AddRange(new object[] { "OX", "OY", "OZ"});
             this.comboBox3.Location = new System.Drawing.Point(50, 141);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(64, 21);
@@ -749,4 +744,3 @@
         private System.Windows.Forms.CheckBox checkBox11;
     }
 }
-
