@@ -201,6 +201,13 @@ internal class AffineTransformations
         double m = y2 - y1;
         double n = z2 - z1;
 
+        // Нормируем вектор
+        double vlength = Math.Sqrt(l * l + m * m + n * n);
+        l /= vlength;
+        m /= vlength;
+        n /= vlength;
+
+        angle = DegreesToRadians(angle);
         double cos = Math.Cos(angle);
         double sin = Math.Sin(angle);
 
