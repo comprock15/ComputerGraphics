@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 internal class Vertex
 {
     public double x;
@@ -46,4 +45,3 @@ internal class Polyhedron
         this.edges = edges;
     }
 }
-

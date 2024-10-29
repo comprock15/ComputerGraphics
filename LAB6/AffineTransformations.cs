@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-
 internal class AffineTransformations
 {
     /// <summary>
@@ -192,6 +191,24 @@ internal class AffineTransformations
     }
 
     /// <summary>
+    /// Масштабирование относительно координат
+    /// </summary>
+    /// <param name="polyhedron">Многогранник</param>
+    /// <param name="scaleX">Масштаб по X</param>
+    /// <param name="scaleY">Масштаб по Y</param>
+    /// <param name="scaleZ">Масштаб по Z</param>
+    public static void Scale(ref Polyhedron polyhedron, double scaleX, double scaleY, double scaleZ) {
+        double[,] matrix = new double[4, 4] {
+            { scaleX, 0,     0,     0 },
+            { 0,     scaleY, 0,     0 },
+            { 0,     0,     scaleZ, 0 },
+            { 0,     0,     0,      1 }
+        };
+
+        RecalculateCoords(ref polyhedron, matrix);
+    }
+
+    /// <summary>
     /// Поворот относительно прямой
     /// </summary>
     /// <param name="polyhedron">Многогранник</param>
@@ -222,5 +239,43 @@ internal class AffineTransformations
         // Пересчитываем координаты всех точек
         RecalculateCoords(ref polyhedron, matrix);
     }
-}
 
+    /// <summary>
+    /// Поворот относительно оси
+    /// </summary>
+    /// <param name="polyhedron">Многогранник</param>
+    /// <param name="angle">Угол</param>
+    /// <param name="axis">Код оси</param>
+    public static void RotateAroundCenter(ref Polyhedron polyhedron, double angle, int axis) {
+        double[,] center = CalculateCenterCoords(polyhedron);
+        double x1 = center[0, 0];
+        double y1 = center[0, 1];
+        double z1 = center[0, 2];
+        double x2 = x1;
+        double y2 = y1;
+        double z2 = z1;
+
+        switch (axis) {
+            case 0:
+                x2 = 0;
+                break;
+            case 1:
+                y2 = 0;
+                break;
+            case 2:
+                z2 = 0;
+                break;
+        }
+
+        RotateAboutLine(ref polyhedron, angle, x1, y1, z1, x2, y2, z2);
+    }
+
+    /// <summary>
+    /// Отражение относительно плоскости
+    /// </summary>
+    /// <param name="polyhedron">Многогранник</param>
+    /// <param name="matrix">Матрица аффинного преобразования</param>
+    public static void Reflect(ref Polyhedron polyhedron, double[,] matrix) {
+        RecalculateCoords(ref polyhedron, matrix);
+    }
+}
