@@ -247,27 +247,26 @@ internal class AffineTransformations
     /// <param name="angle">Угол</param>
     /// <param name="axis">Код оси</param>
     public static void RotateAroundCenter(ref Polyhedron polyhedron, double angle, int axis) {
-        double[,] center = CalculateCenterCoords(polyhedron);
-        double x1 = center[0, 0];
-        double y1 = center[0, 1];
-        double z1 = center[0, 2];
-        double x2 = x1;
-        double y2 = y1;
-        double z2 = z1;
+        double[,] centerCoords = CalculateCenterCoords(polyhedron);
+        double centerX = centerCoords[0, 0];
+        double centerY = centerCoords[0, 1];
+        double centerZ = centerCoords[0, 2];
+
+        Translation(ref polyhedron, -centerX, -centerY, -centerZ);
 
         switch (axis) {
             case 0:
-                x2 = 0;
+                RotationAboutXAxis(ref polyhedron, angle);
                 break;
             case 1:
-                y2 = 0;
+                RotationAboutYAxis(ref polyhedron, angle);
                 break;
             case 2:
-                z2 = 0;
+                RotationAboutZAxis(ref polyhedron, angle);
                 break;
         }
 
-        RotateAboutLine(ref polyhedron, angle, x1, y1, z1, x2, y2, z2);
+        Translation(ref polyhedron, centerX, centerY, centerZ);
     }
 
     /// <summary>
