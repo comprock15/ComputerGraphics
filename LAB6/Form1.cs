@@ -268,7 +268,9 @@ namespace LAB6
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e) {
-            
+            if (g != null)
+                g.Dispose();
+            g = pictureBox1.CreateGraphics();
         }
     }
 }

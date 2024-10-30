@@ -71,8 +71,8 @@ internal class AffineTransformations
             xMax = Math.Max(xMax, vertex.x);
             yMin = Math.Min(yMin, vertex.y);
             yMax = Math.Max(yMax, vertex.y);
-            zMin = Math.Min(yMin, vertex.z);
-            zMax = Math.Max(yMax, vertex.z);
+            zMin = Math.Min(zMin, vertex.z);
+            zMax = Math.Max(zMax, vertex.z);
         }
 
         return new double[1, 3] { { (xMin + xMax) / 2, (yMin + yMax) / 2, (zMin + zMax) / 2 } };
@@ -228,6 +228,8 @@ internal class AffineTransformations
         double cos = Math.Cos(angle);
         double sin = Math.Sin(angle);
 
+        Translation(ref polyhedron, -x1, -y1, -z1);
+
         // Задаём матрицу преобразования
         double[,] matrix = new double[4, 4] {
                 { l*l + cos*(1-l*l),   l*(1-cos)*m + n*sin, l*(1-cos)*n-m*sin, 0 },
@@ -238,6 +240,8 @@ internal class AffineTransformations
 
         // Пересчитываем координаты всех точек
         RecalculateCoords(ref polyhedron, matrix);
+
+        Translation(ref polyhedron, x1, y1, z1);
     }
 
     /// <summary>
