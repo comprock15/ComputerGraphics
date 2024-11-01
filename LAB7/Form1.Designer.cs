@@ -82,6 +82,8 @@
             checkBox1 = new CheckBox();
             groupBox3 = new GroupBox();
             comboBox2 = new ComboBox();
+            buttonSave = new Button();
+            buttonLoad = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -98,7 +100,7 @@
             pictureBox1.Location = new Point(300, 14);
             pictureBox1.Margin = new Padding(4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(850, 853);
+            pictureBox1.Size = new Size(850, 894);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             pictureBox1.SizeChanged += pictureBox1_SizeChanged;
@@ -131,6 +133,8 @@
             // 
             groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             groupBox2.BackColor = Color.Gainsboro;
+            groupBox2.Controls.Add(buttonLoad);
+            groupBox2.Controls.Add(buttonSave);
             groupBox2.Controls.Add(comboBox4);
             groupBox2.Controls.Add(checkBox9);
             groupBox2.Controls.Add(button1);
@@ -149,7 +153,7 @@
             groupBox2.Margin = new Padding(4);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(4);
-            groupBox2.Size = new Size(279, 731);
+            groupBox2.Size = new Size(279, 772);
             groupBox2.TabIndex = 5;
             groupBox2.TabStop = false;
             groupBox2.Text = "Преобразования";
@@ -158,16 +162,16 @@
             // 
             comboBox4.FormattingEnabled = true;
             comboBox4.Items.AddRange(new object[] { "Относительно плоскости OXY", "Относительно плоскости OYZ", "Относительно плоскости OXZ" });
-            comboBox4.Location = new Point(11, 652);
+            comboBox4.Location = new Point(7, 651);
             comboBox4.Margin = new Padding(4);
             comboBox4.Name = "comboBox4";
-            comboBox4.Size = new Size(260, 23);
+            comboBox4.Size = new Size(266, 23);
             comboBox4.TabIndex = 13;
             // 
             // checkBox9
             // 
             checkBox9.AutoSize = true;
-            checkBox9.Location = new Point(11, 624);
+            checkBox9.Location = new Point(7, 624);
             checkBox9.Margin = new Padding(4);
             checkBox9.Name = "checkBox9";
             checkBox9.Size = new Size(91, 19);
@@ -178,10 +182,10 @@
             // button1
             // 
             button1.BackColor = Color.White;
-            button1.Location = new Point(8, 683);
+            button1.Location = new Point(7, 682);
             button1.Margin = new Padding(4);
             button1.Name = "button1";
-            button1.Size = new Size(263, 38);
+            button1.Size = new Size(266, 38);
             button1.TabIndex = 11;
             button1.Text = "Применить преобразования";
             button1.UseVisualStyleBackColor = false;
@@ -655,7 +659,7 @@
             // checkBox3
             // 
             checkBox3.AutoSize = true;
-            checkBox3.Location = new Point(11, 466);
+            checkBox3.Location = new Point(7, 466);
             checkBox3.Margin = new Padding(4);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(131, 19);
@@ -666,7 +670,7 @@
             // checkBox2
             // 
             checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(11, 82);
+            checkBox2.Location = new Point(7, 82);
             checkBox2.Margin = new Padding(4);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new Size(83, 19);
@@ -677,7 +681,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(11, 22);
+            checkBox1.Location = new Point(7, 22);
             checkBox1.Margin = new Padding(4);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(102, 19);
@@ -709,12 +713,34 @@
             comboBox2.TabIndex = 0;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
+            // buttonSave
+            // 
+            buttonSave.BackColor = Color.White;
+            buttonSave.Location = new Point(7, 727);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(130, 38);
+            buttonSave.TabIndex = 14;
+            buttonSave.Text = "Сохранить";
+            buttonSave.UseVisualStyleBackColor = false;
+            buttonSave.Click += buttonSave_Click;
+            // 
+            // buttonLoad
+            // 
+            buttonLoad.BackColor = Color.White;
+            buttonLoad.Location = new Point(143, 727);
+            buttonLoad.Name = "buttonLoad";
+            buttonLoad.Size = new Size(130, 38);
+            buttonLoad.TabIndex = 15;
+            buttonLoad.Text = "Загрузить";
+            buttonLoad.UseVisualStyleBackColor = false;
+            buttonLoad.Click += buttonLoad_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Silver;
-            ClientSize = new Size(1164, 881);
+            ClientSize = new Size(1164, 922);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -790,5 +816,7 @@
         private System.Windows.Forms.TextBox textBox17;
         private System.Windows.Forms.TextBox textBox16;
         private System.Windows.Forms.CheckBox checkBox11;
+        private Button buttonLoad;
+        private Button buttonSave;
     }
 }
