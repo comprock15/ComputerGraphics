@@ -2,8 +2,7 @@
     /// <summary>
     /// Форма
     /// </summary>
-    public partial class Form1 : Form
-    {
+    public partial class Form1 : Form {
         /// <summary>
         /// Многогранник
         /// </summary>
@@ -13,11 +12,10 @@
         /// <summary>
         /// Инициализация формы
         /// </summary>
-        public Form1()
-        {
+        public Form1() {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
-            p = new Pen(Color.Black,2);
+            p = new Pen(Color.Black, 2);
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
@@ -30,10 +28,8 @@
             g = pictureBox1.CreateGraphics();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (comboBox1.SelectedIndex) 
-            {
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
+            switch (comboBox1.SelectedIndex) {
                 case 0:
                     polyhedron = PolyhedronCollection.MakeTetrahedron();
                     break;
@@ -52,7 +48,7 @@
                 default:
                     break;
             }
-            
+
             RedrawField();
         }
 
@@ -61,15 +57,13 @@
         /// <summary>
         /// Отрисовывает поле в зависимости от выбранного типа проекции
         /// </summary>
-        public void RedrawField()
-        {
+        public void RedrawField() {
             if (polyhedron == null)
                 return;
 
             double[,] matrix;
 
-            switch (comboBox2.SelectedIndex) 
-            {
+            switch (comboBox2.SelectedIndex) {
                 case 0: // перспективная
                     double c = 1000;
                     matrix = new double[,] {
@@ -77,7 +71,7 @@
                         { 0, 1, 0, 0 },
                         { 0, 0, 0, -1 / c },
                         { 0, 0, 0, 1 }
-                    };    
+                    };
                     break;
                 case 1: //аксонометрическая - изометрическая
                     //matrix = new double[,] {
@@ -104,18 +98,16 @@
             double[,] cur_m;
             Vertex line_start;
             Vertex line_end;
-            for (int i = 0; i < polyhedron.vertices.Count; i++)
-            {
-                cur_m = AffineTransformations.Multiply(new double[,] {{ polyhedron.vertices[i].x, 
-                                                                                polyhedron.vertices[i].y, 
-                                                                                polyhedron.vertices[i].z, 
+            for (int i = 0; i < polyhedron.vertices.Count; i++) {
+                cur_m = AffineTransformations.Multiply(new double[,] {{ polyhedron.vertices[i].x,
+                                                                                polyhedron.vertices[i].y,
+                                                                                polyhedron.vertices[i].z,
                                                                                 1 }}, matrix);
                 //line_start = new Vertex(cur_m[0,0]/ cur_m[0,3], cur_m[0, 1] / cur_m[0, 3], 0);
                 line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
 
                 //пробегает по всем граничным точкам и рисует линию
-                for (int j = 0; j < polyhedron.edges[i].Count;  j++) 
-                {
+                for (int j = 0; j < polyhedron.edges[i].Count; j++) {
                     var ind = polyhedron.edges[i][j];
                     cur_m = AffineTransformations.Multiply(new double[,] {{ polyhedron.vertices[ind].x,
                                                                             polyhedron.vertices[ind].y,
@@ -128,20 +120,17 @@
             }
 
             //Рисование доп прямых:
-            if (checkBox8.Checked)
-            {
-                double  x1, x2, y1, y2;
+            if (checkBox8.Checked) {
+                double x1, x2, y1, y2;
                 if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) &&
-                    double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2))
-                {
+                    double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2)) {
                     g.DrawLine(new Pen(Color.Green, 3), new Point((int)x1, (int)y1), new Point((int)x2, (int)y2));
                 }
             }
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click(object sender, EventArgs e) {
             if (checkBox1.Checked)
                 MakeTranslation();
 
@@ -157,32 +146,27 @@
             RedrawField();
         }
 
-        void MakeTranslation()
-        {
+        void MakeTranslation() {
             double dx, dy, dz = 0.0;
             double.TryParse(textBox1.Text, out dx);
             double.TryParse(textBox2.Text, out dy);
             double.TryParse(textBox3.Text, out dz);
-                
+
             AffineTransformations.Translation(ref polyhedron, dx, dy, dz);
         }
 
-        void MakeRotation()
-        {
+        void MakeRotation() {
             double angle = 0.0;
 
-            if (checkBox4.Checked)
-            {
+            if (checkBox4.Checked) {
                 double.TryParse(textBox4.Text, out angle);
                 AffineTransformations.RotationAboutXAxis(ref polyhedron, angle);
             }
-            if (checkBox5.Checked)
-            {
+            if (checkBox5.Checked) {
                 double.TryParse(textBox5.Text, out angle);
                 AffineTransformations.RotationAboutYAxis(ref polyhedron, angle);
             }
-            if (checkBox6.Checked)
-            {
+            if (checkBox6.Checked) {
                 double.TryParse(textBox6.Text, out angle);
                 AffineTransformations.RotationAboutZAxis(ref polyhedron, angle);
             }
@@ -201,15 +185,13 @@
                         break;
                 }
             }
-            if (checkBox8.Checked)
-            {
+            if (checkBox8.Checked) {
                 double x1, x2, y1, y2, z1, z2;
                 if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) && double.TryParse(textBox9.Text, out z1) &&
                     double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2) && double.TryParse(textBox12.Text, out z2) &&
-                    double.TryParse(textBox14.Text, out angle))
-                {
+                    double.TryParse(textBox14.Text, out angle)) {
                     AffineTransformations.RotateAboutLine(ref polyhedron, angle, x1, y1, z1, x2, y2, z2);
-                }  
+                }
             }
         }
 
@@ -263,13 +245,30 @@
             AffineTransformations.Reflect(ref polyhedron, matrix);
         }
 
-        private void textBox_TextChanged(object sender, EventArgs e)
-        {
+        private void textBox_TextChanged(object sender, EventArgs e) {
             double num;
             if (double.TryParse((sender as TextBox).Text, out num) == false)
                 (sender as TextBox).BackColor = Color.Red;
             else
                 (sender as TextBox).BackColor = Color.White;
+        }
+
+        /// <summary>
+        /// Сохранение многогранника
+        /// </summary>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Данные события</param>
+        private void buttonSave_Click(object sender, EventArgs e) {
+            
+        }
+
+        /// <summary>
+        /// Загрузка многогранника
+        /// </summary>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Данные события</param>
+        private void buttonLoad_Click(object sender, EventArgs e) {
+            
         }
     }
 }
