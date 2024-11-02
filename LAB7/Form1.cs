@@ -254,12 +254,37 @@
         }
 
         /// <summary>
+        /// Таймер для отображения сообщении о сохранении объекта
+        /// </summary>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Данные события</param>
+        private void saveStatusTimer_Tick(object sender, EventArgs e) {
+            Text = "LAB7";
+            saveStatusTimer.Stop();
+        }
+
+        /// <summary>
         /// Сохранение многогранника
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e">Данные события</param>
         private void buttonSave_Click(object sender, EventArgs e) {
-            
+            if (polyhedron == null) {
+                MessageBox.Show("Нет загруженного многогранника.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using var saveFileDialog = new SaveFileDialog { Filter = "OBJ Files|*.obj", DefaultExt = "obj" };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                try {
+                    OBJHandler.Save(polyhedron, saveFileDialog.FileName);
+                    Text = "LAB7: Файл сохранён успешно.";
+                    saveStatusTimer.Start();
+                }
+                catch (Exception ex) {
+                    MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         /// <summary>
@@ -268,7 +293,19 @@
         /// <param name="sender">Источник события</param>
         /// <param name="e">Данные события</param>
         private void buttonLoad_Click(object sender, EventArgs e) {
-            
+            using var openFileDialog = new OpenFileDialog { Filter = "OBJ Files|*.obj", DefaultExt = "obj" };
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                try {
+                    polyhedron = OBJHandler.Load(openFileDialog.FileName);
+                    RedrawField();
+
+                    Text = "LAB7: Файл загружен успешно.";
+                    saveStatusTimer.Start();
+                }
+                catch (Exception ex) {
+                    MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
