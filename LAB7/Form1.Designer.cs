@@ -28,10 +28,13 @@
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent() {
+            components = new System.ComponentModel.Container();
             pictureBox1 = new PictureBox();
             comboBox1 = new ComboBox();
             groupBox1 = new GroupBox();
             groupBox2 = new GroupBox();
+            buttonLoad = new Button();
+            buttonSave = new Button();
             comboBox4 = new ComboBox();
             checkBox9 = new CheckBox();
             button1 = new Button();
@@ -82,8 +85,9 @@
             checkBox1 = new CheckBox();
             groupBox3 = new GroupBox();
             comboBox2 = new ComboBox();
-            buttonSave = new Button();
-            buttonLoad = new Button();
+            saveStatusTimer = new System.Windows.Forms.Timer();
+            saveStatusTimer.Interval = 5000;
+            saveStatusTimer.Tick += new System.EventHandler(this.saveStatusTimer_Tick);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -157,6 +161,28 @@
             groupBox2.TabIndex = 5;
             groupBox2.TabStop = false;
             groupBox2.Text = "Преобразования";
+            // 
+            // buttonLoad
+            // 
+            buttonLoad.BackColor = Color.White;
+            buttonLoad.Location = new Point(143, 727);
+            buttonLoad.Name = "buttonLoad";
+            buttonLoad.Size = new Size(130, 38);
+            buttonLoad.TabIndex = 15;
+            buttonLoad.Text = "Загрузить";
+            buttonLoad.UseVisualStyleBackColor = false;
+            buttonLoad.Click += buttonLoad_Click;
+            // 
+            // buttonSave
+            // 
+            buttonSave.BackColor = Color.White;
+            buttonSave.Location = new Point(7, 727);
+            buttonSave.Name = "buttonSave";
+            buttonSave.Size = new Size(130, 38);
+            buttonSave.TabIndex = 14;
+            buttonSave.Text = "Сохранить";
+            buttonSave.UseVisualStyleBackColor = false;
+            buttonSave.Click += buttonSave_Click;
             // 
             // comboBox4
             // 
@@ -713,28 +739,6 @@
             comboBox2.TabIndex = 0;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
-            // buttonSave
-            // 
-            buttonSave.BackColor = Color.White;
-            buttonSave.Location = new Point(7, 727);
-            buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(130, 38);
-            buttonSave.TabIndex = 14;
-            buttonSave.Text = "Сохранить";
-            buttonSave.UseVisualStyleBackColor = false;
-            buttonSave.Click += buttonSave_Click;
-            // 
-            // buttonLoad
-            // 
-            buttonLoad.BackColor = Color.White;
-            buttonLoad.Location = new Point(143, 727);
-            buttonLoad.Name = "buttonLoad";
-            buttonLoad.Size = new Size(130, 38);
-            buttonLoad.TabIndex = 15;
-            buttonLoad.Text = "Загрузить";
-            buttonLoad.UseVisualStyleBackColor = false;
-            buttonLoad.Click += buttonLoad_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -818,5 +822,6 @@
         private System.Windows.Forms.CheckBox checkBox11;
         private Button buttonLoad;
         private Button buttonSave;
+        private System.Windows.Forms.Timer saveStatusTimer;
     }
 }
