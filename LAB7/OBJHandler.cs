@@ -1,4 +1,15 @@
-﻿namespace LAB7 {
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+
+namespace LAB7 {
     /// <summary>
     /// Обработчик OBJHandler
     /// </summary>
@@ -9,9 +20,9 @@
         /// <param name="filePath">Путь к файлу</param>
         /// <returns>Многогранник</returns>
         public static Polyhedron Load(string filePath) {
-            List<Vertex> vertices = new();
-            List<List<int>> edges = new();
-            HashSet<string> edgesHash = new();
+            List<Vertex> vertices = new List<Vertex>();
+            List<List<int>> edges = new List<List<int>>();
+            HashSet<string> edgesHash = new HashSet<string>();
 
             foreach (var line in File.ReadLines(filePath)) {
                 string[] parts = line.Split(' ');
@@ -48,21 +59,26 @@
         /// <param name="polyhedron">Многогранник</param>
         /// <param name="filePath">Путь к файлу</param>
         public static void Save(Polyhedron polyhedron, string filePath) {
-            using var writer = new StreamWriter(filePath);
+            using (var writer = new StreamWriter(filePath))
+            {
 
-            foreach (var vertex in polyhedron.vertices)
-                writer.WriteLine($"v {vertex.x} {vertex.y} {vertex.z}");
+                foreach (var vertex in polyhedron.vertices)
+                    writer.WriteLine($"v {vertex.x} {vertex.y} {vertex.z}");
 
-            var addedEdges = new HashSet<string>();
+                var addedEdges = new HashSet<string>();
 
-            for (int i = 0; i < polyhedron.edges.Count; ++i) {
-                foreach (var edge in polyhedron.edges[i]) {
-                    string edgeKey = $"{i}-{edge}";
-                    string reverseEdgeKey = $"{edge}-{i}";
+                for (int i = 0; i < polyhedron.edges.Count; ++i)
+                {
+                    foreach (var edge in polyhedron.edges[i])
+                    {
+                        string edgeKey = $"{i}-{edge}";
+                        string reverseEdgeKey = $"{edge}-{i}";
 
-                    if (i < polyhedron.vertices.Count && edge < polyhedron.vertices.Count
-                        && addedEdges.Add(edgeKey) && addedEdges.Add(reverseEdgeKey)) {
-                        writer.WriteLine($"f {i + 1} {edge + 1}");
+                        if (i < polyhedron.vertices.Count && edge < polyhedron.vertices.Count
+                            && addedEdges.Add(edgeKey) && addedEdges.Add(reverseEdgeKey))
+                        {
+                            writer.WriteLine($"f {i + 1} {edge + 1}");
+                        }
                     }
                 }
             }

@@ -1,4 +1,10 @@
-﻿/// <summary>
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+/// <summary>
 /// Вершина
 /// </summary>
 internal class Vertex
@@ -26,7 +32,7 @@ internal class Polygon
     /// <summary>
     /// Список вершин
     /// </summary>
-    public List<Vertex> vertices = new();
+    public List<Vertex> vertices = new List<Vertex>();
     public Polygon(List<Vertex> vertices) => this.vertices = vertices;
 }
 
@@ -38,13 +44,13 @@ internal class Polyhedron
     /// <summary>
     /// Список вершин
     /// </summary>
-    public List<Vertex> vertices = new();
+    public List<Vertex> vertices = new List<Vertex>();
     //матрица смежности -
     // кол-во элементов листа = колву вершин, каждой вершине сорответствует лист в котором перечислены номера вершин с которыми она смежна 
     /// <summary>
     /// Список рёбер
     /// </summary>
-    public List<List<int>> edges = new();
+    public List<List<int>> edges = new List<List<int>>();
     
     /// <summary>
     /// Конструктор по умолчанию

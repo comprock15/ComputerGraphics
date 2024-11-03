@@ -1,4 +1,7 @@
-﻿namespace LAB7
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace LAB7
 {
     /// <summary>
     /// Форма

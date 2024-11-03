@@ -1,4 +1,8 @@
-﻿/// <summary>
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+/// <summary>
 /// Аффинные преобразования
 /// </summary>
 internal class AffineTransformations

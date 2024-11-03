@@ -1,4 +1,14 @@
-﻿namespace LAB7 {
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace LAB7 {
     /// <summary>
     /// Форма
     /// </summary>
@@ -274,15 +284,20 @@
                 return;
             }
 
-            using var saveFileDialog = new SaveFileDialog { Filter = "OBJ Files|*.obj", DefaultExt = "obj" };
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                try {
-                    OBJHandler.Save(polyhedron, saveFileDialog.FileName);
-                    Text = "LAB7: Файл сохранён успешно.";
-                    saveStatusTimer.Start();
-                }
-                catch (Exception ex) {
-                    MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            using (var saveFileDialog = new SaveFileDialog { Filter = "OBJ Files|*.obj", DefaultExt = "obj" })
+            {
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        OBJHandler.Save(polyhedron, saveFileDialog.FileName);
+                        Text = "LAB7: Файл сохранён успешно.";
+                        saveStatusTimer.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -292,18 +307,24 @@
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e">Данные события</param>
-        private void buttonLoad_Click(object sender, EventArgs e) {
-            using var openFileDialog = new OpenFileDialog { Filter = "OBJ Files|*.obj", DefaultExt = "obj" };
-            if (openFileDialog.ShowDialog() == DialogResult.OK) {
-                try {
-                    polyhedron = OBJHandler.Load(openFileDialog.FileName);
-                    RedrawField();
+        private void buttonLoad_Click(object sender, EventArgs e)
+        {
+            using (var openFileDialog = new OpenFileDialog { Filter = "OBJ Files|*.obj", DefaultExt = "obj" })
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        polyhedron = OBJHandler.Load(openFileDialog.FileName);
+                        RedrawField();
 
-                    Text = "LAB7: Файл загружен успешно.";
-                    saveStatusTimer.Start();
-                }
-                catch (Exception ex) {
-                    MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Text = "LAB7: Файл загружен успешно.";
+                        saveStatusTimer.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при загрузке файла: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
