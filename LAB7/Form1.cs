@@ -102,6 +102,26 @@ namespace LAB7 {
             double[,] cur_m;
             Vertex line_start;
             Vertex line_end;
+
+            //рисование осей координат
+            cur_m = AffineTransformations.Multiply(new double[,] {{ 50.0, 50.0, 50.0, 1 }}, matrix);
+            line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+            //x
+            cur_m = AffineTransformations.Multiply(new double[,] { { 200.0, 50.0, 50.0, 1 } }, matrix);
+            line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+            g.DrawLine(new Pen(Color.Red, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+            //y
+            cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 200.0, 50.0, 1 } }, matrix);
+            line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+            g.DrawLine(new Pen(Color.Green, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+            //z
+            cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 50.0, 200.0, 1 } }, matrix);
+            line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+            g.DrawLine(new Pen(Color.Blue, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+
+
+
+            // рисование полигона
             for (int i = 0; i < polyhedron.vertices.Count; i++) {
                 cur_m = AffineTransformations.Multiply(new double[,] {{ polyhedron.vertices[i].x,
                                                                                 polyhedron.vertices[i].y,
@@ -128,7 +148,7 @@ namespace LAB7 {
                 double x1, x2, y1, y2;
                 if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) &&
                     double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2)) {
-                    g.DrawLine(new Pen(Color.Green, 3), new Point((int)x1, (int)y1), new Point((int)x2, (int)y2));
+                    g.DrawLine(new Pen(Color.Purple, 3), new Point((int)x1, (int)y1), new Point((int)x2, (int)y2));
                 }
             }
 
