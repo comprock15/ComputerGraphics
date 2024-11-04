@@ -57,8 +57,8 @@ internal class Polyhedron
     /// </summary>
     public Polyhedron()
     {
-        vertices.Add(new Vertex(0,0,0));
-        edges.Add(new List<int>() { });
+        //vertices.Add(new Vertex(0,0,0));
+        //edges.Add(new List<int>() { });
     }
 
     /// <summary>

@@ -57,7 +57,7 @@ internal class AffineTransformations
     /// <summary>
     /// Считает координаты центра многогранника
     /// </summary>
-    private static double[,] CalculateCenterCoords(Polyhedron polyhedron)
+    public static double[,] CalculateCenterCoords(Polyhedron polyhedron)
     {
         double xMin = Double.MaxValue;
         double xMax = Double.MinValue;
