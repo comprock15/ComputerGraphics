@@ -90,8 +90,8 @@ namespace LAB7
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.saveStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.showPlotButton = new System.Windows.Forms.Button();
+            this.numericUpDownStep = new System.Windows.Forms.NumericUpDown();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.numericUpDownY1 = new System.Windows.Forms.NumericUpDown();
@@ -104,6 +104,7 @@ namespace LAB7
             this.label14 = new System.Windows.Forms.Label();
             this.textBoxFunc = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.plottingCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -111,7 +112,7 @@ namespace LAB7
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStep)).BeginInit();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY0)).BeginInit();
@@ -790,48 +791,49 @@ namespace LAB7
             // 
             this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox6.BackColor = System.Drawing.Color.Gainsboro;
-            this.groupBox6.Controls.Add(this.button2);
-            this.groupBox6.Controls.Add(this.numericUpDown1);
+            this.groupBox6.Controls.Add(this.plottingCheckBox);
+            this.groupBox6.Controls.Add(this.showPlotButton);
+            this.groupBox6.Controls.Add(this.numericUpDownStep);
             this.groupBox6.Controls.Add(this.label18);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.textBoxFunc);
             this.groupBox6.Controls.Add(this.label13);
             this.groupBox6.Location = new System.Drawing.Point(1088, 15);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(313, 229);
+            this.groupBox6.Size = new System.Drawing.Size(313, 258);
             this.groupBox6.TabIndex = 7;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Построение графика двух переменных";
             // 
-            // button2
+            // showPlotButton
             // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(6, 182);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(301, 41);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Построить график";
-            this.button2.UseVisualStyleBackColor = false;
+            this.showPlotButton.BackColor = System.Drawing.Color.White;
+            this.showPlotButton.Location = new System.Drawing.Point(9, 206);
+            this.showPlotButton.Name = "showPlotButton";
+            this.showPlotButton.Size = new System.Drawing.Size(301, 41);
+            this.showPlotButton.TabIndex = 8;
+            this.showPlotButton.Text = "Построить график";
+            this.showPlotButton.UseVisualStyleBackColor = false;
+            this.showPlotButton.Click += new System.EventHandler(this.showPlotButton_Click);
             // 
-            // numericUpDown1
+            // numericUpDownStep
             // 
-            this.numericUpDown1.DecimalPlaces = 2;
-            this.numericUpDown1.Location = new System.Drawing.Point(191, 151);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.numericUpDownStep.Location = new System.Drawing.Point(191, 151);
+            this.numericUpDownStep.Maximum = new decimal(new int[] {
             1000000000,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.numericUpDownStep.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(110, 22);
-            this.numericUpDown1.TabIndex = 8;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            9,
+            this.numericUpDownStep.Name = "numericUpDownStep";
+            this.numericUpDownStep.Size = new System.Drawing.Size(110, 22);
+            this.numericUpDownStep.TabIndex = 8;
+            this.numericUpDownStep.Value = new decimal(new int[] {
+            20,
             0,
             0,
             0});
@@ -886,10 +888,12 @@ namespace LAB7
             this.numericUpDownY1.Size = new System.Drawing.Size(110, 22);
             this.numericUpDownY1.TabIndex = 7;
             this.numericUpDownY1.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});
+            this.numericUpDownY1.ValueChanged += new System.EventHandler(this.numericUpDownY_ValueChanged);
+            this.numericUpDownY1.Click += new System.EventHandler(this.numericUpDownY_ValueChanged);
             // 
             // label17
             // 
@@ -923,10 +927,12 @@ namespace LAB7
             this.numericUpDownY0.Size = new System.Drawing.Size(110, 22);
             this.numericUpDownY0.TabIndex = 5;
             this.numericUpDownY0.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             -2147483648});
+            this.numericUpDownY0.ValueChanged += new System.EventHandler(this.numericUpDownY_ValueChanged);
+            this.numericUpDownY0.Click += new System.EventHandler(this.numericUpDownY_ValueChanged);
             // 
             // label16
             // 
@@ -960,10 +966,12 @@ namespace LAB7
             this.numericUpDownX1.Size = new System.Drawing.Size(110, 22);
             this.numericUpDownX1.TabIndex = 3;
             this.numericUpDownX1.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});
+            this.numericUpDownX1.ValueChanged += new System.EventHandler(this.numericUpDownX_ValueChanged);
+            this.numericUpDownX1.Click += new System.EventHandler(this.numericUpDownX_ValueChanged);
             // 
             // label15
             // 
@@ -997,10 +1005,12 @@ namespace LAB7
             this.numericUpDownX0.Size = new System.Drawing.Size(110, 22);
             this.numericUpDownX0.TabIndex = 1;
             this.numericUpDownX0.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             -2147483648});
+            this.numericUpDownX0.ValueChanged += new System.EventHandler(this.numericUpDownX_ValueChanged);
+            this.numericUpDownX0.Click += new System.EventHandler(this.numericUpDownX_ValueChanged);
             // 
             // label14
             // 
@@ -1017,6 +1027,8 @@ namespace LAB7
             this.textBoxFunc.Name = "textBoxFunc";
             this.textBoxFunc.Size = new System.Drawing.Size(240, 22);
             this.textBoxFunc.TabIndex = 1;
+            this.textBoxFunc.Text = "2 * cos(x^2 + y^2) / (x^2 + y^2+ 1)";
+            this.textBoxFunc.TextChanged += new System.EventHandler(this.textBoxFunc_TextChanged);
             // 
             // label13
             // 
@@ -1026,6 +1038,16 @@ namespace LAB7
             this.label13.Size = new System.Drawing.Size(55, 17);
             this.label13.TabIndex = 0;
             this.label13.Text = "f(x, y) =";
+            // 
+            // plottingCheckBox
+            // 
+            this.plottingCheckBox.AutoSize = true;
+            this.plottingCheckBox.Location = new System.Drawing.Point(9, 179);
+            this.plottingCheckBox.Name = "plottingCheckBox";
+            this.plottingCheckBox.Size = new System.Drawing.Size(124, 21);
+            this.plottingCheckBox.TabIndex = 9;
+            this.plottingCheckBox.Text = "Вид под углом";
+            this.plottingCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1041,6 +1063,7 @@ namespace LAB7
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "LAB7";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -1052,7 +1075,7 @@ namespace LAB7
             this.groupBox3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStep)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY1)).EndInit();
@@ -1128,8 +1151,8 @@ namespace LAB7
         private GroupBox groupBox7;
         private NumericUpDown numericUpDownX0;
         private Label label14;
-        private Button button2;
-        private NumericUpDown numericUpDown1;
+        private Button showPlotButton;
+        private NumericUpDown numericUpDownStep;
         private Label label18;
         private NumericUpDown numericUpDownY1;
         private Label label17;
@@ -1137,5 +1160,6 @@ namespace LAB7
         private Label label16;
         private NumericUpDown numericUpDownX1;
         private Label label15;
+        private CheckBox plottingCheckBox;
     }
 }
