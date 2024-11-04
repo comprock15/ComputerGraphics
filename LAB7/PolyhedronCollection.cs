@@ -197,5 +197,62 @@ namespace LAB7 {
             };
             return new Polyhedron(vertices, edges);
         }
+
+        public static Polyhedron MakeRotationFigure(string axis, int partitions_count, List<Vertex> forming_verts)
+        {
+            double angle = 360.0 / partitions_count;
+            
+            var all_verts = new List<Vertex>(forming_verts);
+            var temp_poly = new Polyhedron(forming_verts, new List<List<int>> { });
+
+            for (int i = 0; i < partitions_count - 1; i++)
+            {
+                switch (axis)
+                {
+                    case "OX":
+                        AffineTransformations.RotationAboutXAxis(ref temp_poly, angle);
+                        break;
+                    case "OY":
+                        AffineTransformations.RotationAboutYAxis(ref temp_poly, angle);
+                        break;
+                    case "OZ":
+                        AffineTransformations.RotationAboutZAxis(ref temp_poly, angle);
+                        break;
+                    default:
+                        break;
+                }
+
+                foreach (var vert in temp_poly.vertices)
+                {
+                    all_verts.Add(new Vertex(vert));
+                }
+            }
+
+            var edgs = new List<List<int>> { new List<int> { } };
+            for (int i = 1; i < all_verts.Count; i++)
+            {
+                if (i % forming_verts.Count != 0)
+                {
+                    edgs.Add(new List<int> { i-1 });
+                }
+                else
+                {
+                    edgs.Add(new List<int> { });
+                }
+            }
+
+            for (int i = 0; i < edgs.Count - forming_verts.Count; i++)
+            {
+                edgs[i].Add(i + forming_verts.Count);
+            }
+
+            for (int i = 0; i < forming_verts.Count; i++)
+            {
+                edgs[edgs.Count - i - 1].Add(forming_verts.Count - i - 1);
+            }
+
+            var res_poly = new Polyhedron(all_verts, edgs);
+            return res_poly;
+        }
     }
 }

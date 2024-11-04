@@ -84,12 +84,6 @@ namespace LAB7 {
                     };
                     break;
                 case 1: //аксонометрическая - изометрическая
-                    //matrix = new double[,] {
-                    //    { Math.Sqrt(0.5), 0, -Math.Sqrt(0.5), 0 },
-                    //    { 1 / Math.Sqrt(6), 2 / Math.Sqrt(6), 1 / Math.Sqrt(6), 0 },
-                    //    { 1 / Math.Sqrt(3), -1 / Math.Sqrt(3), 1 / Math.Sqrt(3), 0 },
-                    //    { 0, 0, 0, 1 } 
-                    //};
                     var psi = AffineTransformations.DegreesToRadians(45);
                     var phi = AffineTransformations.DegreesToRadians(35);
                     matrix = new double[,] {
@@ -404,6 +398,52 @@ namespace LAB7 {
         {
             numericUpDownY0.BackColor = Color.White;
             numericUpDownY1.BackColor = Color.White;
+        }
+
+        private void label24_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            double x, y, z;
+            if (double.TryParse(textBox21.Text, out x) &&
+                double.TryParse(textBox20.Text, out y) &&
+                double.TryParse(textBox19.Text, out z))
+            {
+                listBox1.Items.Add("x:" + x.ToString() + 
+                                   " y:" + y.ToString() + 
+                                   " z:" + z.ToString());
+            }
+        }
+
+        
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1)
+            {
+                listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+            }
+            
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (comboBox5.SelectedIndex != -1 && listBox1.Items.Count > 1)
+            {
+                List<Vertex> v = new List<Vertex> { };
+                foreach (var item in listBox1.Items)
+                {
+                    var s = (item as string).Split(' ');
+                    v.Add(new Vertex(double.Parse(s[0].Substring(2)), 
+                                     double.Parse(s[1].Substring(2)), 
+                                     double.Parse(s[2].Substring(2))));
+                }
+                polyhedron = PolyhedronCollection.MakeRotationFigure(comboBox5.SelectedItem as string, (int)numericUpDown1.Value, v);
+                RedrawField();
+            }
         }
     }
 }
