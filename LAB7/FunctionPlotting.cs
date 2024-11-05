@@ -42,6 +42,10 @@ static class FunctionPlotting
                     polyhedron.edges[index].Add(index + step + 1);
                 if (j < step)
                     polyhedron.edges[index].Add(index + 1);
+
+                // Добавление грани
+                if (i < step && j < step)
+                    polyhedron.faces.Add(new List<int>() { index, index + 1, index + step + 2, index + step + 1 });
             }
         }
 
