@@ -52,6 +52,11 @@ internal class Polyhedron
     /// Список рёбер
     /// </summary>
     public List<List<int>> edges = new List<List<int>>();
+
+    /// <summary>
+    /// Список граней
+    /// </summary>
+    public List<List<int>> faces = new List<List<int>>();
     
     /// <summary>
     /// Конструктор по умолчанию
@@ -67,9 +72,11 @@ internal class Polyhedron
     /// </summary>
     /// <param name="vertices">Список вершин</param>
     /// <param name="edges">Список рёбер</param>
-    public Polyhedron(List<Vertex> vertices, List<List<int>> edges)
+    /// <param name="faces">Список граней</param>
+    public Polyhedron(List<Vertex> vertices, List<List<int>> edges, List<List<int>> faces = null)
     {
         this.vertices = vertices;
         this.edges = edges;
+        this.faces = faces;
     }
 }

@@ -30,7 +30,15 @@ namespace LAB7 {
                 new List<int> { 3 },       //2
                 new List<int> { }
             };
-            return new Polyhedron(vertices, edges);            
+
+            List<List<int>> faces = new List<List<int>>()
+            {
+                new List<int> { 0, 1, 2 },
+                new List<int> { 0, 1, 3 },
+                new List<int> { 0, 2, 3 },
+                new List<int> { 1, 2, 3 }
+            };
+            return new Polyhedron(vertices, edges, faces);            
         }
 
         /// <summary>
@@ -65,7 +73,18 @@ namespace LAB7 {
                 new List<int> { 7 },       //6
                 new List<int> { }          //7
             };
-            return new Polyhedron(vertices, edges);
+
+            List<List<int>> faces = new List<List<int>>()
+            {
+                new List<int> { 0, 1, 4, 2 },
+                new List<int> { 0, 1, 6, 3 },
+                new List<int> { 0, 2, 5, 3 },
+                new List<int> { 7, 4, 1, 6 },
+                new List<int> { 7, 4, 2, 5 },
+                new List<int> { 7, 5, 3, 6 }
+            };
+
+            return new Polyhedron(vertices, edges, faces);
         }
 
         /// <summary>
@@ -94,7 +113,20 @@ namespace LAB7 {
                 new List<int> {   },          //4
                 new List<int> {   },          //5
             };
-            return new Polyhedron(vertices, edges);
+
+            List<List<int>> faces = new List<List<int>>()
+            {
+                new List<int> { 0, 2, 3 },
+                new List<int> { 0, 3, 4 },
+                new List<int> { 0, 4, 5 },
+                new List<int> { 0, 5, 2 },
+                new List<int> { 1, 2, 3 },
+                new List<int> { 1, 3, 4 },
+                new List<int> { 1, 4, 5 },
+                new List<int> { 1, 5, 2 }
+            };
+
+            return new Polyhedron(vertices, edges, faces);
         }
 
         /// <summary>
@@ -136,7 +168,34 @@ namespace LAB7 {
                 new List<int> { 11 },
                 new List<int> {    },
             };
-            return new Polyhedron(vertices, edges);
+
+            List<List<int>> faces = new List<List<int>>()
+            {
+                 new List<int> { 0, 1, 3 },
+                 new List<int> { 0, 3, 4 },
+                 new List<int> { 0, 4, 5},
+                 new List<int> { 0, 5, 6 },
+                 new List<int> { 0, 6, 1 },
+
+                 new List<int> { 1, 2, 3 },
+                 new List<int> { 2, 3, 8 },
+                 new List<int> { 3, 8, 4 },
+                 new List<int> { 8, 4, 10 },
+                 new List<int> { 4, 10, 5 },
+                 new List<int> { 10, 5, 9 },
+                 new List<int> { 5, 9, 6 },
+                 new List<int> { 9, 6, 7 },
+                 new List<int> { 6, 7, 1 },
+                 new List<int> { 7, 1, 2 },
+
+                 new List<int> { 11, 10, 8 },
+                 new List<int> { 11, 8, 2 },
+                 new List<int> { 11, 2, 7 },
+                 new List<int> { 11, 7, 9 },
+                 new List<int> { 11, 9, 10 },
+            };
+
+            return new Polyhedron(vertices, edges, faces);
         }
 
         /// <summary>
@@ -195,7 +254,13 @@ namespace LAB7 {
                 new List<int> {    },
                 new List<int> {    },
             };
-            return new Polyhedron(vertices, edges);
+
+            List<List<int>> faces = new List<List<int>>()
+            {
+
+            };
+
+            return new Polyhedron(vertices, edges, faces);
         }
 
         public static Polyhedron MakeRotationFigure(string axis, int partitions_count, List<Vertex> forming_verts)
