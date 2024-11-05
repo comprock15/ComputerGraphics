@@ -279,6 +279,7 @@ namespace LAB7 {
 
         public static Polyhedron MakeRotationFigure(string axis, int partitions_count, List<Vertex> forming_verts)
         {
+            int forming_count = forming_verts.Count;
             double angle = 360.0 / partitions_count;
             
             var all_verts = new List<Vertex>(forming_verts);
@@ -320,17 +321,43 @@ namespace LAB7 {
                 }
             }
 
-            for (int i = 0; i < edgs.Count - forming_verts.Count; i++)
+            for (int i = 0; i < edgs.Count - forming_count; i++)
             {
-                edgs[i].Add(i + forming_verts.Count);
+                edgs[i].Add(i + forming_count);
             }
 
-            for (int i = 0; i < forming_verts.Count; i++)
+            for (int i = 0; i < forming_count; i++)
             {
-                edgs[edgs.Count - i - 1].Add(forming_verts.Count - i - 1);
+                edgs[edgs.Count - i - 1].Add(forming_count - i - 1);
             }
 
-            var res_poly = new Polyhedron(all_verts, edgs);
+            var faces = new List<List<int>> { new List<int> { }, new List<int> { } };
+
+            // шапочки фигуры
+            for (int i = 0; i < partitions_count; i++)
+            {
+                faces[0].Add(i * forming_count);
+                faces[1].Add((i+1) * forming_count - 1 );
+            }
+
+            // боковые грани
+            for (int i = 0; i < partitions_count - 1; i++)
+            {
+                for (int j = 0; j < forming_count - 1; j++)
+                {
+                    int init = j + i * forming_count;
+                    faces.Add(new List<int> { init, init + 1, init + 1 + forming_count, init + forming_count }); 
+                }
+            }
+
+            // боковые грани между 1 и последними точками
+            for (int i = 0; i < forming_count - 1; i++)
+            {
+                faces.Add(new List<int> { i, i + 1, (i + 1) + forming_count * (partitions_count - 1), i + forming_count * (partitions_count - 1) });
+            }
+
+
+            var res_poly = new Polyhedron(all_verts, edgs, faces);
             return res_poly;
         }
     }
