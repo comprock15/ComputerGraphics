@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Microsoft.FSharp.Core.ByRefKinds;
 
 namespace LAB7 {
     /// <summary>
@@ -19,6 +21,8 @@ namespace LAB7 {
         Polyhedron cur_polyhedron;
         Graphics g;
         Pen p;
+        List<Color> colors;
+        private Random random = new Random();
         /// <summary>
         /// Инициализация формы
         /// </summary>
@@ -26,23 +30,26 @@ namespace LAB7 {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
             p = new Pen(Color.Black, 2);
+            colors = new List<Color>{ Color.Red, Color.Green, Color.Blue};
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
-            objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(100.0, 0, 0)},
-                                              new List<List<int>> { new List<int>{ 1 }, new List<int>{ } },
-                                              new List<List<int>> { new List<int> { 0 , 1 } }
-                                              ));
-            objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(0, 100, 0) },
-                                              new List<List<int>> { new List<int> { 1 }, new List<int> { } },
-                                              new List<List<int>> { new List<int> { 0, 1 } }
-                                              ));
-            objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(0, 0, 100) },
-                                              new List<List<int>> { new List<int> { 1 }, new List<int> { } },
-                                              new List<List<int>> { new List<int> { 0, 1 } }
-                                              ));
-            cur_polyhedron = null;
+            comboBox6.SelectedIndex = 1;
+            //objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(100.0, 0, 0)},
+            //                                  new List<List<int>> { new List<int>{ 1 }, new List<int>{ } },
+            //                                  new List<List<int>> { new List<int> { 0 , 1 } }
+            //                                  ));
+            //objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(0, 100, 0) },
+            //                                  new List<List<int>> { new List<int> { 1 }, new List<int> { } },
+            //                                  new List<List<int>> { new List<int> { 0, 1 } }
+            //                                  ));
+            //objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(0, 0, 100) },
+            //                                  new List<List<int>> { new List<int> { 1 }, new List<int> { } },
+            //                                  new List<List<int>> { new List<int> { 0, 1 } }
+            //                                  ));
+
+            RedrawField();
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e) {
@@ -72,6 +79,7 @@ namespace LAB7 {
                     break;
             }
             objects_list.Items.Add(cur_polyhedron);
+            colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
             RedrawField();
         }
 
@@ -81,8 +89,7 @@ namespace LAB7 {
         /// Отрисовывает поле в зависимости от выбранного типа проекции
         /// </summary>
         public void RedrawField() {
-            if (cur_polyhedron == null)
-                return;
+            if (cur_polyhedron == null) return;
 
             double[,] matrix;
 
@@ -110,63 +117,88 @@ namespace LAB7 {
                     return;
             }
 
-            g.Clear(Color.White);
+            //g.Clear(Color.White);
 
-            double[,] cur_m;
-            Vertex line_start;
-            Vertex line_end;
+            switch (comboBox6.SelectedIndex)
+            {
+                case 0:
+                    return;
+                case 1:
+                    //var ZbuffDraw(matrix);
+                    var polyh = objects_list.Items;
+                    var bmp = ZBuffer.ZBuff(matrix, objects_list.Items, colors, Width, Height);
+                    if (pictureBox1.Image != null)
+                        pictureBox1.Image.Dispose();
+                    pictureBox1.Image = bmp;
+                    return;
+                default:
+                    // старый алгоритм 
+                    break;
+            }
 
-            //рисование осей координат
-            cur_m = AffineTransformations.Multiply(new double[,] {{ 50.0, 50.0, 50.0, 1 }}, matrix);
-            line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-            //x
-            cur_m = AffineTransformations.Multiply(new double[,] { { 200.0, 50.0, 50.0, 1 } }, matrix);
-            line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-            g.DrawLine(new Pen(Color.Red, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
-            //y
-            cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 200.0, 50.0, 1 } }, matrix);
-            line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-            g.DrawLine(new Pen(Color.Green, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
-            //z
-            cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 50.0, 200.0, 1 } }, matrix);
-            line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-            g.DrawLine(new Pen(Color.Blue, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
-
+            {
 
 
-            // рисование полигона
-            for (int i = 0; i < cur_polyhedron.vertices.Count; i++) {
-                cur_m = AffineTransformations.Multiply(new double[,] {{ cur_polyhedron.vertices[i].x,
+                double[,] cur_m;
+                Vertex line_start;
+                Vertex line_end;
+
+                //рисование осей координат
+                cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 50.0, 50.0, 1 } }, matrix);
+                line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+                //x
+                cur_m = AffineTransformations.Multiply(new double[,] { { 200.0, 50.0, 50.0, 1 } }, matrix);
+                line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+                g.DrawLine(new Pen(Color.Red, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                //y
+                cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 200.0, 50.0, 1 } }, matrix);
+                line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+                g.DrawLine(new Pen(Color.Green, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                //z
+                cur_m = AffineTransformations.Multiply(new double[,] { { 50.0, 50.0, 200.0, 1 } }, matrix);
+                line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+                g.DrawLine(new Pen(Color.Blue, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+
+
+
+                // рисование полигона
+                for (int i = 0; i < cur_polyhedron.vertices.Count; i++)
+                {
+                    cur_m = AffineTransformations.Multiply(new double[,] {{ cur_polyhedron.vertices[i].x,
                                                                                 cur_polyhedron.vertices[i].y,
                                                                                 cur_polyhedron.vertices[i].z,
                                                                                 1 }}, matrix);
-                //line_start = new Vertex(cur_m[0,0]/ cur_m[0,3], cur_m[0, 1] / cur_m[0, 3], 0);
-                line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+                    //line_start = new Vertex(cur_m[0,0]/ cur_m[0,3], cur_m[0, 1] / cur_m[0, 3], 0);
+                    line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
 
-                //пробегает по всем граничным точкам и рисует линию
-                for (int j = 0; j < cur_polyhedron.edges[i].Count; j++) {
-                    var ind = cur_polyhedron.edges[i][j];
-                    cur_m = AffineTransformations.Multiply(new double[,] {{ cur_polyhedron.vertices[ind].x,
+                    //пробегает по всем граничным точкам и рисует линию
+                    for (int j = 0; j < cur_polyhedron.edges[i].Count; j++)
+                    {
+                        var ind = cur_polyhedron.edges[i][j];
+                        cur_m = AffineTransformations.Multiply(new double[,] {{ cur_polyhedron.vertices[ind].x,
                                                                             cur_polyhedron.vertices[ind].y,
                                                                             cur_polyhedron.vertices[ind].z,
                                                                             1 }}, matrix);
-                    //line_end = new Vertex(cur_m[0, 0] / cur_m[0, 3], cur_m[0, 1] / cur_m[0, 3], 0);
-                    line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-                    g.DrawLine(p, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                        //line_end = new Vertex(cur_m[0, 0] / cur_m[0, 3], cur_m[0, 1] / cur_m[0, 3], 0);
+                        line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
+                        g.DrawLine(p, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                    }
+                }
+
+                //Рисование доп прямых:
+                if (checkBox8.Checked)
+                {
+                    double x1, x2, y1, y2;
+                    if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) &&
+                        double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2))
+                    {
+                        g.DrawLine(new Pen(Color.Purple, 3), new Point((int)x1, (int)y1), new Point((int)x2, (int)y2));
+                    }
                 }
             }
-
-            //Рисование доп прямых:
-            if (checkBox8.Checked) {
-                double x1, x2, y1, y2;
-                if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) &&
-                    double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2)) {
-                    g.DrawLine(new Pen(Color.Purple, 3), new Point((int)x1, (int)y1), new Point((int)x2, (int)y2));
-                }
-            }
-
         }
 
+        
         private void button1_Click(object sender, EventArgs e) {
             if (cur_polyhedron == null) return;
 
@@ -345,6 +377,8 @@ namespace LAB7 {
                     try
                     {
                         cur_polyhedron = OBJHandler.Load(openFileDialog.FileName);
+                        objects_list.Items.Add(cur_polyhedron);
+                        colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
                         RedrawField();
 
                         Text = "LAB7: Файл загружен успешно.";
@@ -483,13 +517,21 @@ namespace LAB7 {
 
         private void objects_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (objects_list.SelectedItems.Count > 0)
-                cur_polyhedron = objects_list.SelectedItems[0] as Polyhedron;
+
         }
 
         private void button_delete_obj_Click(object sender, EventArgs e)
         {
+            colors.RemoveAt(objects_list.SelectedIndex);
             objects_list.Items.RemoveAt(objects_list.SelectedIndex);
+            RedrawField();
+            
+        }
+
+        private void objects_list_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (objects_list.SelectedIndex != -1)
+                cur_polyhedron = objects_list.SelectedItems[0] as Polyhedron;
         }
     }
 }
