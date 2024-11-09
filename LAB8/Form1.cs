@@ -537,5 +537,16 @@ namespace LAB7 {
             if (objects_list.SelectedIndex != -1)
                 cur_polyhedron = objects_list.SelectedItems[0] as Polyhedron;
         }
+
+        private void createCameraButton_Click(object sender, EventArgs e)
+        {
+            CameraForm cameraForm = new CameraForm(objects_list.Items, 
+                                                   new Camera.Point3(-600, 
+                                                                     -150,
+                                                                     1000),
+                                                   new Camera.Point3(0, 0, -1000));
+            this.AddOwnedForm(cameraForm);
+            cameraForm.Show();
+        }
     }
 }

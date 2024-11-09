@@ -37,7 +37,7 @@ internal class AffineTransformations
     /// <param name="matrix">Матрица аффинного преобразования</param>
     public static List<Vertex> RecalculatedCoords(Polyhedron polyhedron, double[,] matrix)
     {
-        List<Vertex> newVertices = polyhedron.vertices;
+        List<Vertex> newVertices = new List<Vertex>(polyhedron.vertices);
         for (int i = 0; i < polyhedron.vertices.Count; i++)
         {
             double[,] oldCoords = new double[,] { { polyhedron.vertices[i].x, polyhedron.vertices[i].y, polyhedron.vertices[i].z, 1 } };
