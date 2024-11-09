@@ -57,6 +57,12 @@ internal class Polyhedron
     /// Список граней
     /// </summary>
     public List<List<int>> faces = new List<List<int>>();
+
+    private string name;
+    /// <summary>
+    /// Задать имя многогранника
+    /// </summary>
+    public void SetName(string name) => this.name = name;
     
     /// <summary>
     /// Конструктор по умолчанию
@@ -78,5 +84,13 @@ internal class Polyhedron
         this.vertices = vertices;
         this.edges = edges;
         this.faces = faces;
+    }
+
+    public override string ToString()
+    {
+        if (name == null)
+            return base.ToString();
+        else
+            return name;
     }
 }

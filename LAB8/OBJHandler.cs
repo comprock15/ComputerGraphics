@@ -42,8 +42,9 @@ namespace LAB7 {
                     faces.Add(faceVertices);
                 }
             }
-
-            return new Polyhedron(vertices, edges, faces);
+            Polyhedron polyhedron = new Polyhedron(vertices, edges, faces);
+            polyhedron.SetName(Path.GetFileNameWithoutExtension(filePath));
+            return polyhedron;
         }
 
         /// <summary>

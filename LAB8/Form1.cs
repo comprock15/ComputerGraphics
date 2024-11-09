@@ -427,6 +427,7 @@ namespace LAB7 {
                 cur_polyhedron = FunctionPlotting.GetPlot(textBoxFunc.Text, x0, x1, y0, y1,
                                                       (int)numericUpDownStep.Value);
                 textBoxFunc_TextChanged(sender, e);
+                objects_list.Items.Add(cur_polyhedron);
             }
             catch (Exception ex)
             {
@@ -511,6 +512,7 @@ namespace LAB7 {
                                      double.Parse(s[2].Substring(2))));
                 }
                 cur_polyhedron = PolyhedronCollection.MakeRotationFigure(comboBox5.SelectedItem as string, (int)numericUpDown1.Value, v);
+                objects_list.Items.Add(cur_polyhedron);
                 RedrawField();
             }
         }
@@ -522,6 +524,8 @@ namespace LAB7 {
 
         private void button_delete_obj_Click(object sender, EventArgs e)
         {
+            if (objects_list.SelectedIndex == -1)
+                return;
             colors.RemoveAt(objects_list.SelectedIndex);
             objects_list.Items.RemoveAt(objects_list.SelectedIndex);
             RedrawField();

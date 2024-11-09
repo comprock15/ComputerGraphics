@@ -49,6 +49,7 @@ static class FunctionPlotting
             }
         }
 
+        polyhedron.SetName(expressionString);
         return polyhedron;
     }
 }

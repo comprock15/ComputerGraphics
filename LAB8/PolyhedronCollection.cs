@@ -38,7 +38,10 @@ namespace LAB7 {
                 new List<int> { 0, 2, 3 },
                 new List<int> { 1, 2, 3 }
             };
-            return new Polyhedron(vertices, edges, faces);            
+
+            Polyhedron polyhedron = new Polyhedron(vertices, edges, faces);
+            polyhedron.SetName("Тетраэдр");
+            return polyhedron;            
         }
 
         /// <summary>
@@ -84,7 +87,9 @@ namespace LAB7 {
                 new List<int> { 7, 5, 3, 6 }
             };
 
-            return new Polyhedron(vertices, edges, faces);
+            Polyhedron polyhedron = new Polyhedron(vertices, edges, faces);
+            polyhedron.SetName("Гексаэдр");
+            return polyhedron;
         }
 
         /// <summary>
@@ -126,7 +131,9 @@ namespace LAB7 {
                 new List<int> { 1, 5, 2 }
             };
 
-            return new Polyhedron(vertices, edges, faces);
+            Polyhedron polyhedron = new Polyhedron(vertices, edges, faces);
+            polyhedron.SetName("Октаэдр");
+            return polyhedron;
         }
 
         /// <summary>
@@ -195,7 +202,9 @@ namespace LAB7 {
                  new List<int> { 11, 9, 10 },
             };
 
-            return new Polyhedron(vertices, edges, faces);
+            Polyhedron polyhedron = new Polyhedron(vertices, edges, faces);
+            polyhedron.SetName("Икосаэдр");
+            return polyhedron;
         }
 
         /// <summary>
@@ -274,7 +283,9 @@ namespace LAB7 {
                 new List<int> { 12, 13, 15, 16, 18 }
             };
 
-            return new Polyhedron(vertices, edges, faces);
+            Polyhedron polyhedron = new Polyhedron(vertices, edges, faces);
+            polyhedron.SetName("Додекаэдр");
+            return polyhedron;
         }
 
         public static Polyhedron MakeRotationFigure(string axis, int partitions_count, List<Vertex> forming_verts)
@@ -358,6 +369,7 @@ namespace LAB7 {
 
 
             var res_poly = new Polyhedron(all_verts, edgs, faces);
+            res_poly.SetName("Фигура вращения");
             return res_poly;
         }
     }
