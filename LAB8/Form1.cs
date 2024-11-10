@@ -540,11 +540,7 @@ namespace LAB7 {
 
         private void createCameraButton_Click(object sender, EventArgs e)
         {
-            CameraForm cameraForm = new CameraForm(objects_list.Items, 
-                                                   new Camera.Point3(-600, 
-                                                                     -150,
-                                                                     1000),
-                                                   new Camera.Point3(0, 0, -1000));
+            CameraForm cameraForm = new CameraForm(objects_list.Items);
             this.AddOwnedForm(cameraForm);
             cameraForm.Show();
         }
