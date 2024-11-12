@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Зелёный треугольник</title>
+    </head>
+    <body>
+        <canvas id="canvasWebGL" width="333" height="333">Ваш браузер не поддерживает элемент canvas</canvas>
+        <!-- вершинный шейдер -->
+        <script id="vertexShader" type="x-shader/x-vertex">#version 300 es
+            in vec2 coord;
+            void main() {
+                gl_Position = vec4(coord, 0.0, 1.0);
+            }
+        </script>
+        <!-- фрагментный шейдер -->
+        <script id="fragmentShader" type="x-shader/x-fragment">#version 300 es
+            precision highp float;
+            out vec4 color;
+            void main() {
+                color = vec4(0, 1, 0, 1);
+            }
+        </script>
+
+        <script src="app.js"></script>
+    </body>
+</html>
