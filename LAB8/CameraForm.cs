@@ -29,7 +29,7 @@ namespace LAB7
                 var c = AffineTransformations.CalculateCenterCoords(polyhedron);
             }
 
-            camera = new Camera(new Camera.Vector3(pictureBox1.Width / 2, pictureBox1.Height / 2, 0),
+            camera = new Camera(new Camera.Vector3(pictureBox1.Width / 2, pictureBox1.Height / 2, 500),
                                 new Camera.Vector3(0, 0, 0));
 
             g = pictureBox1.CreateGraphics();
@@ -44,7 +44,7 @@ namespace LAB7
             double[,] projectionMatrix = new double[4, 4] {
                 { 1, 0, 0, 0 },
                 { 0, 1, 0, 0 },
-                { 0, 0, 0, -1.0/1000 },
+                { 0, 0, 0, -1/1000 },
                 { pictureBox1.Width / 2, pictureBox1.Height / 2, 0, 1 }
             };
 
@@ -53,8 +53,11 @@ namespace LAB7
                 foreach (Vertex v in polyhedron.vertices)
                 {
                     var coords = AffineTransformations.Multiply(new double[1, 4] { { v.x, v.y, v.z, 1 } }, projectionMatrix);
-                    v.x = coords[0, 0] / coords[0, 3];
-                    v.y = coords[0, 1] / coords[0, 3];
+                    //v.x = coords[0, 0] / coords[0, 3];
+                    //v.y = coords[0, 1] / coords[0, 3];
+                    //v.z = coords[0, 2];
+                    v.x = coords[0, 0];
+                    v.y = coords[0, 1];
                     v.z = coords[0, 2];
                 }
 
@@ -70,13 +73,13 @@ namespace LAB7
                 }
             }
 
-            float sinz = 10*(float)Math.Sin(camera.rotation.z);
-            float cosz = 10*(float)Math.Cos(camera.rotation.z);
-            g.DrawLine(new Pen(Color.Red), pictureBox1.Width / 2 - cosz, pictureBox1.Height / 2 - sinz, pictureBox1.Width / 2 + cosz, pictureBox1.Height / 2 + sinz);
+            //float sinz = 10*(float)Math.Sin(camera.rotation.z);
+            //float cosz = 10*(float)Math.Cos(camera.rotation.z);
+            //g.DrawLine(new Pen(Color.Red), pictureBox1.Width / 2 - cosz, pictureBox1.Height / 2 - sinz, pictureBox1.Width / 2 + cosz, pictureBox1.Height / 2 + sinz);
 
-            sinz = 10 * (float)Math.Sin(camera.rotation.z + Math.PI / 2);
-            cosz = 10 * (float)Math.Cos(camera.rotation.z + Math.PI / 2);
-            g.DrawLine(new Pen(Color.Blue), pictureBox1.Width / 2 - cosz, pictureBox1.Height / 2 - sinz, pictureBox1.Width / 2, pictureBox1.Height / 2);
+            //sinz = 10 * (float)Math.Sin(camera.rotation.z + Math.PI / 2);
+            //cosz = 10 * (float)Math.Cos(camera.rotation.z + Math.PI / 2);
+            //g.DrawLine(new Pen(Color.Blue), pictureBox1.Width / 2 - cosz, pictureBox1.Height / 2 - sinz, pictureBox1.Width / 2, pictureBox1.Height / 2);
 
             label4.Text = $"Позиция камеры: ({camera.position.x}, {camera.position.y}, {camera.position.z})";
         }
@@ -88,19 +91,22 @@ namespace LAB7
 
         private void button1_Click(object sender, EventArgs e)
         {
-            camera.rotation.x += AffineTransformations.DegreesToRadians(2);
+            //camera.rotation.x += AffineTransformations.DegreesToRadians(2);
+            camera.Rotate(2, 0);
             RedrawField();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            camera.rotation.y += AffineTransformations.DegreesToRadians(2);
+            //camera.rotation.y += AffineTransformations.DegreesToRadians(2);
+            camera.Rotate(0, 2);
             RedrawField();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            camera.rotation.z += AffineTransformations.DegreesToRadians(5);
+            //camera.rotation.z += AffineTransformations.DegreesToRadians(5);
+            camera.Rotate(AffineTransformations.DegreesToRadians(2), 0);
             if (sender != null)
                 RedrawField();
             System.Threading.Thread.Sleep(100);

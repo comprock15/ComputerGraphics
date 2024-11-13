@@ -42,7 +42,9 @@ internal class AffineTransformations
         {
             double[,] oldCoords = new double[,] { { polyhedron.vertices[i].x, polyhedron.vertices[i].y, polyhedron.vertices[i].z, 1 } };
             double[,] newCoords = Multiply(oldCoords, matrix);
-            newVertices[i] = new Vertex(newCoords[0, 0], newCoords[0, 1], newCoords[0, 2]);
+            newVertices[i] = new Vertex(newCoords[0, 0] / newCoords[0, 3], newCoords[0, 1] / newCoords[0, 3], newCoords[0, 2] / newCoords[0, 3]);
+            //newVertices[i] = new Vertex(newCoords[0, 0], newCoords[0, 1], newCoords[0, 2]);
+
         }
         return newVertices;
     }
