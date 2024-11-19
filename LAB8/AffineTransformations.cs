@@ -37,12 +37,14 @@ internal class AffineTransformations
     /// <param name="matrix">Матрица аффинного преобразования</param>
     public static List<Vertex> RecalculatedCoords(Polyhedron polyhedron, double[,] matrix)
     {
-        List<Vertex> newVertices = polyhedron.vertices;
+        List<Vertex> newVertices = new List<Vertex>(polyhedron.vertices);
         for (int i = 0; i < polyhedron.vertices.Count; i++)
         {
             double[,] oldCoords = new double[,] { { polyhedron.vertices[i].x, polyhedron.vertices[i].y, polyhedron.vertices[i].z, 1 } };
             double[,] newCoords = Multiply(oldCoords, matrix);
-            newVertices[i] = new Vertex(newCoords[0, 0], newCoords[0, 1], newCoords[0, 2]);
+            newVertices[i] = new Vertex(newCoords[0, 0] / newCoords[0, 3], newCoords[0, 1] / newCoords[0, 3], newCoords[0, 2] / newCoords[0, 3]);
+            //newVertices[i] = new Vertex(newCoords[0, 0], newCoords[0, 1], newCoords[0, 2]);
+
         }
         return newVertices;
     }
@@ -279,4 +281,43 @@ internal class AffineTransformations
     /// <param name="polyhedron">Многогранник</param>
     /// <param name="matrix">Матрица аффинного преобразования</param>
     public static void Reflect(ref Polyhedron polyhedron, double[,] matrix) => RecalculateCoords(ref polyhedron, matrix);
-}
+
+    public static double[,] GetTranslationMatrix(double dx, double dy, double dz)
+    {
+        double[,] matrix = new double[4, 4] {
+            {  1,   0,   0,   0 },
+            {  0,   1,   0,   0 },
+            {  0,   0,   1,   0 },
+            { dx,  dy,  dz,   1 }
+        };
+        return matrix;
+    }
+
+    public static double[,] GetPerspectiveMatrix(double c)
+    {
+        double[,] matrix = new double[4, 4] {
+                { 1, 0, 0, 0 },
+                { 0, 1, 0, 0 },
+                { 0, 0, 0, -1/c },
+                { 0, 0, 0, 1 }
+            };
+        return matrix;
+    }
+
+    public static double[,] GetTransposedMatrix(double[,] m)
+    {
+        int rows = m.GetLength(0);
+        int columns = m.GetLength(1);
+
+        double[,] matrix = new double[columns, rows];
+
+        for (int i = 0; i < rows; ++i)
+        {
+            for (int j = 0; j < columns; ++j)
+            {
+                matrix[i, j] = m[j, i];
+            }
+        }
+        return matrix;
+    }
+}   

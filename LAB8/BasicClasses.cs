@@ -86,6 +86,13 @@ internal class Polyhedron
         this.faces = faces;
     }
 
+    public Polyhedron(Polyhedron polyhedron)
+    {
+        this.vertices = polyhedron.vertices;
+        this.edges = polyhedron.edges;
+        this.faces = polyhedron.faces;
+    }
+
     public override string ToString()
     {
         if (name == null)
