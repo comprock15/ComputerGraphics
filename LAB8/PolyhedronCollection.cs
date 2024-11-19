@@ -14,7 +14,7 @@ namespace LAB7 {
         /// <returns>Тетраэдр</returns>
         public static Polyhedron MakeTetrahedron() 
         {
-            Vertex start = new Vertex(300, 300, 0);  //=(250, 150, 200)?
+            Vertex start = new Vertex(-75, -75, -75);  //=(250, 150, 200)?
             double side_size = 150;
 
             List<Vertex> vertices = new List<Vertex>() {

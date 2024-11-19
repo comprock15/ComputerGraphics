@@ -204,9 +204,9 @@ namespace LAB7
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.Location = new System.Drawing.Point(284, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(284, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(797, 588);
+            this.pictureBox1.Size = new System.Drawing.Size(800, 600);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
@@ -230,6 +230,7 @@ namespace LAB7
             this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel1);
+            this.MinimizeBox = false;
             this.Name = "CameraForm";
             this.Text = "Camera View";
             this.panel1.ResumeLayout(false);
