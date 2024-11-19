@@ -118,38 +118,63 @@ namespace LAB7
             RedrawField();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void RotateCamera(double[,] matrix)
         {
-            //camera.rotation.x += AffineTransformations.DegreesToRadians(2);
-            camera.Rotate(2, 0);
-            RedrawField();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //camera.rotation.y += AffineTransformations.DegreesToRadians(2);
-            camera.Rotate(0, 2);
-            RedrawField();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //camera.rotation.z += AffineTransformations.DegreesToRadians(5);
-            //camera.Rotate(AffineTransformations.DegreesToRadians(2), 0);
-            var angle = AffineTransformations.DegreesToRadians(5);
-
-
-            double[,] matrix = new double[4, 4] {
-            { Math.Cos(angle), 0, -Math.Sin(angle), 0 },
-            {      0,          1,       0,          0 },
-            { Math.Sin(angle), 0,  Math.Cos(angle), 0 },
-            {      0,          0,       0,          1 }
-        };
             double[,] coord = new double[,] { { camera.position.x, camera.position.y, camera.position.z, 1 } };
             coord = AffineTransformations.Multiply(coord, matrix);
 
             //camera.position = new Vector3(coord[0, 0] / coord[0, 3], coord[0, 1] / coord[0, 3], coord[0, 2] / coord[0, 3]);
             camera.position = new Vector3(coord[0, 0], coord[0, 1], coord[0, 2]);
+        }
+
+        private void RotateCameraAboutYAxis(object sender, EventArgs e)
+        {
+            double angle = AffineTransformations.DegreesToRadians(5);
+
+            double[,] matrix = new double[4, 4] {
+                { Math.Cos(angle), 0, -Math.Sin(angle), 0 },
+                {      0,          1,       0,          0 },
+                { Math.Sin(angle), 0,  Math.Cos(angle), 0 },
+                {      0,          0,       0,          1 }
+            };
+
+            RotateCamera(matrix);
+
+            if (sender != null)
+                RedrawField();
+            System.Threading.Thread.Sleep(100);
+        }
+
+        private void RotateCameraAboutZAxis(object sender, EventArgs e)
+        {
+            double angle = AffineTransformations.DegreesToRadians(5);
+
+            double[,] matrix = new double[4, 4] {
+                { Math.Cos(angle), Math.Sin(angle), 0, 0 },
+                {-Math.Sin(angle), Math.Cos(angle), 0, 0 },
+                {      0,               0,          1, 0 },
+                {      0,               0,          0, 1 }
+            };
+
+            RotateCamera(matrix);
+
+            if (sender != null)
+                RedrawField();
+            System.Threading.Thread.Sleep(100);
+        }
+
+        private void RotateCameraAboutXAxis(object sender, EventArgs e)
+        {
+            double angle = AffineTransformations.DegreesToRadians(5);
+
+            double[,] matrix = new double[4, 4] {
+                { 1,       0,               0,          0 },
+                { 0,  Math.Cos(angle), Math.Sin(angle), 0 },
+                { 0, -Math.Sin(angle), Math.Cos(angle), 0 },
+                { 0,       0,               0,          1 }
+            };
+
+            RotateCamera(matrix);
 
             if (sender != null)
                 RedrawField();
@@ -164,26 +189,57 @@ namespace LAB7
         }
 
 
-        private async void MoveIt()
+        private async void AsyncRotateX()
         {
-            while (checkBox1.Checked)
+            while (radioButton2.Checked)
             {
-                await Task.Run(() => button3_Click(null, null));
+                await Task.Run(() => RotateCameraAboutXAxis(null, null));
                 RedrawField();
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private async void AsyncRotateY()
         {
-            MoveIt();
+            while (radioButton3.Checked)
+            {
+                await Task.Run(() => RotateCameraAboutYAxis(null, null));
+                RedrawField();
+            }
+        }
+
+        private async void AsyncRotateZ()
+        {
+            while (radioButton4.Checked)
+            {
+                await Task.Run(() => RotateCameraAboutZAxis(null, null));
+                RedrawField();
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            camera.position.x += (double)numericUpDown1.Value;
-            camera.position.y += (double)numericUpDown2.Value;
-            camera.position.z += (double)numericUpDown3.Value;
+            camera.Move((double)numericUpDown1.Value, (double)numericUpDown2.Value, (double)numericUpDown3.Value);
             RedrawField();
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            // do nothing
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            AsyncRotateX();
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            AsyncRotateY();
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            AsyncRotateZ();
         }
     }
 }

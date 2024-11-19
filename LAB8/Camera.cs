@@ -27,7 +27,7 @@ internal class Camera
 
     // Настройки перспективной проекции
     private double fov = Math.PI / 2; // Угол обзора в радианах
-    private double aspect = 800.0/600; // Соотношение сторон
+    private double aspect = 800.0/600.0; // Соотношение сторон
     private double zNear = 1;  // Расстояние до ближней плоскости отсечения
     private double zFar = 1000; // Расстояние до дальней плоскости отсечения
 
@@ -53,7 +53,7 @@ internal class Camera
     public void Move(double dx, double dy, double dz)
     {
         this.position += new Vector3(dx, dy, dz);
-        this.target += new Vector3(dx, dy, dz);
+        //this.target += new Vector3(dx, dy, dz);
     }
 
     public void RecalculateAxes()
@@ -89,19 +89,26 @@ internal class Camera
             { -position.x,  -position.y,  -position.z,   1 }
         };
 
+        //double[,] viewMatrix = new double[4, 4] {
+        //    { right.x,     right.y,     right.z,     0 },
+        //    { up.x,        up.y,        up.z,        0 },
+        //    { forward.x,   forward.y,   forward.z,   0 },
+        //    { 0,           0,           0,           1 }
+        //};
+
         double[,] viewMatrix = new double[4, 4] {
-            { right.x,     right.y,     right.z,     0 },
-            { up.x,        up.y,        up.z,        0 },
-            { forward.x,   forward.y,   forward.z,   0 },
-            { 0,           0,           0,           1 }
+            { right.x,   up.x,   forward.x,   0 },
+            { right.y,   up.y,   forward.y,   0 },
+            { right.z,   up.z,   forward.z,   0 },
+            { -right.Dot(position), -up.Dot(position), -forward.Dot(position),      1 }
         };
 
-        double[,] projectionMatrix = new double[4, 4] {
-            {  1.0 / Math.Tan(fov/2) / aspect,   0,   0,   0 },
-            {  0,   1.0 / Math.Tan(fov/2),   0,   0 },
-            {  0,   0,   (zFar + zNear) / (zFar - zNear),   -2 * zFar * zNear / (zFar - zNear) },
-            { 0,  0,  1,   0 }
-        };
+        //double[,] projectionMatrix = new double[4, 4] {
+        //    {  1.0 / Math.Tan(fov/2) / aspect,   0,   0,   0 },
+        //    {  0,   1.0 / Math.Tan(fov/2),   0,   0 },
+        //    {  0,   0,   (zFar + zNear) / (zFar - zNear),   -1 },
+        //    { 0,  0,  -2 * zFar * zNear / (zFar - zNear),   0 }
+        //};
 
         //double[,] projectionMatrix = new double[4, 4] {
         //        { 1, 0, 0, 0 },
@@ -110,7 +117,7 @@ internal class Camera
         //        { 800 / 2, 600 / 2, 0, 1 }
         //    };
 
-        viewMatrix = AffineTransformations.Multiply(translationMatrix, viewMatrix);
+        //viewMatrix = AffineTransformations.Multiply(translationMatrix, viewMatrix);
         //viewMatrix = AffineTransformations.Multiply(viewMatrix, projectionMatrix);
 
         return viewMatrix;
