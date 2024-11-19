@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AffineTransformations.cs" />
+    <Compile Include="BackfaceCulling.cs" />
     <Compile Include="BasicClasses.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

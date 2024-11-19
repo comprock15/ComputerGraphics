@@ -119,14 +119,21 @@ namespace LAB7 {
 
             //g.Clear(Color.White);
 
-            switch (comboBox6.SelectedIndex)
-            {
+            label32.Text = cur_polyhedron.Center().ToString();
+
+            Bitmap bmp = null;
+
+            switch (comboBox6.SelectedIndex) {
                 case 0:
+                    bmp = BackfaceCulling.Cull(matrix, objects_list.Items, colors, Width, Height);
+                    if (pictureBox1.Image != null)
+                        pictureBox1.Image.Dispose();
+                    pictureBox1.Image = bmp;
                     return;
                 case 1:
                     //var ZbuffDraw(matrix);
                     var polyh = objects_list.Items;
-                    var bmp = ZBuffer.ZBuff(matrix, objects_list.Items, colors, Width, Height);
+                    bmp = ZBuffer.ZBuff(matrix, objects_list.Items, colors, Width, Height);
                     if (pictureBox1.Image != null)
                         pictureBox1.Image.Dispose();
                     pictureBox1.Image = bmp;
@@ -137,8 +144,6 @@ namespace LAB7 {
             }
 
             {
-
-
                 double[,] cur_m;
                 Vertex line_start;
                 Vertex line_end;
@@ -159,11 +164,8 @@ namespace LAB7 {
                 line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
                 g.DrawLine(new Pen(Color.Blue, 3), (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
 
-
-
                 // рисование полигона
-                for (int i = 0; i < cur_polyhedron.vertices.Count; i++)
-                {
+                for (int i = 0; i < cur_polyhedron.vertices.Count; i++) {
                     cur_m = AffineTransformations.Multiply(new double[,] {{ cur_polyhedron.vertices[i].x,
                                                                                 cur_polyhedron.vertices[i].y,
                                                                                 cur_polyhedron.vertices[i].z,
@@ -172,8 +174,7 @@ namespace LAB7 {
                     line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
 
                     //пробегает по всем граничным точкам и рисует линию
-                    for (int j = 0; j < cur_polyhedron.edges[i].Count; j++)
-                    {
+                    for (int j = 0; j < cur_polyhedron.edges[i].Count; j++) {
                         var ind = cur_polyhedron.edges[i][j];
                         cur_m = AffineTransformations.Multiply(new double[,] {{ cur_polyhedron.vertices[ind].x,
                                                                             cur_polyhedron.vertices[ind].y,
@@ -186,19 +187,16 @@ namespace LAB7 {
                 }
 
                 //Рисование доп прямых:
-                if (checkBox8.Checked)
-                {
+                if (checkBox8.Checked) {
                     double x1, x2, y1, y2;
                     if (double.TryParse(textBox10.Text, out x1) && double.TryParse(textBox8.Text, out y1) &&
-                        double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2))
-                    {
+                        double.TryParse(textBox13.Text, out x2) && double.TryParse(textBox11.Text, out y2)) {
                         g.DrawLine(new Pen(Color.Purple, 3), new Point((int)x1, (int)y1), new Point((int)x2, (int)y2));
                     }
                 }
             }
         }
-
-        
+                
         private void button1_Click(object sender, EventArgs e) {
             if (cur_polyhedron == null) return;
 

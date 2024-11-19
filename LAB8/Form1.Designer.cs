@@ -138,6 +138,7 @@ namespace LAB7
             this.textBox26 = new System.Windows.Forms.TextBox();
             this.textBox27 = new System.Windows.Forms.TextBox();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.label32 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -736,6 +737,7 @@ namespace LAB7
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.Gainsboro;
+            this.groupBox3.Controls.Add(this.label32);
             this.groupBox3.Controls.Add(this.comboBox2);
             this.groupBox3.Location = new System.Drawing.Point(12, 65);
             this.groupBox3.Name = "groupBox3";
@@ -1392,6 +1394,16 @@ namespace LAB7
             this.comboBox6.Size = new System.Drawing.Size(223, 21);
             this.comboBox6.TabIndex = 0;
             // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(90, 0);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(69, 13);
+            this.label32.TabIndex = 43;
+            this.label32.Text = "Координаты";
+            this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1418,6 +1430,7 @@ namespace LAB7
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStep)).EndInit();
@@ -1545,5 +1558,6 @@ namespace LAB7
         private TextBox textBox26;
         private TextBox textBox27;
         private ComboBox comboBox6;
+        private Label label32;
     }
 }
