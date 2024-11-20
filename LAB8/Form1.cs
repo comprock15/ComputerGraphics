@@ -125,7 +125,7 @@ namespace LAB7 {
 
             switch (comboBox6.SelectedIndex) {
                 case 0:
-                    bmp = BackfaceCulling.Cull(matrix, objects_list.Items, colors, Width, Height);
+                    bmp = BackfaceCulling.Cull(matrix, objects_list.Items, Width, Height);
                     if (pictureBox1.Image != null)
                         pictureBox1.Image.Dispose();
                     pictureBox1.Image = bmp;
@@ -133,7 +133,7 @@ namespace LAB7 {
                 case 1:
                     //var ZbuffDraw(matrix);
                     var polyh = objects_list.Items;
-                    bmp = ZBuffer.ZBuff(matrix, objects_list.Items, colors, Width, Height);
+                    bmp = ZBuffer.ZBuff(matrix, objects_list.Items, Width, Height);
                     if (pictureBox1.Image != null)
                         pictureBox1.Image.Dispose();
                     pictureBox1.Image = bmp;

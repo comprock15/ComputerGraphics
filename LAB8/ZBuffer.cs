@@ -14,7 +14,7 @@ namespace LAB7
     internal class ZBuffer
     {
         private static int h, w;
-        public static Bitmap ZBuff(double[,] matrix, ListBox.ObjectCollection polyhedrons, List<Color> colors, int width, int height)
+        public static Bitmap ZBuff(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height)
         {
             //var polyhedrons = polyhedronss as List<Polyhedron>;
             h = height; w = width;

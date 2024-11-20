@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,17 +13,18 @@ namespace LAB7 {
         /// </summary>
         /// <param name="matrix">Матрица трансформации для преобразования вершин</param>
         /// <param name="polyhedrons">Список многоугольников для обработки</param>
-        /// <param name="colors">Список цветов, соответствующих каждому многоугольнику</param>
         /// <param name="width">Ширина изображения</param>
         /// <param name="height">Высота изображения</param>
         /// <returns>Bitmap с лицевыми гранями многоугольников</returns>
-        public static Bitmap Cull(double[,] matrix, ListBox.ObjectCollection polyhedrons, List<Color> colors, int width, int height) {
+        public static Bitmap Cull(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height) {
             var bmp = new Bitmap(width, height);
             var graphics = Graphics.FromImage(bmp);
             graphics.Clear(Color.White);
 
             // Вектор обзора, направленный из экрана к пользователю
             var viewDirection = new Vertex(0, 0, 1);
+
+            var random = new Random(42);
 
             for (var i = 0; i < polyhedrons.Count; ++i) {
                 var polyhedron = polyhedrons[i] as Polyhedron;
@@ -51,8 +53,11 @@ namespace LAB7 {
                         points.Add(new Point((int)projectedPoint.x, (int)projectedPoint.y));
                     }
 
-                    // Закрашивание грани и отрисовка её границ
-                    graphics.FillPolygon(new SolidBrush(colors[i]), points.ToArray());
+                    // Генерация случайного цвета для каждой грани
+                    var color = Color.FromArgb(random.Next(100, 256), random.Next(100, 256), random.Next(100, 256));
+
+                    // Закрашивание грани случайным цветом
+                    graphics.FillPolygon(new SolidBrush(color), points.ToArray());
                     graphics.DrawPolygon(Pens.Black, points.ToArray());
                 }
             }
