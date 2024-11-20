@@ -28,6 +28,7 @@ namespace LAB7
                 }
 
             double[,] cur_m;
+            Random rand = new Random(42);
             for (var ind = 0; ind < polyhedrons.Count; ind++)
             {
                 // Вычислим координаты вершин в зависимости от выбранной проекции
@@ -39,90 +40,96 @@ namespace LAB7
                     //new_verts.Add(new Vertex(cur_m[0, 0], cur_m[0, 1], cur_m[0, 2]));
                     new_verts.Add(new Vertex(cur_m[0, 0], cur_m[0, 1], vert.z));
                 }
-
+                
                 // Разобъём грани на треугольники для более удобной растеризации
                 var triangulated_faces = new List<List<Vertex>>();
                 foreach (var face in (polyhedrons[ind] as Polyhedron).faces)
                 {
-                    triangulated_faces = triangulated_faces.Concat(Triangulate(new_verts, face)).ToList();
-                }
-
-                foreach (var triangg in triangulated_faces)
-                {
-                    var triang = triangg.OrderBy(v => v.y).ToList();
-                    var up = triang[0]; var mid = triang[1]; var bot = triang[2];
-
-                   
-                    double x1, y1, z1, x2, y2, z2;
-                    for (var cur_y = up.y; cur_y <= mid.y; cur_y+= 0.5)
-                    {
-                        x1 = FindXbyY(cur_y, up.x, up.y, mid.x, mid.y);
-                        z1 = FindZbyY(cur_y, up.y, up.z, mid.y, mid.z);
-
-                        x2 = FindXbyY(cur_y, up.x, up.y, bot.x, bot.y);
-                        z2 = FindZbyY(cur_y, up.y, up.z, bot.y, bot.z);
-
-                        if (x1 < x2)
-                        {
-                            for (double cur_x = x1; cur_x <= x2; cur_x+= 0.5)
-                            {
-                                double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                                if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
-                                {
-                                    z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                                    bmp.SetPixel((int)cur_x, (int)cur_y, colors[ind]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (double cur_x = x1; cur_x >= x2; cur_x-= 0.5)
-                            {
-                                double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                                if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
-                                {
-                                    z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                                    bmp.SetPixel((int)cur_x, (int)cur_y, colors[ind]);
-                                }
-                            }
-                        }
-                    }
-                    for (var cur_y = mid.y; cur_y <= bot.y; cur_y += 0.5)
-                    {
-                        x1 = FindXbyY(cur_y, mid.x, mid.y, bot.x, bot.y);
-                        z1 = FindZbyY(cur_y, mid.y, mid.z, bot.y, bot.z);
-
-                        x2 = FindXbyY(cur_y, up.x, up.y, bot.x, bot.y);
-                        z2 = FindZbyY(cur_y, up.y, up.z, bot.y, bot.z);
-
-                        if (x1 < x2)
-                        {
-                            for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
-                            {
-                                double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                                if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
-                                {
-                                    z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                                    bmp.SetPixel((int)cur_x, (int)cur_y, colors[ind]);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            for (double cur_x = x1; cur_x >= x2; cur_x-= 0.5)
-                            {
-                                double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                                if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
-                                {
-                                    z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                                    bmp.SetPixel((int)cur_x, (int)cur_y, colors[ind]);
-                                }
-                            }
-                        }
-
-                    }
-
                     
+                    
+                    //triangulated_faces = triangulated_faces.Concat(Triangulate(new_verts, face)).ToList();
+                    triangulated_faces = Triangulate(new_verts, face);
+
+                     Color c = Color.FromArgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255));
+
+
+                    foreach (var triangg in triangulated_faces)
+                    {
+                        var triang = triangg.OrderBy(v => v.y).ToList();
+                        var up = triang[0]; var mid = triang[1]; var bot = triang[2];
+                       
+
+                        double x1, y1, z1, x2, y2, z2;
+                        for (var cur_y = up.y; cur_y <= mid.y; cur_y += 0.5)
+                        {
+                            x1 = FindXbyY(cur_y, up.x, up.y, mid.x, mid.y);
+                            z1 = FindZbyY(cur_y, up.y, up.z, mid.y, mid.z);
+
+                            x2 = FindXbyY(cur_y, up.x, up.y, bot.x, bot.y);
+                            z2 = FindZbyY(cur_y, up.y, up.z, bot.y, bot.z);
+
+                            if (x1 < x2)
+                            {
+                                for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
+                                {
+                                    double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
+                                    if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                                    {
+                                        z_buff[(int)cur_x, (int)cur_y] = cur_z;
+                                        bmp.SetPixel((int)cur_x, (int)cur_y, c);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (double cur_x = x1; cur_x >= x2; cur_x -= 0.5)
+                                {
+                                    double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
+                                    if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                                    {
+                                        z_buff[(int)cur_x, (int)cur_y] = cur_z;
+                                        bmp.SetPixel((int)cur_x, (int)cur_y, c);
+                                    }
+                                }
+                            }
+                        }
+                        for (var cur_y = mid.y; cur_y <= bot.y; cur_y += 0.5)
+                        {
+                            x1 = FindXbyY(cur_y, mid.x, mid.y, bot.x, bot.y);
+                            z1 = FindZbyY(cur_y, mid.y, mid.z, bot.y, bot.z);
+
+                            x2 = FindXbyY(cur_y, up.x, up.y, bot.x, bot.y);
+                            z2 = FindZbyY(cur_y, up.y, up.z, bot.y, bot.z);
+
+                            if (x1 < x2)
+                            {
+                                for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
+                                {
+                                    double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
+                                    if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                                    {
+                                        z_buff[(int)cur_x, (int)cur_y] = cur_z;
+                                        bmp.SetPixel((int)cur_x, (int)cur_y, c);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (double cur_x = x1; cur_x >= x2; cur_x -= 0.5)
+                                {
+                                    double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
+                                    if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                                    {
+                                        z_buff[(int)cur_x, (int)cur_y] = cur_z;
+                                        bmp.SetPixel((int)cur_x, (int)cur_y, c);
+                                    }
+                                }
+                            }
+
+                        }
+
+
+                    }
                 }
 
                 // Нарисуем рёбра 

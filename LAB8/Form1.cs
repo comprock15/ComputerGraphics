@@ -30,7 +30,7 @@ namespace LAB7 {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
             p = new Pen(Color.Black, 2);
-            colors = new List<Color>{ Color.Red, Color.Green, Color.Blue};
+            colors = new List<Color>{ };
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;

@@ -17,6 +17,7 @@ namespace LAB7
         ListBox.ObjectCollection objectCollection;
         Graphics g;
         Pen pen = new Pen(Color.Black);
+        int sleeptime = 200;
 
         public CameraForm(ListBox.ObjectCollection objects_list)
         {
@@ -38,7 +39,7 @@ namespace LAB7
 
         public void RedrawField()
         {
-            g.Clear(Color.White);
+            
             List<Polyhedron> newPolyhedrons = camera.GetPolyhedronsInCameraCoordinates(polyhedrons);
 
             //List<Polyhedron> newPolyhedrons = polyhedrons.Select(p => new Polyhedron(p)).ToList();
@@ -46,67 +47,75 @@ namespace LAB7
             double[,] projectionMatrix = new double[4, 4] {
                 { 1, 0, 0, 0 },
                 { 0, 1, 0, 0 },
-                { 0, 0, 0, 0 },
+                { 0, 0, 0, -1/1000 },
                 { pictureBox1.Width / 2, pictureBox1.Height / 2, 0, 1 }
             };
 
+            ListBox objects_list = new ListBox();
+            objects_list.Items.AddRange(newPolyhedrons.ToArray());
+                var bmp = ZBuffer.ZBuff(projectionMatrix, objects_list.Items, null, pictureBox1.Width, pictureBox1.Height);
+            //g.Clear(Color.White);
+            if (pictureBox1.Image != null)
+                pictureBox1.Image.Dispose();
+            pictureBox1.Image = bmp;
 
-            foreach (Polyhedron polyhedron in newPolyhedrons)
-            {
-                foreach (Vertex v in polyhedron.vertices)
-                {
+            //foreach (Polyhedron polyhedron in newPolyhedrons)
+            //{
+            //    //foreach (Vertex v in polyhedron.vertices)
+            //    //{
 
-                    var coords = AffineTransformations.Multiply(new double[1, 4] { { v.x, v.y, v.z, 1 } }, projectionMatrix);
-                    v.x = coords[0, 0] / coords[0, 3];
-                    v.y = coords[0, 1] / coords[0, 3];
-                    v.z = coords[0, 2] / coords[0, 3];
-                    //v.x = coords[0, 0];
-                    //v.y = coords[0, 1];
-                    //v.z = coords[0, 2];
-                }
-                //Polyhedron polyhedron = p;
-                //polyhedron.vertices = AffineTransformations.RecalculatedCoords(p, mvp);
+            //    //    var coords = AffineTransformations.Multiply(new double[1, 4] { { v.x, v.y, v.z, 1 } }, projectionMatrix);
+            //    //    v.x = coords[0, 0] / coords[0, 3];
+            //    //    v.y = coords[0, 1] / coords[0, 3];
+            //    //    v.z = coords[0, 2] / coords[0, 3];
+            //    //    //v.x = coords[0, 0];
+            //    //    //v.y = coords[0, 1];
+            //    //    //v.z = coords[0, 2];
+            //    //}
+            //    //Polyhedron polyhedron = p;
+            //    //polyhedron.vertices = AffineTransformations.RecalculatedCoords(p, mvp);
 
-                foreach (List<int> face in polyhedron.faces)
-                {
-                    g.DrawLines(pen, face.Select(i => new PointF(
-                        (float)(polyhedron.vertices[i].x),
-                        (float)(polyhedron.vertices[i].y))).ToArray());
-                    g.DrawLine(pen, (float)polyhedron.vertices[face[0]].x,
-                                    (float)polyhedron.vertices[face[0]].y,
-                                    (float)polyhedron.vertices[face[face.Count - 1]].x,
-                                    (float)polyhedron.vertices[face[face.Count - 1]].y);
-                }
 
-                this.Text = polyhedron.vertices[0].x + " " + polyhedron.vertices[0].y + " " + polyhedron.vertices[0].z;
-            }
+            //    foreach (List<int> face in polyhedron.faces)
+            //    {
+            //        g.DrawLines(pen, face.Select(i => new PointF(
+            //            (float)(polyhedron.vertices[i].x),
+            //            (float)(polyhedron.vertices[i].y))).ToArray());
+            //        g.DrawLine(pen, (float)polyhedron.vertices[face[0]].x,
+            //                        (float)polyhedron.vertices[face[0]].y,
+            //                        (float)polyhedron.vertices[face[face.Count - 1]].x,
+            //                        (float)polyhedron.vertices[face[face.Count - 1]].y);
+            //    }
+
+            //    this.Text = polyhedron.vertices[0].x + " " + polyhedron.vertices[0].y + " " + polyhedron.vertices[0].z;
+            //}
 
 
             // РИСОВАНИЕ ОСЕЙ КООРДИНАТ
 
-            Polyhedron ox = new Polyhedron();
-            ox.vertices.Add(new Vertex(100, 0, 0));
-            ox.vertices.Add(new Vertex(0, 0, 0));
-            //ox.vertices = AffineTransformations.RecalculatedCoords(ox, mvp);
-            ox = camera.GetPolyhedronsInCameraCoordinates(new List<Polyhedron> { ox })[0];
-            ox.vertices = AffineTransformations.RecalculatedCoords(ox, projectionMatrix);
-            g.DrawLine(new Pen(Color.Red), (float)ox.vertices[0].x, (float)ox.vertices[0].y, (float)ox.vertices[1].x, (float)ox.vertices[1].y);
+            //Polyhedron ox = new Polyhedron();
+            //ox.vertices.Add(new Vertex(100, 0, 0));
+            //ox.vertices.Add(new Vertex(0, 0, 0));
+            ////ox.vertices = AffineTransformations.RecalculatedCoords(ox, mvp);
+            //ox = camera.GetPolyhedronsInCameraCoordinates(new List<Polyhedron> { ox })[0];
+            //ox.vertices = AffineTransformations.RecalculatedCoords(ox, projectionMatrix);
+            //g.DrawLine(new Pen(Color.Red), (float)ox.vertices[0].x, (float)ox.vertices[0].y, (float)ox.vertices[1].x, (float)ox.vertices[1].y);
 
-            Polyhedron oy = new Polyhedron();
-            oy.vertices.Add(new Vertex(0, 100, 0));
-            oy.vertices.Add(new Vertex(0, 0, 0));
-            //oy.vertices = AffineTransformations.RecalculatedCoords(oy, mvp);
-            oy = camera.GetPolyhedronsInCameraCoordinates(new List<Polyhedron> { oy })[0];
-            oy.vertices = AffineTransformations.RecalculatedCoords(oy, projectionMatrix);
-            g.DrawLine(new Pen(Color.Green), (float)oy.vertices[0].x, (float)oy.vertices[0].y, (float)oy.vertices[1].x, (float)oy.vertices[1].y);
+            //Polyhedron oy = new Polyhedron();
+            //oy.vertices.Add(new Vertex(0, 100, 0));
+            //oy.vertices.Add(new Vertex(0, 0, 0));
+            ////oy.vertices = AffineTransformations.RecalculatedCoords(oy, mvp);
+            //oy = camera.GetPolyhedronsInCameraCoordinates(new List<Polyhedron> { oy })[0];
+            //oy.vertices = AffineTransformations.RecalculatedCoords(oy, projectionMatrix);
+            //g.DrawLine(new Pen(Color.Green), (float)oy.vertices[0].x, (float)oy.vertices[0].y, (float)oy.vertices[1].x, (float)oy.vertices[1].y);
 
-            Polyhedron oz = new Polyhedron();
-            oz.vertices.Add(new Vertex(0, 0, 100));
-            oz.vertices.Add(new Vertex(0, 0, 0));
-            //oz.vertices = AffineTransformations.RecalculatedCoords(oz, mvp);
-            oz = camera.GetPolyhedronsInCameraCoordinates(new List<Polyhedron> { oz })[0];
-            oz.vertices = AffineTransformations.RecalculatedCoords(oz, projectionMatrix);
-            g.DrawLine(new Pen(Color.Blue), (float)oz.vertices[0].x, (float)oz.vertices[0].y, (float)oz.vertices[1].x, (float)oz.vertices[1].y);
+            //Polyhedron oz = new Polyhedron();
+            //oz.vertices.Add(new Vertex(0, 0, 100));
+            //oz.vertices.Add(new Vertex(0, 0, 0));
+            ////oz.vertices = AffineTransformations.RecalculatedCoords(oz, mvp);
+            //oz = camera.GetPolyhedronsInCameraCoordinates(new List<Polyhedron> { oz })[0];
+            //oz.vertices = AffineTransformations.RecalculatedCoords(oz, projectionMatrix);
+            //g.DrawLine(new Pen(Color.Blue), (float)oz.vertices[0].x, (float)oz.vertices[0].y, (float)oz.vertices[1].x, (float)oz.vertices[1].y);
 
             label4.Text = $"Позиция камеры: ({camera.position.x}, {camera.position.y}, {camera.position.z})";
         }
@@ -142,7 +151,7 @@ namespace LAB7
 
             if (sender != null)
                 RedrawField();
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(sleeptime);
         }
 
         private void RotateCameraAboutZAxis(object sender, EventArgs e)
@@ -160,7 +169,7 @@ namespace LAB7
 
             if (sender != null)
                 RedrawField();
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(sleeptime);
         }
 
         private void RotateCameraAboutXAxis(object sender, EventArgs e)
@@ -178,7 +187,7 @@ namespace LAB7
 
             if (sender != null)
                 RedrawField();
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(sleeptime);
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e)
