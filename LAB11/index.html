@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LAB11</title>
+    </head>
+    <body>
+        <canvas id="canvasWebGL" width="600" height="600">Ваш браузер не поддерживает элемент canvas</canvas>
+        <form>
+            <label for="figure">Фигура:</label>
+            <select id="figure" name="figure">
+              <option value="quadrilateral">Четырехугольник</option>
+              <option value="fan">Веер</option>
+              <option value="pentagon">Правильный пятиугольник</option>
+            </select>
+        </form>
+        <form>
+            <label for="paintMode">Вариант закрашивания:</label>
+            <select id="paintMode" name="paintMode">
+              <option value="const">1. Плоское закрашивание (цвет задан константой в шейдере)</option>
+              <option value="uniform">2. Плоское закрашивание (цвет передан во фрагментный шейдер через uniform-переменные из основной программы)</option>
+              <option value="gradient">3. Градиентное закрашивание</option>
+            </select>
+        </form>
+        <script src="app.js"></script>
+    </body>
+</html>
