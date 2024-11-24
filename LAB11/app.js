@@ -65,8 +65,7 @@ void main() {
 }
 `
 
-// TODO: закрашивание 2
-var vertexShaderSource2 = 
+var vertexShaderSource2 =
 `#version 300 es
 in vec2 coord;
 void main() {
@@ -74,12 +73,13 @@ void main() {
 }
 `
 
-var fragmentShaderSource2 = 
+var fragmentShaderSource2 =
 `#version 300 es
 precision highp float;
+uniform vec4 uniformColor;
 out vec4 color;
 void main() {
-  color = vec4(0, 1, 0, 1);
+  color = uniformColor;
 }
 `
 
@@ -165,6 +165,15 @@ function initShaders() {
   // Линкуем шейдерную программу
   gl.linkProgram(program);
 
+  // Получаем ID uniform-переменной
+  if (selectPaintMode.options[1].selected === true) {
+    uniformColor = gl.getUniformLocation(program, "uniformColor");
+    if (uniformColor === null) {
+      console.error("Не удалось получить uniform-переменную 'uniformColor'");
+    }
+  }
+
+
   // Проверяем статус сборки
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
     console.error("Не удалсь установить шейдеры");
@@ -210,6 +219,10 @@ function draw() {
   gl.bindBuffer(gl.ARRAY_BUFFER, VBO);
   // Указываем, что каждая вершина имеет по 2 координаты
   gl.vertexAttribPointer(attrib_vertex, 2, gl.FLOAT, gl.FALSE, 0, 0);
+  // Передаём цвет в uniform-переменную
+  if (selectPaintMode.options[1].selected === true) {
+    gl.uniform4f(uniformColor, 0.5, 0.0, 0.5, 1.0); // Красный цвет
+  }
   // Передаем данные на видеокарту (рисуем)
   gl.drawArrays(primitive, 0, vertices.length / 2); // Делим на кол-во параметров вершины (у нас сейчас это 2 координаты)
   // Отключаем массив атрибутов
