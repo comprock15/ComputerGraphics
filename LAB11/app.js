@@ -1,3 +1,4 @@
+
 // Смена рисуемой фигуры
 var selectFigure = document.querySelector('#figure');
 selectFigure.addEventListener('change', function() {
@@ -38,8 +39,12 @@ selectPaintMode.addEventListener('change', function() {
 var program;
 // ID атрибута
 var attrib_vertex;
+
+var vertexColorAttribute;
 // ID Vertex Buffer Object
 var VBO;
+// ID color_buffer
+var color_buffer;
 
 var gl;
 var canvas = document.getElementById("canvasWebGL");
@@ -83,23 +88,32 @@ void main() {
 }
 `
 
-// TODO: закрашивание 3
+
 var vertexShaderSource3 = 
 `#version 300 es
+precision highp float;
 in vec2 coord;
+in vec4 a_color;
+out vec4 v_color;
+
 void main() {
   gl_Position = vec4(coord, 0.0, 1.0);
+  v_color = a_color;
 }
 `
 
 var fragmentShaderSource3 = 
 `#version 300 es
 precision highp float;
+
+in vec4 v_color;
 out vec4 color;
+
 void main() {
-  color = vec4(0, 1, 0, 1);
+  color = v_color;
 }
-`
+`;
+
 // --------------------- Фигуры ---------------------
 
 var quadrilateral = [
@@ -109,13 +123,23 @@ var quadrilateral = [
   0.7, 0.3
 ];
 
+// var fan = [
+//   0.0, -0.8,
+//   -0.8, 0.6,
+//   -0.5, 0.7,
+//   -0.2, 0.8,
+//   0.2, 0.8,
+//   0.6, 0.4,
+// ];
+
 var fan = [
   0.0, -0.8,
-  -0.8, 0.6,
-  -0.5, 0.7,
-  -0.2, 0.8,
-  0.2, 0.8,
-  0.6, 0.4,
+ -0.8, 0.4,
+  -0.5, 0.6,
+  0.0, 0.8,
+  0.5, 0.6,
+  0.8, 0.4,
+  
 ];
 
 var pentagon = [
@@ -148,6 +172,23 @@ function initVBO(vertices) {
   // Передаем вершины в буфер
   gl.bindBuffer(gl.ARRAY_BUFFER, VBO);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+  // инициализация буфера цветов для градиентной закраски
+  if (selectPaintMode.options[2].selected === true)
+  {
+    color_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+    // массив цветов для градиентной окраски вершин
+    var colors = [
+      1.0,  0.0,  0.0,  1.0,    // красный
+      1.0,  1.0,  0.0,  1.0,    // жёлтый
+      0.0,  1.0,  0.0,  1.0,    // зелёный
+      0.0,  1.0,  1.0,  1.0,    
+      0.0,  0.0,  1.0,  1.0,    // синий
+      1.0,  0.0,  1.0,  1.0,    // фиолетовый
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+  }
 }
 
 
@@ -187,6 +228,16 @@ function initShaders() {
     console.error("Не получилось связать атрибут");
     return;
   }
+  if (selectPaintMode.options[2].selected === true)
+  {
+    vertexColorAttribute = gl.getAttribLocation(program, "a_color");
+    if (vertexColorAttribute === -1) {
+      console.error("Не получилось связать атрибут");
+      return;
+    }
+  }
+  
+
 }
 
 function getShader(gl, type, source) {
@@ -223,6 +274,15 @@ function draw() {
   if (selectPaintMode.options[1].selected === true) {
     gl.uniform4f(uniformColor, 0.5, 0.0, 0.5, 1.0); // Красный цвет
   }
+
+  if (selectPaintMode.options[2].selected === true)
+  {
+    gl.enableVertexAttribArray(vertexColorAttribute);
+    gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+    gl.vertexAttribPointer(vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, VBO);
+  }
+
   // Передаем данные на видеокарту (рисуем)
   gl.drawArrays(primitive, 0, vertices.length / 2); // Делим на кол-во параметров вершины (у нас сейчас это 2 координаты)
   // Отключаем массив атрибутов
