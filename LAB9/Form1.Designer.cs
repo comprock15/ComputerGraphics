@@ -102,6 +102,15 @@ namespace LAB9
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -113,6 +122,7 @@ namespace LAB9
             this.groupBox11.SuspendLayout();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -124,7 +134,7 @@ namespace LAB9
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(251, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(849, 634);
+            this.pictureBox1.Size = new System.Drawing.Size(591, 672);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
@@ -175,7 +185,7 @@ namespace LAB9
             this.groupBox2.Controls.Add(this.checkBox3);
             this.groupBox2.Controls.Add(this.checkBox2);
             this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Location = new System.Drawing.Point(1106, 12);
+            this.groupBox2.Location = new System.Drawing.Point(848, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(239, 634);
             this.groupBox2.TabIndex = 5;
@@ -706,7 +716,7 @@ namespace LAB9
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(9, 521);
+            this.label32.Location = new System.Drawing.Point(9, 671);
             this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(69, 13);
@@ -793,7 +803,7 @@ namespace LAB9
             // createCameraButton
             // 
             this.createCameraButton.BackColor = System.Drawing.Color.White;
-            this.createCameraButton.Location = new System.Drawing.Point(6, 541);
+            this.createCameraButton.Location = new System.Drawing.Point(848, 651);
             this.createCameraButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.createCameraButton.Name = "createCameraButton";
             this.createCameraButton.Size = new System.Drawing.Size(239, 33);
@@ -869,12 +879,119 @@ namespace LAB9
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button2.Location = new System.Drawing.Point(69, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(97, 30);
+            this.button2.TabIndex = 44;
+            this.button2.Text = "↑";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.White;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button3.Location = new System.Drawing.Point(69, 51);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(30, 50);
+            this.button3.TabIndex = 45;
+            this.button3.Text = "←";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.White;
+            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button6.Location = new System.Drawing.Point(136, 51);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(30, 50);
+            this.button6.TabIndex = 46;
+            this.button6.Text = "→";
+            this.button6.UseVisualStyleBackColor = false;
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.White;
+            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button7.Location = new System.Drawing.Point(69, 101);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(97, 30);
+            this.button7.TabIndex = 47;
+            this.button7.Text = "↓";
+            this.button7.UseVisualStyleBackColor = false;
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.White;
+            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button8.Location = new System.Drawing.Point(105, 51);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(25, 25);
+            this.button8.TabIndex = 48;
+            this.button8.Text = "+";
+            this.button8.UseVisualStyleBackColor = false;
+            // 
+            // button9
+            // 
+            this.button9.BackColor = System.Drawing.Color.White;
+            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button9.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button9.Location = new System.Drawing.Point(105, 76);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(25, 25);
+            this.button9.TabIndex = 49;
+            this.button9.Text = "-";
+            this.button9.UseVisualStyleBackColor = false;
+            // 
+            // button10
+            // 
+            this.button10.BackColor = System.Drawing.Color.White;
+            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button10.Location = new System.Drawing.Point(38, 19);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(25, 112);
+            this.button10.TabIndex = 50;
+            this.button10.Text = "↰";
+            this.button10.UseVisualStyleBackColor = false;
+            // 
+            // button11
+            // 
+            this.button11.BackColor = System.Drawing.Color.White;
+            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button11.Location = new System.Drawing.Point(172, 19);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(25, 112);
+            this.button11.TabIndex = 51;
+            this.button11.Text = "↱";
+            this.button11.UseVisualStyleBackColor = false;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.button2);
+            this.groupBox6.Controls.Add(this.button11);
+            this.groupBox6.Controls.Add(this.button3);
+            this.groupBox6.Controls.Add(this.button10);
+            this.groupBox6.Controls.Add(this.button6);
+            this.groupBox6.Controls.Add(this.button9);
+            this.groupBox6.Controls.Add(this.button7);
+            this.groupBox6.Controls.Add(this.button8);
+            this.groupBox6.Location = new System.Drawing.Point(6, 517);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(239, 150);
+            this.groupBox6.TabIndex = 52;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "groupBox6";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
-            this.ClientSize = new System.Drawing.Size(1349, 666);
+            this.ClientSize = new System.Drawing.Size(1091, 695);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.label32);
             this.Controls.Add(this.groupBox12);
             this.Controls.Add(this.groupBox11);
@@ -888,6 +1005,7 @@ namespace LAB9
             this.Name = "Form1";
             this.Text = "LAB9";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -902,6 +1020,7 @@ namespace LAB9
             this.groupBox11.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -979,5 +1098,14 @@ namespace LAB9
         private PictureBox pictureBox2;
         private Button button5;
         private Button button4;
+        private Button button2;
+        private Button button3;
+        private Button button6;
+        private Button button7;
+        private Button button8;
+        private Button button9;
+        private Button button10;
+        private Button button11;
+        private GroupBox groupBox6;
     }
 }
