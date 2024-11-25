@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LAB9;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Microsoft.FSharp.Core.ByRefKinds;
 
-namespace LAB7 {
+namespace LAB9 {
     /// <summary>
     /// Форма
     /// </summary>
@@ -23,6 +24,7 @@ namespace LAB7 {
         Pen p;
         List<Color> colors;
         private Random random = new Random();
+
         /// <summary>
         /// Инициализация формы
         /// </summary>
@@ -36,19 +38,7 @@ namespace LAB7 {
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 1;
-            //objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(100.0, 0, 0)},
-            //                                  new List<List<int>> { new List<int>{ 1 }, new List<int>{ } },
-            //                                  new List<List<int>> { new List<int> { 0 , 1 } }
-            //                                  ));
-            //objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(0, 100, 0) },
-            //                                  new List<List<int>> { new List<int> { 1 }, new List<int> { } },
-            //                                  new List<List<int>> { new List<int> { 0, 1 } }
-            //                                  ));
-            //objects_list.Items.Add(new Polyhedron(new List<Vertex> { new Vertex(0, 0, 0), new Vertex(0, 0, 100) },
-            //                                  new List<List<int>> { new List<int> { 1 }, new List<int> { } },
-            //                                  new List<List<int>> { new List<int> { 0, 1 } }
-            //                                  ));
-
+            
             RedrawField();
         }
 
@@ -58,7 +48,16 @@ namespace LAB7 {
             g = pictureBox1.CreateGraphics();
         }
 
+        /// <summary>
+        /// Создание многогранника из списка
+        /// </summary>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
+            Polyhedron old_polyhedron;
+            if (cur_polyhedron != null)
+                old_polyhedron = new Polyhedron(cur_polyhedron);
+            else
+                old_polyhedron = null;
+
             switch (comboBox1.SelectedIndex) {
                 case 0:
                     cur_polyhedron = PolyhedronCollection.MakeTetrahedron();
@@ -75,12 +74,27 @@ namespace LAB7 {
                 case 4:
                     cur_polyhedron = PolyhedronCollection.MakeDodecahedron();
                     break;
+                case 5:
+                    var f = new AddFunctionGraphicForm(pictureBox1.Width, pictureBox1.Height);
+                    if (f.ShowDialog() == DialogResult.OK) {
+                        cur_polyhedron = f.cur_polyhedron;
+                    }
+                    break;
+                case 6:
+                    var ff = new AddRotationFigurePolyhedronForm();
+                    if (ff.ShowDialog() == DialogResult.OK) {
+                        cur_polyhedron = ff.cur_polyhedron;
+                    }
+                    break;
                 default:
                     break;
             }
-            objects_list.Items.Add(cur_polyhedron);
-            colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
-            RedrawField();
+            if (old_polyhedron != cur_polyhedron)
+            {
+                objects_list.Items.Add(cur_polyhedron);
+                colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
+                RedrawField();
+            }
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) => RedrawField();
@@ -328,7 +342,7 @@ namespace LAB7 {
         /// <param name="sender">Источник события</param>
         /// <param name="e">Данные события</param>
         private void saveStatusTimer_Tick(object sender, EventArgs e) {
-            Text = "LAB7";
+            Text = "LAB9";
             saveStatusTimer.Stop();
         }
 
@@ -350,7 +364,7 @@ namespace LAB7 {
                     try
                     {
                         OBJHandler.Save(cur_polyhedron, saveFileDialog.FileName);
-                        Text = "LAB7: Файл сохранён успешно.";
+                        Text = "LAB9: Файл сохранён успешно.";
                         saveStatusTimer.Start();
                     }
                     catch (Exception ex)
@@ -379,7 +393,7 @@ namespace LAB7 {
                         colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
                         RedrawField();
 
-                        Text = "LAB7: Файл загружен успешно.";
+                        Text = "LAB9: Файл загружен успешно.";
                         saveStatusTimer.Start();
                     }
                     catch (Exception ex)
@@ -390,135 +404,6 @@ namespace LAB7 {
             }
         }
 
-        private void showPlotButton_Click(object sender, EventArgs e)
-        {
-            double x0 = (double)numericUpDownX0.Value;
-            double x1 = (double)numericUpDownX1.Value;
-            double y0 = (double)numericUpDownY0.Value;
-            double y1 = (double)numericUpDownY1.Value;
-
-            if (x1 < x0)
-            {
-                numericUpDownX0.BackColor = Color.Red;
-                numericUpDownX1.BackColor = Color.Red;
-                return;
-            }
-            else
-            {
-                numericUpDownX_ValueChanged(sender, e);
-            }
-
-            if (y1 < y0)
-            {
-                numericUpDownY0.BackColor = Color.Red;
-                numericUpDownY1.BackColor = Color.Red;
-                return;
-            }
-            else
-            {
-                numericUpDownY_ValueChanged(sender, e);
-            }
-
-            // Получение графика
-            try
-            {
-                cur_polyhedron = FunctionPlotting.GetPlot(textBoxFunc.Text, x0, x1, y0, y1,
-                                                      (int)numericUpDownStep.Value);
-                textBoxFunc_TextChanged(sender, e);
-                objects_list.Items.Add(cur_polyhedron);
-            }
-            catch (Exception ex)
-            {
-                textBoxFunc.BackColor = Color.Red;
-                return;
-            }
-
-            // Настройка приближения
-            double scale = Math.Min(pictureBox1.Width / 2.0 / ((double)numericUpDownX1.Value - (double)numericUpDownX0.Value),
-                                    pictureBox1.Height / 2.0 / ((double)numericUpDownY1.Value - (double)numericUpDownY0.Value));
-            AffineTransformations.Scale(ref cur_polyhedron, scale);
-
-            // Поворот
-            if (plottingCheckBox.Checked)
-            {
-                AffineTransformations.RotateAroundCenter(ref cur_polyhedron, 70, 0);
-                AffineTransformations.RotateAroundCenter(ref cur_polyhedron, 30, 1);
-            }
-
-            // Центрирование
-            var center = AffineTransformations.CalculateCenterCoords(cur_polyhedron);
-            var pbCenter = new double[2] { pictureBox1.Width / 2, pictureBox1.Height / 2 };
-            AffineTransformations.Translation(ref cur_polyhedron, pbCenter[0] - center[0, 0], pbCenter[1] - center[0, 1], 0);            RedrawField();
-        }
-
-        private void textBoxFunc_TextChanged(object sender, EventArgs e)
-        {
-            textBoxFunc.BackColor = Color.White;
-        }
-
-        private void numericUpDownX_ValueChanged(object sender, EventArgs e)
-        {
-            numericUpDownX0.BackColor = Color.White;
-            numericUpDownX1.BackColor = Color.White;
-        }
-
-        private void numericUpDownY_ValueChanged(object sender, EventArgs e)
-        {
-            numericUpDownY0.BackColor = Color.White;
-            numericUpDownY1.BackColor = Color.White;
-        }
-
-        private void label24_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            double x, y, z;
-            if (double.TryParse(textBox21.Text, out x) &&
-                double.TryParse(textBox20.Text, out y) &&
-                double.TryParse(textBox19.Text, out z))
-            {
-                listBox1.Items.Add("x:" + x.ToString() + 
-                                   " y:" + y.ToString() + 
-                                   " z:" + z.ToString());
-            }
-        }
-
-        
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBox1.SelectedIndex != -1)
-            {
-                listBox1.Items.RemoveAt(listBox1.SelectedIndex);
-            }
-            
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (comboBox5.SelectedIndex != -1 && listBox1.Items.Count > 1)
-            {
-                List<Vertex> v = new List<Vertex> { };
-                foreach (var item in listBox1.Items)
-                {
-                    var s = (item as string).Split(' ');
-                    v.Add(new Vertex(double.Parse(s[0].Substring(2)), 
-                                     double.Parse(s[1].Substring(2)), 
-                                     double.Parse(s[2].Substring(2))));
-                }
-                cur_polyhedron = PolyhedronCollection.MakeRotationFigure(comboBox5.SelectedItem as string, (int)numericUpDown1.Value, v);
-                objects_list.Items.Add(cur_polyhedron);
-                RedrawField();
-            }
-        }
-
-        private void objects_list_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void button_delete_obj_Click(object sender, EventArgs e)
         {

@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 
-namespace LAB7.Properties
+namespace LAB9.Properties
 {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.

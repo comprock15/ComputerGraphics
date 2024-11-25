@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace LAB7
+namespace LAB9
 {
     internal partial class CameraForm : Form
     {

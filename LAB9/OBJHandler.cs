@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace LAB7 {
+namespace LAB9 {
     /// <summary>
     /// Обработчик OBJHandler
     /// </summary>

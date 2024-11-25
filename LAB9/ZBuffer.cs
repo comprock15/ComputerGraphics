@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-namespace LAB7
+namespace LAB9
 {
     internal class ZBuffer
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace LAB7
+namespace LAB9
 {
     partial class CameraForm
     {

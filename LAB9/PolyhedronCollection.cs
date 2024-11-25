@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LAB7 {
+namespace LAB9 {
     /// <summary>
     /// Коллекция многогранников
     /// </summary>

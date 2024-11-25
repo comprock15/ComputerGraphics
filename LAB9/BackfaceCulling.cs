@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace LAB7 {
+namespace LAB9 {
     /// <summary>
     /// Отсечение нелицевых граней
     /// </summary>
