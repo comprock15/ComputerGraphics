@@ -22,7 +22,7 @@ namespace LAB9 {
             graphics.Clear(Color.White);
 
             // Вектор обзора, направленный из экрана к пользователю
-            var viewDirection = new Vertex(0, 0, 1);
+            var viewDirection = new Vertex(0, 0, -1);
 
             var random = new Random(42);
 
@@ -40,7 +40,7 @@ namespace LAB9 {
 
                 // Определение видимых граней по нормалям
                 foreach (var face in polyhedron.faces) {
-                    var normal = GetNormalVector(face, transformedVertices);
+                    var normal = Normalize(face, transformedVertices);
                     var scalar = normal.x * viewDirection.x + normal.y * viewDirection.y + normal.z * viewDirection.z;
                     if (scalar < 0) visibleFaces.Add(face); // Грань видима, если нормаль направлена к наблюдателю (по оси Z)
                 }
@@ -72,19 +72,7 @@ namespace LAB9 {
         /// <param name="face">Вершины грани</param>
         /// <param name="vertices">Вершины многоугольника</param>
         /// <returns>Вектор нормали</returns>
-        public static Vertex GetNormalVector(List<int> face, List<Vertex> vertices) => CrossProduct(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]]);
-
-        /// <summary>
-        /// Вычисляет векторное произведение двух векторов
-        /// </summary>
-        /// <param name="vec1">Первый вектор</param>
-        /// <param name="vec2">Второй вектор</param>
-        /// <returns>Векторное произведение</returns>
-        public static Vertex CrossProduct(Vertex vec1, Vertex vec2) => new Vertex(
-                vec1.y * vec2.z - vec1.z * vec2.y,
-                vec1.z * vec2.x - vec1.x * vec2.z,
-                vec1.x * vec2.y - vec1.y * vec2.x
-            );
+        public static Vertex Normalize(List<int> face, List<Vertex> vertices) => Polyhedron.CrossProduct(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]]);
 
         /// <summary>
         /// Параллельная проекция вершины на 2D экран
