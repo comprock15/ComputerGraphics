@@ -94,7 +94,16 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormFieldDrawing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormObjSavingAndLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FunctionPlotting.cs" />
+    <Compile Include="FormAffineTransformations.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="OBJHandler.cs" />
     <Compile Include="PolyhedronCollection.cs" />
     <Compile Include="Program.cs" />

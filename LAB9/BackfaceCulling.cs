@@ -72,7 +72,7 @@ namespace LAB9 {
         /// <param name="face">Вершины грани</param>
         /// <param name="vertices">Вершины многоугольника</param>
         /// <returns>Вектор нормали</returns>
-        private static Vertex GetNormalVector(List<int> face, List<Vertex> vertices) => CrossProduct(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]]);
+        public static Vertex GetNormalVector(List<int> face, List<Vertex> vertices) => CrossProduct(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]]);
 
         /// <summary>
         /// Вычисляет векторное произведение двух векторов
@@ -80,7 +80,7 @@ namespace LAB9 {
         /// <param name="vec1">Первый вектор</param>
         /// <param name="vec2">Второй вектор</param>
         /// <returns>Векторное произведение</returns>
-        private static Vertex CrossProduct(Vertex vec1, Vertex vec2) => new Vertex(
+        public static Vertex CrossProduct(Vertex vec1, Vertex vec2) => new Vertex(
                 vec1.y * vec2.z - vec1.z * vec2.y,
                 vec1.z * vec2.x - vec1.x * vec2.z,
                 vec1.x * vec2.y - vec1.y * vec2.x
@@ -91,6 +91,6 @@ namespace LAB9 {
         /// </summary>
         /// <param name="v">Вершина</param>
         /// <returns>Параллельная проекция вершины</returns>
-        private static Vertex ProjectTo2D(Vertex v) => new Vertex(v.x, v.y, 0);
+        public static Vertex ProjectTo2D(Vertex v) => new Vertex(v.x, v.y, 0);
     }
 }
