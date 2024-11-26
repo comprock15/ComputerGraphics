@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -63,7 +64,8 @@ namespace LAB9 {
                     cur_polyhedron = PolyhedronCollection.MakeTetrahedron();
                     break;
                 case 1:
-                    cur_polyhedron = PolyhedronCollection.MakeHexahedron();
+                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "..", "LAB7", "Polyhendrons", "cube_scaled.obj"));
+                    cur_polyhedron.SetName("Гексаэдр");
                     break;
                 case 2:
                     cur_polyhedron = PolyhedronCollection.MakeOctahedron();

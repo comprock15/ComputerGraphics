@@ -160,7 +160,7 @@ namespace LAB9
                 // Определение видимых граней по нормалям
                 foreach (var face in polyhedron.faces)
                 {
-                    var normal = BackfaceCulling.GetNormalVector(face, transformedVertices);
+                    var normal = BackfaceCulling.Normalize(face, transformedVertices);
                     var scalar = normal.x * viewDirection.x + normal.y * viewDirection.y + normal.z * viewDirection.z;
                     if (scalar < 0) visibleFaces.Add(face); // Грань видима, если нормаль направлена к наблюдателю (по оси Z)
                 }
