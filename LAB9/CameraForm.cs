@@ -53,7 +53,7 @@ namespace LAB9
 
             ListBox objects_list = new ListBox();
             objects_list.Items.AddRange(newPolyhedrons.ToArray());
-                var bmp = ZBuffer.ZBuff(projectionMatrix, objects_list.Items, pictureBox1.Width, pictureBox1.Height);
+                var bmp = PhongShading.UseShading(projectionMatrix, objects_list.Items, pictureBox1.Width, pictureBox1.Height);
             //g.Clear(Color.White);
             if (pictureBox1.Image != null)
                 pictureBox1.Image.Dispose();
