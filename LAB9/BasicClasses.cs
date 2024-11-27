@@ -50,6 +50,16 @@ internal class Vertex {
     /// <param name="vertex2">Вершина 1</param>
     /// <returns>Вершина из разности координат двух вершин</returns>
     static public Vertex operator -(Vertex vertex1, Vertex vertex2) => new Vertex(vertex1.x - vertex2.x, vertex1.y - vertex2.y, vertex1.z - vertex2.z);
+
+    /// <summary>
+    /// Скалярное произведение векторов
+    /// </summary>
+    /// <param name="v1">Вершина 1</param>
+    /// <param name="v2">Вершина 2</param>
+    static public double Dot(Vertex v1, Vertex v2)
+    {
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    }
     /// <summary>
     /// Строковое представление вершины
     /// </summary>

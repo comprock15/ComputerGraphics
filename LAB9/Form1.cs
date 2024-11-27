@@ -22,6 +22,7 @@ namespace LAB9 {
         /// </summary>
         Polyhedron cur_polyhedron;
         Graphics g;
+        Graphics g2;
         Pen p;
         List<Color> colors;
         private Random random = new Random();
@@ -32,6 +33,7 @@ namespace LAB9 {
         public Form1() {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
+            g2 = pictureBox3.CreateGraphics();
             p = new Pen(Color.Black, 2);
             colors = new List<Color>{ };
             comboBox1.SelectedIndex = 0;
@@ -39,6 +41,7 @@ namespace LAB9 {
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 0;
+            comboBox7.SelectedIndex = 0;
             
             RedrawField();
         }
@@ -53,11 +56,9 @@ namespace LAB9 {
         /// Создание многогранника из списка
         /// </summary>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-            Polyhedron old_polyhedron;
+            Polyhedron old_polyhedron = null;
             if (cur_polyhedron != null)
                 old_polyhedron = new Polyhedron(cur_polyhedron);
-            else
-                old_polyhedron = null;
 
             switch (comboBox1.SelectedIndex) {
                 case 0:
