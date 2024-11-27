@@ -97,7 +97,7 @@ namespace LAB9
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.createCameraButton = new System.Windows.Forms.Button();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.lightningComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.button5 = new System.Windows.Forms.Button();
@@ -217,7 +217,7 @@ namespace LAB9
             this.checkBox9.Location = new System.Drawing.Point(13, 666);
             this.checkBox9.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(106, 20);
+            this.checkBox9.Size = new System.Drawing.Size(109, 21);
             this.checkBox9.TabIndex = 12;
             this.checkBox9.Text = "Отражение ";
             this.checkBox9.UseVisualStyleBackColor = true;
@@ -250,7 +250,7 @@ namespace LAB9
             this.label3.Location = new System.Drawing.Point(208, 48);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(15, 16);
+            this.label3.Size = new System.Drawing.Size(17, 17);
             this.label3.TabIndex = 10;
             this.label3.Text = "Z";
             // 
@@ -260,7 +260,7 @@ namespace LAB9
             this.label2.Location = new System.Drawing.Point(120, 48);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(16, 16);
+            this.label2.Size = new System.Drawing.Size(17, 17);
             this.label2.TabIndex = 9;
             this.label2.Text = "Y";
             // 
@@ -270,7 +270,7 @@ namespace LAB9
             this.label1.Location = new System.Drawing.Point(32, 48);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(15, 16);
+            this.label1.Size = new System.Drawing.Size(17, 17);
             this.label1.TabIndex = 8;
             this.label1.Text = "X";
             // 
@@ -347,7 +347,7 @@ namespace LAB9
             this.label12.Location = new System.Drawing.Point(176, 330);
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(38, 16);
+            this.label12.Size = new System.Drawing.Size(38, 17);
             this.label12.TabIndex = 31;
             this.label12.Text = "Угол";
             // 
@@ -367,7 +367,7 @@ namespace LAB9
             this.label9.Location = new System.Drawing.Point(195, 299);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(20, 16);
+            this.label9.Size = new System.Drawing.Size(23, 17);
             this.label9.TabIndex = 29;
             this.label9.Text = "z2";
             // 
@@ -377,7 +377,7 @@ namespace LAB9
             this.label10.Location = new System.Drawing.Point(107, 299);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(21, 16);
+            this.label10.Size = new System.Drawing.Size(23, 17);
             this.label10.TabIndex = 28;
             this.label10.Text = "y2";
             // 
@@ -387,7 +387,7 @@ namespace LAB9
             this.label11.Location = new System.Drawing.Point(19, 299);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(20, 16);
+            this.label11.Size = new System.Drawing.Size(22, 17);
             this.label11.TabIndex = 27;
             this.label11.Text = "x2";
             // 
@@ -427,7 +427,7 @@ namespace LAB9
             this.label6.Location = new System.Drawing.Point(195, 268);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(20, 16);
+            this.label6.Size = new System.Drawing.Size(23, 17);
             this.label6.TabIndex = 17;
             this.label6.Text = "z1";
             // 
@@ -447,7 +447,7 @@ namespace LAB9
             this.label7.Location = new System.Drawing.Point(107, 268);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(21, 16);
+            this.label7.Size = new System.Drawing.Size(23, 17);
             this.label7.TabIndex = 16;
             this.label7.Text = "y1";
             // 
@@ -457,7 +457,7 @@ namespace LAB9
             this.label5.Location = new System.Drawing.Point(171, 177);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 16);
+            this.label5.Size = new System.Drawing.Size(38, 17);
             this.label5.TabIndex = 23;
             this.label5.Text = "Угол";
             // 
@@ -467,7 +467,7 @@ namespace LAB9
             this.label8.Location = new System.Drawing.Point(19, 268);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(20, 16);
+            this.label8.Size = new System.Drawing.Size(22, 17);
             this.label8.TabIndex = 15;
             this.label8.Text = "x1";
             // 
@@ -477,7 +477,7 @@ namespace LAB9
             this.label4.Location = new System.Drawing.Point(23, 177);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 16);
+            this.label4.Size = new System.Drawing.Size(33, 17);
             this.label4.TabIndex = 22;
             this.label4.Text = "Ось";
             // 
@@ -497,7 +497,7 @@ namespace LAB9
             this.checkBox8.Location = new System.Drawing.Point(8, 222);
             this.checkBox8.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(243, 36);
+            this.checkBox8.Size = new System.Drawing.Size(246, 38);
             this.checkBox8.TabIndex = 21;
             this.checkBox8.Text = "Вокруг прямой (заданной двумя \r\nточками) на заданный угол";
             this.checkBox8.UseVisualStyleBackColor = true;
@@ -531,7 +531,7 @@ namespace LAB9
             this.checkBox7.Location = new System.Drawing.Point(8, 114);
             this.checkBox7.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(267, 52);
+            this.checkBox7.Size = new System.Drawing.Size(270, 55);
             this.checkBox7.TabIndex = 20;
             this.checkBox7.Text = "Вокруг прямой, проходящей через \r\nцентр многогранника, параллельно \r\nоси на задан" +
     "ный угол";
@@ -553,7 +553,7 @@ namespace LAB9
             this.checkBox6.Location = new System.Drawing.Point(8, 69);
             this.checkBox6.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(134, 20);
+            this.checkBox6.Size = new System.Drawing.Size(138, 21);
             this.checkBox6.TabIndex = 15;
             this.checkBox6.Text = "Относительно Z";
             this.checkBox6.UseVisualStyleBackColor = true;
@@ -574,7 +574,7 @@ namespace LAB9
             this.checkBox5.Location = new System.Drawing.Point(8, 41);
             this.checkBox5.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(135, 20);
+            this.checkBox5.Size = new System.Drawing.Size(138, 21);
             this.checkBox5.TabIndex = 13;
             this.checkBox5.Text = "Относительно Y";
             this.checkBox5.UseVisualStyleBackColor = true;
@@ -595,7 +595,7 @@ namespace LAB9
             this.checkBox4.Location = new System.Drawing.Point(8, 12);
             this.checkBox4.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(134, 20);
+            this.checkBox4.Size = new System.Drawing.Size(138, 21);
             this.checkBox4.TabIndex = 0;
             this.checkBox4.Text = "Относительно Х";
             this.checkBox4.UseVisualStyleBackColor = true;
@@ -635,7 +635,7 @@ namespace LAB9
             this.checkBox13.Location = new System.Drawing.Point(8, 96);
             this.checkBox13.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox13.Name = "checkBox13";
-            this.checkBox13.Size = new System.Drawing.Size(173, 20);
+            this.checkBox13.Size = new System.Drawing.Size(176, 21);
             this.checkBox13.TabIndex = 38;
             this.checkBox13.Text = "Относительно центра";
             this.checkBox13.UseVisualStyleBackColor = true;
@@ -656,7 +656,7 @@ namespace LAB9
             this.checkBox12.Location = new System.Drawing.Point(8, 11);
             this.checkBox12.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(134, 20);
+            this.checkBox12.Size = new System.Drawing.Size(138, 21);
             this.checkBox12.TabIndex = 32;
             this.checkBox12.Text = "Относительно Х";
             this.checkBox12.UseVisualStyleBackColor = true;
@@ -667,7 +667,7 @@ namespace LAB9
             this.checkBox10.Location = new System.Drawing.Point(8, 68);
             this.checkBox10.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(134, 20);
+            this.checkBox10.Size = new System.Drawing.Size(138, 21);
             this.checkBox10.TabIndex = 36;
             this.checkBox10.Text = "Относительно Z";
             this.checkBox10.UseVisualStyleBackColor = true;
@@ -698,7 +698,7 @@ namespace LAB9
             this.checkBox11.Location = new System.Drawing.Point(8, 39);
             this.checkBox11.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox11.Name = "checkBox11";
-            this.checkBox11.Size = new System.Drawing.Size(135, 20);
+            this.checkBox11.Size = new System.Drawing.Size(138, 21);
             this.checkBox11.TabIndex = 34;
             this.checkBox11.Text = "Относительно Y";
             this.checkBox11.UseVisualStyleBackColor = true;
@@ -709,7 +709,7 @@ namespace LAB9
             this.checkBox3.Location = new System.Drawing.Point(13, 497);
             this.checkBox3.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(151, 20);
+            this.checkBox3.Size = new System.Drawing.Size(153, 21);
             this.checkBox3.TabIndex = 2;
             this.checkBox3.Text = "Масштабирование";
             this.checkBox3.UseVisualStyleBackColor = true;
@@ -720,7 +720,7 @@ namespace LAB9
             this.checkBox2.Location = new System.Drawing.Point(13, 87);
             this.checkBox2.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(95, 20);
+            this.checkBox2.Size = new System.Drawing.Size(98, 21);
             this.checkBox2.TabIndex = 1;
             this.checkBox2.Text = "Вращение";
             this.checkBox2.UseVisualStyleBackColor = true;
@@ -731,7 +731,7 @@ namespace LAB9
             this.checkBox1.Location = new System.Drawing.Point(13, 23);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(115, 20);
+            this.checkBox1.Size = new System.Drawing.Size(119, 21);
             this.checkBox1.TabIndex = 0;
             this.checkBox1.Text = "Смещение на";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -791,7 +791,7 @@ namespace LAB9
             this.label32.AutoSize = true;
             this.label32.Location = new System.Drawing.Point(12, 826);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(87, 16);
+            this.label32.Size = new System.Drawing.Size(90, 17);
             this.label32.TabIndex = 43;
             this.label32.Text = "Координаты";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -868,9 +868,11 @@ namespace LAB9
             this.comboBox6.Name = "comboBox6";
             this.comboBox6.Size = new System.Drawing.Size(296, 24);
             this.comboBox6.TabIndex = 0;
+            this.comboBox6.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // createCameraButton
             // 
+            this.createCameraButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.createCameraButton.BackColor = System.Drawing.Color.White;
             this.createCameraButton.Location = new System.Drawing.Point(1131, 801);
             this.createCameraButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -884,7 +886,7 @@ namespace LAB9
             // groupBox11
             // 
             this.groupBox11.BackColor = System.Drawing.Color.Gainsboro;
-            this.groupBox11.Controls.Add(this.comboBox7);
+            this.groupBox11.Controls.Add(this.lightningComboBox);
             this.groupBox11.Location = new System.Drawing.Point(8, 145);
             this.groupBox11.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox11.Name = "groupBox11";
@@ -894,18 +896,19 @@ namespace LAB9
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Освещение";
             // 
-            // comboBox7
+            // lightningComboBox
             // 
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Items.AddRange(new object[] {
+            this.lightningComboBox.FormattingEnabled = true;
+            this.lightningComboBox.Items.AddRange(new object[] {
             "Отключить",
             "Шейдинг Гуро для модели Ламберта",
             "Шейдинг Фонга для модели туншейдинг"});
-            this.comboBox7.Location = new System.Drawing.Point(8, 23);
-            this.comboBox7.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(301, 24);
-            this.comboBox7.TabIndex = 0;
+            this.lightningComboBox.Location = new System.Drawing.Point(8, 23);
+            this.lightningComboBox.Margin = new System.Windows.Forms.Padding(4);
+            this.lightningComboBox.Name = "lightningComboBox";
+            this.lightningComboBox.Size = new System.Drawing.Size(301, 24);
+            this.lightningComboBox.TabIndex = 0;
+            this.lightningComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // groupBox12
             // 
@@ -1179,7 +1182,7 @@ namespace LAB9
         private Button createCameraButton;
         private Label label32;
         private GroupBox groupBox11;
-        private ComboBox comboBox7;
+        private ComboBox lightningComboBox;
         private GroupBox groupBox12;
         private PictureBox pictureBox2;
         private Button button5;

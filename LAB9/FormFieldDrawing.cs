@@ -23,6 +23,27 @@ namespace LAB9
 
             Bitmap bmp = null;
             
+            // Освещение
+            switch (lightningComboBox.SelectedIndex)
+            {
+                // Отключено
+                case 0:
+                    break;
+                // Шейдинг Гуро для модели Ламберта
+                case 1:
+                    break;
+                // Шейдинг Фонга для модели туншейдинг
+                case 2: 
+                    bmp = PhongShading.UseShading(matrix, objects_list.Items, Width, Height, lightPosition);
+                    //g.Clear(Color.White);
+                    if (pictureBox1.Image != null)
+                        pictureBox1.Image.Dispose();
+                    pictureBox1.Image = bmp;
+                    return;
+                    break;
+                default:
+                    break;
+            }
 
             switch (comboBox6.SelectedIndex)
             { 

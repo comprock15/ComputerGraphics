@@ -116,11 +116,11 @@ static class PhongShading
             var up = triang[0]; var mid = triang[1]; var bot = triang[2];
 
             Vector3 v1 = new Vector3(new_verts[triangg[0]].x, new_verts[triangg[0]].y, new_verts[triangg[0]].z);
-            Vector3 n1 = new Vector3(poly.normals[triangg[0]].x, poly.normals[triangg[0]].y, poly.normals[triangg[0]].z);
+            Vector3 n1 = new Vector3(poly.normals[triangg[0]].x, poly.normals[triangg[0]].y, poly.normals[triangg[0]].z).Normalized();
             Vector3 v2 = new Vector3(new_verts[triangg[1]].x, new_verts[triangg[1]].y, new_verts[triangg[1]].z);
-            Vector3 n2 = new Vector3(poly.normals[triangg[1]].x, poly.normals[triangg[1]].y, poly.normals[triangg[1]].z);
+            Vector3 n2 = new Vector3(poly.normals[triangg[1]].x, poly.normals[triangg[1]].y, poly.normals[triangg[1]].z).Normalized();
             Vector3 v3 = new Vector3(new_verts[triangg[2]].x, new_verts[triangg[2]].y, new_verts[triangg[2]].z);
-            Vector3 n3 = new Vector3(poly.normals[triangg[2]].x, poly.normals[triangg[2]].y, poly.normals[triangg[2]].z);
+            Vector3 n3 = new Vector3(poly.normals[triangg[2]].x, poly.normals[triangg[2]].y, poly.normals[triangg[2]].z).Normalized();
 
             double x1, y1, z1, x2, y2, z2;
             for (var cur_y = up.y; cur_y <= mid.y; cur_y += 0.5)
