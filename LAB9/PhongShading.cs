@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 static class PhongShading
 {
-    public static Bitmap UseShading(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height)
+    public static Bitmap UseShading(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height, Vector3 lightpos)
     {
-        return ZBufferForPhong.ZBuff(matrix, polyhedrons, width, height);
+        return ZBufferForPhong.ZBuff(matrix, polyhedrons, width, height, lightpos);
     }
 
     public static Color ToonShadingModel(Vector3 n, Vector3 l, Color diffColor)
@@ -28,10 +28,14 @@ static class PhongShading
         {
             clr = diffColor;
         }
-        else
+        else //if (diff < 1.15)
         {
             clr = MultColor(1.3, diffColor);
         }
+        //else  // Блики
+        //{
+        //    clr = Color.White;
+        //}
 
         return clr;
     }
@@ -58,7 +62,7 @@ static class PhongShading
     private static class ZBufferForPhong
     {
         private static int h, w;
-        public static Bitmap ZBuff(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height)
+        public static Bitmap ZBuff(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height, Vector3 lightpos)
         {
             //var polyhedrons = polyhedronss as List<Polyhedron>;
             h = height; w = width;
@@ -98,7 +102,7 @@ static class PhongShading
 
                     foreach (var triangg in triangulated_faces)
                     {
-                        DrawTriang(triangg, ref bmp, ref z_buff, c, polyhedrons[ind] as Polyhedron, new_verts);
+                        DrawTriang(triangg, ref bmp, ref z_buff, c, polyhedrons[ind] as Polyhedron, new_verts, lightpos);
                     }
                 }
             }
@@ -106,7 +110,7 @@ static class PhongShading
             return bmp;
         }
 
-        public static void DrawTriang(List<int> triangg, ref Bitmap bmp, ref double[,] z_buff, Color c, Polyhedron poly, List<Vertex> new_verts)
+        public static void DrawTriang(List<int> triangg, ref Bitmap bmp, ref double[,] z_buff, Color c, Polyhedron poly, List<Vertex> new_verts, Vector3 lightpos)
         {
             var triang = triangg.Select(v => new_verts[v]).OrderBy(v => v.y).ToList();
             var up = triang[0]; var mid = triang[1]; var bot = triang[2];
@@ -134,10 +138,10 @@ static class PhongShading
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
                         if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
-                            Vector3 p = new Vector3(cur_x, cur_x, z_buff[(int)cur_x, (int)cur_y]);
-                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, new Vector3(10,10,10), c));
+                            Vector3 p = new Vector3(cur_x, cur_y, cur_z);
+                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
+                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, (lightpos - p), c));
                         }
                     }
                 }
@@ -148,10 +152,10 @@ static class PhongShading
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
                         if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
-                            Vector3 p = new Vector3(cur_x, cur_x, z_buff[(int)cur_x, (int)cur_y]);
-                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, new Vector3(10, 10, 10), c));
+                            Vector3 p = new Vector3(cur_x, cur_y, cur_z);
+                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
+                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, (lightpos - p), c));
                         }
                     }
                 }
@@ -171,10 +175,10 @@ static class PhongShading
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
                         if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
-                            Vector3 p = new Vector3(cur_x, cur_x, z_buff[(int)cur_x, (int)cur_y]);
-                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, new Vector3(10, 10, 10), c));
+                            Vector3 p = new Vector3(cur_x, cur_y, cur_z);
+                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
+                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, (lightpos - p), c));
                         }
                     }
                 }
@@ -185,10 +189,10 @@ static class PhongShading
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
                         if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
-                            Vector3 p = new Vector3(cur_x, cur_x, z_buff[(int)cur_x, (int)cur_y]);
-                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
-                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, new Vector3(10, 10, 10), c));
+                            Vector3 p = new Vector3(cur_x, cur_y, cur_z);
+                            Vector3 norm = Interpolate(p, v1, n1, v2, n2, v3, n3);
+                            bmp.SetPixel((int)cur_x, (int)cur_y, ToonShadingModel(norm, (lightpos - p), c));
                         }
                     }
                 }
