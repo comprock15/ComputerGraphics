@@ -25,6 +25,7 @@ namespace LAB9 {
         Pen p;
         List<Color> colors;
         private Random random = new Random();
+        private Vector3 lightPosition = new Vector3(100, 100, 1000);
 
         /// <summary>
         /// Инициализация формы
@@ -39,7 +40,8 @@ namespace LAB9 {
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 0;
-            
+            lightningComboBox.SelectedIndex = 0;
+
             RedrawField();
         }
 
@@ -131,6 +133,5 @@ namespace LAB9 {
             this.AddOwnedForm(cameraForm);
             cameraForm.Show();
         }
-
     }
 }

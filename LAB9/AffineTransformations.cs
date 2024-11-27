@@ -56,6 +56,22 @@ internal class AffineTransformations
     /// <param name="matrix">Матрица аффинного преобразования</param>
     private static void RecalculateCoords(ref Polyhedron polyhedron, double[,] matrix) => polyhedron.vertices = RecalculatedCoords(polyhedron, matrix);
 
+    private static List<Vertex> RecalculatedNormals(Polyhedron polyhedron, double[,] matrix)
+    {
+        List<Vertex> newNormals = new List<Vertex>(polyhedron.normals);
+        for (int i = 0; i < polyhedron.vertices.Count; i++)
+        {
+            double[,] oldCoords = new double[,] { { polyhedron.normals[i].x, polyhedron.normals[i].y, polyhedron.normals[i].z, 1 } };
+            double[,] newCoords = Multiply(oldCoords, matrix);
+            newNormals[i] = new Vertex(newCoords[0, 0] / newCoords[0, 3], newCoords[0, 1] / newCoords[0, 3], newCoords[0, 2] / newCoords[0, 3]);
+            //newVertices[i] = new Vertex(newCoords[0, 0], newCoords[0, 1], newCoords[0, 2]);
+
+        }
+        return newNormals;
+    }
+
+    private static void RecalculateNormals(ref Polyhedron polyhedron, double[,] matrix) => polyhedron.normals = RecalculatedNormals(polyhedron, matrix);
+
     /// <summary>
     /// Считает координаты центра многогранника
     /// </summary>
@@ -128,6 +144,7 @@ internal class AffineTransformations
 
         // Пересчитываем координаты всех точек
         RecalculateCoords(ref polyhedron, matrix);
+        RecalculateNormals(ref polyhedron, matrix);
     }
 
     /// <summary>
@@ -149,6 +166,7 @@ internal class AffineTransformations
 
         // Пересчитываем координаты всех точек
         RecalculateCoords(ref polyhedron, matrix);
+        RecalculateNormals(ref polyhedron, matrix);
     }
 
     /// <summary>
@@ -170,6 +188,7 @@ internal class AffineTransformations
 
         // Пересчитываем координаты всех точек
         RecalculateCoords(ref polyhedron, matrix);
+        RecalculateNormals(ref polyhedron, matrix);
     }
 
     /// <summary>
@@ -244,6 +263,7 @@ internal class AffineTransformations
         RecalculateCoords(ref polyhedron, matrix);
 
         Translation(ref polyhedron, x1, y1, z1);
+        RecalculateNormals(ref polyhedron, matrix);
     }
 
     /// <summary>
