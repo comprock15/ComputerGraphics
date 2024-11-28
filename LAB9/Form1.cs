@@ -27,6 +27,17 @@ namespace LAB9 {
         List<Color> colors;
         private Random random = new Random();
 
+
+        //camry
+        Camry camry;
+        PointF worldCenter;
+        double zScreenNear;
+        double zScreenFar;
+        double fov;
+        double[,] parallelProjectionMatrix;
+        double[,] perspectiveProjectionMatrix;
+
+
         /// <summary>
         /// Инициализация формы
         /// </summary>
@@ -43,6 +54,31 @@ namespace LAB9 {
             comboBox6.SelectedIndex = 0;
             comboBox7.SelectedIndex = 0;
             
+           
+
+
+            //camry
+            camry = new Camry();
+            worldCenter = new PointF(pictureBox3.Width / 2, pictureBox3.Height / 2);
+            zScreenNear = 1;
+            zScreenFar = 100;
+            fov = 45;
+            
+            parallelProjectionMatrix = new double[,] { 
+                { 1.0 / pictureBox3.Width, 0,                       0,                                 0},
+                { 0,                      1.0 / pictureBox3.Height, 0,                                 0},
+                { 0,                      0,                       -2.0 / (zScreenFar - zScreenNear), -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear)},
+                { 0,                      0,                        0,                                 1} 
+            };
+
+            perspectiveProjectionMatrix = new double[,] {
+                { pictureBox3.Height / (Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)) * pictureBox3.Width), 0, 0, 0},
+                { 0, 1.0 / Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)), 0, 0},
+                { 0, 0, -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear), -2 * (zScreenFar * zScreenNear) / (zScreenFar - zScreenNear)},
+                { 0, 0, -1, 0}
+            };
+
+            RedrawCamryField();
             RedrawField();
         }
 

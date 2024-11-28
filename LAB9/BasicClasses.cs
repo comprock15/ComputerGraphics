@@ -73,6 +73,8 @@ internal class Vertex {
     public string ToObjString(string prefix = "v") => $"{prefix} {x.ToString("G", CultureInfo.InvariantCulture)} " +
         $"{y.ToString("G", CultureInfo.InvariantCulture)} " +
         $"{z.ToString("G", CultureInfo.InvariantCulture)}";
+
+    
 }
 
 /// <summary>

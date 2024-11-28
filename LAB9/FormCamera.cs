@@ -73,11 +73,24 @@ namespace LAB9
                 //    { 0, 0, (-zf*zn)/(zf-zn), 0 }
                 //};
 
+                //return new double[,] {
+                //    { 2.0/W, 0, 0, 0 },
+                //    { 0, 2.0/H, 0,0 },
+                //    { 0, 0, 1.0/ (zf - zn), 0},
+                //    { 0, 0, (double)zn / (zf - zn), 1}
+                //};
+                //return new double[,] {
+                //    { W/2.0 , 0, 0, 0 },
+                //    { 0, H/2.0, 0,0 },
+                //    { 0, 0, 1.0/ (zf - zn), 0},
+                //    { 0, 0, (double)zn / (zf - zn), 1}
+                //};
+
                 return new double[,] {
-                    { 2.0/W, 0, 0, 0 },
-                    { 0, 2.0/H, 0,0 },
-                    { 0, 0, 1.0/ (zf - zn), 0},
-                    { 0, 0, (double)zn / (zf - zn), 1}
+                    { w, 0, 0,                0 },
+                    { 0, h, 0,                0 },
+                    { 0, 0, zf/(zf-zn),       1 },
+                    { 0, 0, (-zf*zn)/(zf-zn), 0 }
                 };
             }
 
@@ -126,7 +139,8 @@ namespace LAB9
         {
             var p = camr.GetProjectionMatrix();
             var v = camr.GetViewMatrix();
-
+            if (pictureBox1.Image != null)
+                pictureBox1.Image.Dispose();
             //var matrix = AffineTransformations.Multiply(v, p);
             var matrix = AffineTransformations.Multiply(p, v);
             CamDrawEdges(matrix);
@@ -135,56 +149,78 @@ namespace LAB9
 
         private void CameraUpButton_Click(object sender, EventArgs e)
         {
-            camr.c = camr.c + camr.u;
-            CameraDraw();
+            //camr.c = camr.c + camr.u;
+            //CameraDraw();
+
+            camry.move(updown: 15);
+            RedrawCamryField();
         }
 
         private void CameraDownButton_Click(object sender, EventArgs e)
         {
-            camr.c = camr.c - camr.u;
-            CameraDraw();
+            //camr.c = camr.c - camr.u;
+            //CameraDraw();
+
+            camry.move(updown: -15);
+            RedrawCamryField();
         }
 
         private void CameraLeftButton_Click(object sender, EventArgs e)
         {
-            camr.c = camr.c - camr.v;
-            CameraDraw();
+            //camr.c = camr.c - camr.v;
+            //CameraDraw();
+
+            camry.move(leftright: 15);
+            RedrawCamryField();
         }
 
         private void CameraRightButton_Click(object sender, EventArgs e)
-        {  
-            camr.c = camr.c + camr.v;
-            CameraDraw();
+        {
+            //camr.c = camr.c + camr.v;
+            //CameraDraw();
+            camry.move(leftright: -15);
+            RedrawCamryField();
         }
 
         private void CameraLeftRotateButton_Click(object sender, EventArgs e)
         {
-            camr.c = Cam.RotateToAngleByX(camr.c, 10); 
-            camr.n = Cam.RotateToAngleByX(camr.n, 10);
-            camr.v = Cam.RotateToAngleByX(camr.n, 90);
-            camr.u = Cam.RotateToAngleByY(camr.n, 90);
-            CameraDraw();
+            //camr.c = Cam.RotateToAngleByX(camr.c, 10); 
+            //camr.n = Cam.RotateToAngleByX(camr.n, 10);
+            //camr.v = Cam.RotateToAngleByX(camr.n, 90);
+            //camr.u = Cam.RotateToAngleByY(camr.n, 90);
+            //CameraDraw();
+            camry.changeView(shiftY: 10);
+            RedrawCamryField();
         }
 
         private void CameraRightRotateButton_Click(object sender, EventArgs e)
         {
-            camr.c = Cam.RotateToAngleByX(camr.c, -10);
-            camr.n = Cam.RotateToAngleByX(camr.n, -10);
-            camr.v = Cam.RotateToAngleByX(camr.n, 90);
-            camr.u = Cam.RotateToAngleByY(camr.n, 90);
-            CameraDraw();
+            //camr.c = Cam.RotateToAngleByX(camr.c, -10);
+            //camr.n = Cam.RotateToAngleByX(camr.n, -10);
+            //camr.v = Cam.RotateToAngleByX(camr.n, 90);
+            //camr.u = Cam.RotateToAngleByY(camr.n, 90);
+            //CameraDraw();
+
+            camry.changeView(shiftX: 10);
+            RedrawCamryField();
         }
 
         private void CameraPlusButton_Click(object sender, EventArgs e)
         {
-            camr.c = camr.c + camr.n;
-            CameraDraw(); 
+            //camr.c = camr.c + camr.n;
+            //CameraDraw(); 
+
+            camry.move(forwardbackward: 15);
+            RedrawCamryField();
         }
 
         private void CameraMinusButton_Click(object sender, EventArgs e)
         {
-            camr.c = camr.c - camr.n;
-            CameraDraw();
+            //camr.c = camr.c - camr.n;
+            //CameraDraw();
+
+            camry.move(forwardbackward: -15);
+            RedrawCamryField();
         }
 
         internal void CamDrawEdges(double[,] matrix)
@@ -194,6 +230,7 @@ namespace LAB9
             var vm = camr.GetViewMatrix();
             Vertex line_start;
             Vertex line_end;
+            //g2.Dispose();
             g2.Clear(Color.White);
             foreach (var obj in objects_list.Items)
             {
@@ -235,7 +272,8 @@ namespace LAB9
                                                                                     cur_m[0,3] }}, pm);
                         line_end = new Vertex(cur_m[0, 0] / cur_m[0, 3], cur_m[0, 1] / cur_m[0, 3], 0);
                         //line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-                        g2.DrawLine(p, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                        
+                            g2.DrawLine(p, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
                     }
                 }
             }
