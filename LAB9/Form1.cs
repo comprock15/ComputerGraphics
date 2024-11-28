@@ -19,29 +19,23 @@ namespace LAB9 {
     enum LightingMode { Disable, Guro, Phong};
     enum TexturingMode { Disable, ShowAllTextures };
 
-    /// <summary>
-    /// Главная форма
-    /// </summary>
+    /// <summary> Главная форма</summary>
     public partial class Form1 : Form 
     {
-        /// <summary>
-        /// Многогранник
-        /// </summary>
+        /// <summary> Многогранник </summary>
         Polyhedron cur_polyhedron;
-        /// <summary>
-        /// Список всех многогранников на сцене
-        /// </summary>
+        /// <summary> Список всех многогранников на сцене </summary>
         List<Polyhedron> all_polyhedrons;
 
+        List<Color> colors;
 
         Graphics g;
         Graphics g2;
 
         Pen pen = new Pen(Color.Black, 2);
-        List<Color> colors;
+        
         private Random random = new Random();
         private Vector3 lightPosition = new Vector3(100, 100, 1000);
-
 
         Camera camera;
 
@@ -53,9 +47,7 @@ namespace LAB9 {
         TexturingMode textur_mode;
 
 
-        /// <summary>
-        /// Инициализация формы
-        /// </summary>
+        /// <summary> Инициализация формы </summary>
         public Form1() 
         {
             InitializeComponent();
@@ -73,6 +65,9 @@ namespace LAB9 {
             RedrawField();
         }
 
+        /// <summary>
+        /// Настройка селекторов
+        /// </summary>
         private void SetStartSelectorsSettings()
         {
             //comboBox1.SelectedIndex = 0;
@@ -90,55 +85,10 @@ namespace LAB9 {
             g = pictureBox1.CreateGraphics();
         }
 
+        
         /// <summary>
-        /// Создание многогранника из списка
+        /// Перерисовка всех полей 
         /// </summary>
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-            Polyhedron old_polyhedron = null;
-            if (cur_polyhedron != null)
-                old_polyhedron = new Polyhedron(cur_polyhedron);
-
-            switch (comboBox1.SelectedIndex) {
-                case 0:
-                    cur_polyhedron = PolyhedronCollection.MakeTetrahedron();
-                    break;
-                case 1:
-                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "..", "LAB7", "Polyhendrons", "cube_scaled.obj"));
-                    cur_polyhedron.SetName("Гексаэдр");
-                    break;
-                case 2:
-                    cur_polyhedron = PolyhedronCollection.MakeOctahedron();
-                    break;
-                case 3:
-                    cur_polyhedron = PolyhedronCollection.MakeIcosahedron();
-                    break;
-                case 4:
-                    cur_polyhedron = PolyhedronCollection.MakeDodecahedron();
-                    break;
-                case 5:
-                    var f = new AddFunctionGraphicForm(pictureBox1.Width, pictureBox1.Height);
-                    if (f.ShowDialog() == DialogResult.OK) {
-                        cur_polyhedron = f.cur_polyhedron;
-                    }
-                    break;
-                case 6:
-                    var ff = new AddRotationFigurePolyhedronForm();
-                    if (ff.ShowDialog() == DialogResult.OK) {
-                        cur_polyhedron = ff.cur_polyhedron;
-                    }
-                    break;
-                default:
-                    break;
-            }
-            if (old_polyhedron != cur_polyhedron)
-            {
-                objects_list.Items.Add(cur_polyhedron);
-                all_polyhedrons.Add(cur_polyhedron);
-                colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
-                Redraw();
-            }
-        }
-
         private void Redraw()
         {
             RedrawField();
@@ -146,10 +96,8 @@ namespace LAB9 {
         }
 
         /// <summary>
-        /// Проверка значения в текстовом полес числом
+        /// Проверка значения в текстовом поле с числом
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void textBox_TextChanged(object sender, EventArgs e) {
             double num;
             if (double.TryParse((sender as TextBox).Text, out num) == false)
@@ -158,24 +106,7 @@ namespace LAB9 {
                 (sender as TextBox).BackColor = Color.White;
         }
 
-        private void button_delete_obj_Click(object sender, EventArgs e)
-        {
-            if (objects_list.SelectedIndex == -1)
-                return;
-            colors.RemoveAt(objects_list.SelectedIndex);
-            objects_list.Items.RemoveAt(objects_list.SelectedIndex);
-            RedrawField();
-            
-        }
-
-        private void objects_list_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            if (objects_list.SelectedIndex != -1)
-            {
-                cur_polyhedron = all_polyhedrons[objects_list.SelectedIndex];
-            }
-                
-        }
+        
 
         /// <summary>Выбор типа проекции</summary>
         private void projectionMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -198,7 +129,7 @@ namespace LAB9 {
                 light_mode = (LightingMode)lightningComboBox.SelectedIndex;
             Redraw();
         }
-
+        /// <summary>Выбор типа текстурирования</summary>
         private void textureCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (textureCheckBox.Checked)

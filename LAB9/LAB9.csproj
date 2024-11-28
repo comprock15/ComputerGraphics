@@ -93,7 +93,7 @@
     <Compile Include="FormFieldDrawing.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormObjSavingAndLoading.cs">
+    <Compile Include="FormObjManagment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FunctionPlotting.cs" />
