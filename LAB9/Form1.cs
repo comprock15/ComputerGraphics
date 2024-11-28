@@ -46,6 +46,7 @@ namespace LAB9 {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
             g2 = pictureBox3.CreateGraphics();
+            camry = new Camry();
             p = new Pen(Color.Black, 2);
             colors = new List<Color>{ };
             comboBox1.SelectedIndex = 0;
@@ -57,13 +58,11 @@ namespace LAB9 {
             lightningComboBox.SelectedIndex = 0;
 
 
-            comboBox7.SelectedIndex = 0;
-            
            
 
 
             //camry
-            camry = new Camry();
+            
             worldCenter = new PointF(pictureBox3.Width / 2, pictureBox3.Height / 2);
             zScreenNear = 1;
             zScreenFar = 100;

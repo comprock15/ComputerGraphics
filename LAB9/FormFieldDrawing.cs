@@ -146,7 +146,7 @@ namespace LAB9
                 }
             }
 
-            g.DrawEllipse(p, (float)camry.cameraPosition.x, (float)camry.cameraPosition.y, 4, 4);
+           g.DrawEllipse(p, (float)camry.cameraPosition.x, (float)camry.cameraPosition.y, 4, 4);
 
         }
 
