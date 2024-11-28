@@ -94,6 +94,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCamera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCamry.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormFieldDrawing.cs">
       <SubType>Form</SubType>
     </Compile>

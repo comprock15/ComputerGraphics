@@ -22,10 +22,22 @@ namespace LAB9 {
         /// </summary>
         Polyhedron cur_polyhedron;
         Graphics g;
+        Graphics g2;
         Pen p;
         List<Color> colors;
         private Random random = new Random();
         private Vector3 lightPosition = new Vector3(100, 100, 1000);
+
+
+        //camry
+        Camry camry;
+        PointF worldCenter;
+        double zScreenNear;
+        double zScreenFar;
+        double fov;
+        double[,] parallelProjectionMatrix;
+        double[,] perspectiveProjectionMatrix;
+
 
         /// <summary>
         /// Инициализация формы
@@ -33,6 +45,7 @@ namespace LAB9 {
         public Form1() {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
+            g2 = pictureBox3.CreateGraphics();
             p = new Pen(Color.Black, 2);
             colors = new List<Color>{ };
             comboBox1.SelectedIndex = 0;
@@ -40,7 +53,37 @@ namespace LAB9 {
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             comboBox6.SelectedIndex = 0;
+
             lightningComboBox.SelectedIndex = 0;
+
+
+            comboBox7.SelectedIndex = 0;
+            
+           
+
+
+            //camry
+            camry = new Camry();
+            worldCenter = new PointF(pictureBox3.Width / 2, pictureBox3.Height / 2);
+            zScreenNear = 1;
+            zScreenFar = 100;
+            fov = 45;
+            
+            parallelProjectionMatrix = new double[,] { 
+                { 1.0 / pictureBox3.Width, 0,                       0,                                 0},
+                { 0,                      1.0 / pictureBox3.Height, 0,                                 0},
+                { 0,                      0,                       -2.0 / (zScreenFar - zScreenNear), -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear)},
+                { 0,                      0,                        0,                                 1} 
+            };
+
+            perspectiveProjectionMatrix = new double[,] {
+                { pictureBox3.Height / (Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)) * pictureBox3.Width), 0, 0, 0},
+                { 0, 1.0 / Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)), 0, 0},
+                { 0, 0, -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear), -2 * (zScreenFar * zScreenNear) / (zScreenFar - zScreenNear)},
+                { 0, 0, -1, 0}
+            };
+
+            RedrawCamryField();
 
             RedrawField();
         }
@@ -55,11 +98,9 @@ namespace LAB9 {
         /// Создание многогранника из списка
         /// </summary>
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-            Polyhedron old_polyhedron;
+            Polyhedron old_polyhedron = null;
             if (cur_polyhedron != null)
                 old_polyhedron = new Polyhedron(cur_polyhedron);
-            else
-                old_polyhedron = null;
 
             switch (comboBox1.SelectedIndex) {
                 case 0:

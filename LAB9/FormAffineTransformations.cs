@@ -32,6 +32,7 @@ namespace LAB9
                 MakeReflection();
 
             RedrawField();
+            RedrawCamryField();
         }
 
         void MakeTranslation()

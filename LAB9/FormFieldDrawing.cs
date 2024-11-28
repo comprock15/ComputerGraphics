@@ -145,6 +145,9 @@ namespace LAB9
                     }
                 }
             }
+
+            g.DrawEllipse(p, (float)camry.cameraPosition.x, (float)camry.cameraPosition.y, 4, 4);
+
         }
 
         internal Bitmap ZBuff_AfterFacesDelete(double[,] matrix)
