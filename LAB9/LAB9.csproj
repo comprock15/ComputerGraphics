@@ -81,13 +81,6 @@
     <Compile Include="AffineTransformations.cs" />
     <Compile Include="BackfaceCulling.cs" />
     <Compile Include="BasicClasses.cs" />
-    <Compile Include="Camera.cs" />
-    <Compile Include="CameraForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CameraForm.Designer.cs">
-      <DependentUpon>CameraForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,9 +88,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FormCamera.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormCamry.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormFieldDrawing.cs">
@@ -122,9 +112,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddRotationFigurePolyhedronForm.resx">
       <DependentUpon>AddRotationFigurePolyhedronForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CameraForm.resx">
-      <DependentUpon>CameraForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

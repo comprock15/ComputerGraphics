@@ -2,281 +2,228 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LAB9
-{ 
+{
     public partial class Form1 : Form
     {
-        
-        internal class Cam
+
+        internal class Camera
         {
-            // положение камеры в мировой систем е координат
-            public Vertex c;
-            // вертикальная ориентация камеры (вектор туда где у камеры верх)
-            public Vertex u;
-            // горизонтальная ориентация камеры
-            public Vertex v;
-            // куда смотрит камера 
-            public Vertex n;
+            public Vector3 cameraPos;
 
+            public Vector3 cameraDir;
+            public Vector3 cameraUp;
+            public Vector3 cameraRight;
 
-            int W; int H;
+            const double cameraRotationSpeed = 1;
+            double yaw = 0.0, pitch = 0.0;
+            double zScreenNear = 1;
+            double zScreenFar = 100;
+            double fov = 45;
+            PointF worldCenter;
+            int screenWidth, screenHeight;
+            double[,] parallelProjectionMatrix, perspectiveProjectionMatrix;
 
-            // расстояние до передней плоскости отсечения
-            int zn; 
-            // расстояние до задней плоскости отсечения
-            int zf;
-
-            public Cam(Vertex c, Vertex n, int pbW, int pbH)
+            public Camera(int screenWidth, int screenHeight)
             {
-                this.c = c;
-
-                this.n = n;
-                v = RotateToAngleByX(n, 90);
-                u = RotateToAngleByY(n, 90);
-
-                W = pbW; H = pbH;
-
-                //zn = Math.Max(W / 2, H / 2);
-                //zf = zn + 1000;
-
-                zn = 1;
-                zf = 10;
+                cameraPos = new Vector3(-200, 0, 0);
+                cameraDir = new Vector3(1, 0, 0);
+                cameraUp = new Vector3(0, 0, 1);
+                cameraRight = (cameraDir * cameraUp).Normalize();
+                this.screenHeight = screenHeight;
+                this.screenWidth = screenWidth;
+                worldCenter = new PointF(screenWidth / 2, screenHeight / 2);
+                UpdateProjMatrix();
             }
 
-            public double[,] GetViewMatrix()
+            public void UpdateProjMatrix()
             {
-                var uc = Vertex.Dot(u, c);
-                var vc = Vertex.Dot(v, c);
-                var nc = Vertex.Dot(n, c);
-                return new double[,] {
-                    { u.x, v.x, n.x, 0 },
-                    { u.y, v.y, n.y, 0 },
-                    { u.z, v.z, n.z, 0 },
-                    { -uc, -vc, -nc, 1 }
+                parallelProjectionMatrix = new double[,] {
+                    { 1.0 / screenWidth, 0,                       0,                                 0},
+                    { 0,                      1.0 / screenHeight, 0,                                 0},
+                    { 0,                      0,                       -2.0 / (zScreenFar - zScreenNear), -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear)},
+                    { 0,                      0,                        0,                                 1}
+                };
+
+                perspectiveProjectionMatrix = new double[,] {
+                    { screenHeight / (Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)) * screenWidth), 0, 0, 0},
+                    { 0, 1.0 / Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)), 0, 0},
+                    { 0, 0, -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear), -2 * (zScreenFar * zScreenNear) / (zScreenFar - zScreenNear)},
+                    { 0, 0, -1, 0}
                 };
             }
 
-
-            public double[,] GetProjectionMatrix()
+            public void cameraMove(double leftright = 0, double forwardbackward = 0, double updown = 0)
             {
-                var w = (W / 2.0) / zn;
-                var h = (H / 2.0) / zn;
-                //return new double[,] {
-                //    { w, 0, 0,                0 },
-                //    { 0, h, 0,                0 },
-                //    { 0, 0, zf/(zf-zn),       1 },
-                //    { 0, 0, (-zf*zn)/(zf-zn), 0 }
-                //};
-
-                //return new double[,] {
-                //    { 2.0/W, 0, 0, 0 },
-                //    { 0, 2.0/H, 0,0 },
-                //    { 0, 0, 1.0/ (zf - zn), 0},
-                //    { 0, 0, (double)zn / (zf - zn), 1}
-                //};
-                //return new double[,] {
-                //    { W/2.0 , 0, 0, 0 },
-                //    { 0, H/2.0, 0,0 },
-                //    { 0, 0, 1.0/ (zf - zn), 0},
-                //    { 0, 0, (double)zn / (zf - zn), 1}
-                //};
-
-                return new double[,] {
-                    { w, 0, 0,                0 },
-                    { 0, h, 0,                0 },
-                    { 0, 0, zf/(zf-zn),       1 },
-                    { 0, 0, (-zf*zn)/(zf-zn), 0 }
-                };
+                cameraPos.x += leftright * cameraRight.x + forwardbackward * cameraDir.x + updown * cameraUp.x;
+                cameraPos.y += leftright * cameraRight.y + forwardbackward * cameraDir.y + updown * cameraUp.y;
+                cameraPos.z += leftright * cameraRight.z + forwardbackward * cameraDir.z + updown * cameraUp.z;
+            }
+            public void cameraRotate(double shiftX = 0, double shiftY = 0)
+            {
+                var newPitch = Clamp(pitch + shiftY * cameraRotationSpeed, -89.0, 89.0);
+                var newYaw = (yaw + shiftX) % 360;
+                if (newPitch != pitch)
+                {
+                    AffineTransformations.rotateVectors(ref cameraDir, ref cameraUp, (newPitch - pitch), cameraRight);
+                    pitch = newPitch;
+                }
+                if (newYaw != yaw)
+                {
+                    AffineTransformations.rotateVectors(ref cameraDir, ref cameraRight, (newYaw - yaw), cameraUp);
+                    yaw = newYaw;
+                }
             }
 
-            public static Vertex RotateToAngleByX(Vertex v, double angle)
+            public Vertex toCameraView(Vertex v)
             {
-                angle = AffineTransformations.DegreesToRadians(angle);
+                return new Vertex(cameraRight.x * (v.x - cameraPos.x) + cameraRight.y * (v.y - cameraPos.y) + cameraRight.z * (v.z - cameraPos.z),
+                                  cameraUp.x * (v.x - cameraPos.x) + cameraUp.y * (v.y - cameraPos.y) + cameraUp.z * (v.z - cameraPos.z),
+                                  cameraDir.x * (v.x - cameraPos.x) + cameraDir.y * (v.y - cameraPos.y) + cameraDir.z * (v.z - cameraPos.z)
+                                  );
+            }
 
-                // Задаём матрицу преобразования
-                double[,] matrix = new double[4, 4] {
-                    { 1,       0,               0,          0 },
-                    { 0,  Math.Cos(angle), Math.Sin(angle), 0 },
-                    { 0, -Math.Sin(angle), Math.Cos(angle), 0 },
-                    { 0,       0,               0,          1 }
-                };
+            
+            internal Vertex to2D(Vertex v)
+            {
+                var viewCoord = this.toCameraView(v);
+                if (viewCoord.z < 0)
+                {
+                    return null;
+                }
 
-                double[,] oldCoords = new double[,] { { v.x, v.y, v.z, 1 } };
-                double[,] newCoords = AffineTransformations.Multiply(oldCoords, matrix);
-                return new Vertex(newCoords[0, 0] / newCoords[0, 3], newCoords[0, 1] / newCoords[0, 3], newCoords[0, 2] / newCoords[0, 3]);
+                var res = AffineTransformations.Multiply(new double[,] { { viewCoord.x, viewCoord.y, viewCoord.z, 1 } }, perspectiveProjectionMatrix);
+                if (res[0, 3] == 0)
+                {
+                    return null;
+
+                }
+
+                var elem = 1.0 / res[0, 3];
+                for (int i = 0; i < res.GetLength(0); i++)
+                {
+                    for (int j = 0; j < res.GetLength(1); j++)
+                    {
+                        res[i, j] *= elem;
+                    }
+                }
+
+                res[0, 0] = Camera.Clamp(res[0, 0], -1, 1);
+                res[0, 1] = Camera.Clamp(res[0, 1], -1, 1);
+
+                if (res[0, 2] < 0)
+                {
+                    return null;
+                }
+                return new Vertex(worldCenter.X + res[0, 0] * worldCenter.X, worldCenter.Y + res[0, 1] * worldCenter.Y, (float)v.z);
 
             }
 
-            public static Vertex RotateToAngleByY(Vertex v, double angle) 
+            //x = (x < a) ? a : ((x > b) ? b : x);
+            public static double Clamp(double val, double min, double max) 
             {
-                angle = AffineTransformations.DegreesToRadians(angle);
-                // Задаём матрицу преобразования
-                double[,] matrix = new double[4, 4] {
-                    { Math.Cos(angle), 0, -Math.Sin(angle), 0 },
-                    {      0,          1,       0,          0 },
-                    { Math.Sin(angle), 0,  Math.Cos(angle), 0 },
-                    {      0,          0,       0,          1 }
-                };
-                double[,] oldCoords = new double[,] { { v.x, v.y, v.z, 1 } };
-                double[,] newCoords = AffineTransformations.Multiply(oldCoords, matrix);
-                return new Vertex(newCoords[0, 0] / newCoords[0, 3], newCoords[0, 1] / newCoords[0, 3], newCoords[0, 2] / newCoords[0, 3]);
-
+                if (val.CompareTo(min) < 0) return min;
+                else if (val.CompareTo(max) > 0) return max;
+                else return val;
             }
-
-
-
-
         }
 
-        Cam camr = new Cam(new Vertex(10, 10, 100), new Vertex(-1, -1, 0), 591, 387);
-
-        public void CameraDraw()
+        public void RedrawCamryField()
         {
-            var p = camr.GetProjectionMatrix();
-            var v = camr.GetViewMatrix();
-            if (pictureBox1.Image != null)
-                pictureBox1.Image.Dispose();
-            //var matrix = AffineTransformations.Multiply(v, p);
-            var matrix = AffineTransformations.Multiply(p, v);
-            CamDrawEdges(matrix);
-        }
-
-
-        private void CameraUpButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = camr.c + camr.u;
-            //CameraDraw();
-
-            camry.move(updown: 15);
-            RedrawCamryField();
-        }
-
-        private void CameraDownButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = camr.c - camr.u;
-            //CameraDraw();
-
-            camry.move(updown: -15);
-            RedrawCamryField();
-        }
-
-        private void CameraLeftButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = camr.c - camr.v;
-            //CameraDraw();
-
-            camry.move(leftright: 15);
-            RedrawCamryField();
-        }
-
-        private void CameraRightButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = camr.c + camr.v;
-            //CameraDraw();
-            camry.move(leftright: -15);
-            RedrawCamryField();
-        }
-
-        private void CameraLeftRotateButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = Cam.RotateToAngleByX(camr.c, 10); 
-            //camr.n = Cam.RotateToAngleByX(camr.n, 10);
-            //camr.v = Cam.RotateToAngleByX(camr.n, 90);
-            //camr.u = Cam.RotateToAngleByY(camr.n, 90);
-            //CameraDraw();
-            camry.changeView(shiftY: 10);
-            RedrawCamryField();
-        }
-
-        private void CameraRightRotateButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = Cam.RotateToAngleByX(camr.c, -10);
-            //camr.n = Cam.RotateToAngleByX(camr.n, -10);
-            //camr.v = Cam.RotateToAngleByX(camr.n, 90);
-            //camr.u = Cam.RotateToAngleByY(camr.n, 90);
-            //CameraDraw();
-
-            camry.changeView(shiftX: 10);
-            RedrawCamryField();
-        }
-
-        private void CameraPlusButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = camr.c + camr.n;
-            //CameraDraw(); 
-
-            camry.move(forwardbackward: 15);
-            RedrawCamryField();
-        }
-
-        private void CameraMinusButton_Click(object sender, EventArgs e)
-        {
-            //camr.c = camr.c - camr.n;
-            //CameraDraw();
-
-            camry.move(forwardbackward: -15);
-            RedrawCamryField();
-        }
-
-        internal void CamDrawEdges(double[,] matrix)
-        {
-            double[,] cur_m;
-            var pm = camr.GetProjectionMatrix();
-            var vm = camr.GetViewMatrix();
-            Vertex line_start;
-            Vertex line_end;
-            //g2.Dispose();
             g2.Clear(Color.White);
+            Vertex line_start, line_end;
             foreach (var obj in objects_list.Items)
             {
                 var cur_poly = obj as Polyhedron;
                 for (int i = 0; i < cur_poly.vertices.Count; i++)
                 {
-                    //cur_m = AffineTransformations.Multiply(new double[,] {{ cur_poly.vertices[i].x,
-                    //                                                                cur_poly.vertices[i].y,
-                    //                                                                cur_poly.vertices[i].z,
-                    //                                                                1 }}, matrix);
-                    cur_m = AffineTransformations.Multiply(new double[,] {{ cur_poly.vertices[i].x,
-                                                                                    cur_poly.vertices[i].y,
-                                                                                    cur_poly.vertices[i].z,
-                                                                                    1 }}, vm);
-                    cur_m = AffineTransformations.Multiply(new double[,] {{ cur_m[0,0],
-                                                                                    cur_m[0,1],
-                                                                                    cur_m[0,2],
-                                                                                    cur_m[0,3] }}, pm);
-                    line_start = new Vertex(cur_m[0,0]/ cur_m[0,3], cur_m[0, 1] / cur_m[0, 3], 0);
+                    
+                    line_start = camera.to2D(cur_poly.vertices[i]);
                     //line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
 
                     //пробегает по всем граничным точкам и рисует линию
                     for (int j = 0; j < cur_poly.edges[i].Count; j++)
                     {
                         var ind = cur_poly.edges[i][j];
-                        //cur_m = AffineTransformations.Multiply(new double[,] {{ cur_poly.vertices[ind].x,
-                        //                                                        cur_poly.vertices[ind].y,
-                        //                                                        cur_poly.vertices[ind].z,
-                        //                                                        1 }}, matrix);
-
-
-                        cur_m = AffineTransformations.Multiply(new double[,] {{ cur_poly.vertices[ind].x,
-                                                                                    cur_poly.vertices[ind].y,
-                                                                                    cur_poly.vertices[ind].z,
-                                                                                    1 }}, vm);
-                        cur_m = AffineTransformations.Multiply(new double[,] {{ cur_m[0,0],
-                                                                                    cur_m[0,1],
-                                                                                    cur_m[0,2],
-                                                                                    cur_m[0,3] }}, pm);
-                        line_end = new Vertex(cur_m[0, 0] / cur_m[0, 3], cur_m[0, 1] / cur_m[0, 3], 0);
-                        //line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
                         
-                            g2.DrawLine(p, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                        line_end = camera.to2D(cur_poly.vertices[ind]);
+                        //if (null != line_start && null != line_end)
+                        if (!(line_start is null || line_end is null))
+                            g2.DrawLine(pen, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
                     }
                 }
             }
         }
+
+        
+
+
+        private void CameraUpButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraMove(updown: 15);
+            RedrawCamryField();
+        }
+
+        private void CameraDownButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraMove(updown: -15);
+            RedrawCamryField();
+        }
+
+        private void CameraLeftButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraMove(leftright: 15);
+            RedrawCamryField();
+        }
+
+        private void CameraRightButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraMove(leftright: -15);
+            RedrawCamryField();
+        }
+
+        private void CameraLeftRotateButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraRotate(shiftX: 10);
+            RedrawCamryField();
+        }
+
+        private void CameraRightRotateButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraRotate(shiftX: 10);
+            RedrawCamryField();
+        }
+
+        private void CameraUpRotateButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraRotate(shiftY: -10);
+            RedrawCamryField();
+        }
+
+        private void CameraDownRotateButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraRotate(shiftY: -10);
+            RedrawCamryField();
+        }
+
+        private void CameraPlusButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraMove(forwardbackward: 15);
+            RedrawCamryField();
+        }
+
+        private void CameraMinusButton_Click(object sender, EventArgs e)
+        {
+            camera.cameraMove(forwardbackward: -15);
+            RedrawCamryField();
+        }
+
     }
+
+
+    
 }

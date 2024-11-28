@@ -17,7 +17,7 @@ namespace LAB9
         {
             if (cur_polyhedron == null) return;
 
-            double[,] matrix = GetProjectionMatrix(comboBox2.SelectedIndex);
+            double[,] matrix = GetProjectionMatrix(projectionModeSelector.SelectedIndex);
 
             label32.Text = cur_polyhedron.Center().ToString();
 
@@ -45,7 +45,7 @@ namespace LAB9
                     break;
             }
 
-            switch (comboBox6.SelectedIndex)
+            switch (DrawModeSelector.SelectedIndex)
             { 
                 // Только рёбра 
                 case 0:
@@ -141,12 +141,12 @@ namespace LAB9
                                                                                 1 }}, matrix);
                         //line_end = new Vertex(cur_m[0, 0] / cur_m[0, 3], cur_m[0, 1] / cur_m[0, 3], 0);
                         line_end = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
-                        g.DrawLine(p, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                        g.DrawLine(pen, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
                     }
                 }
             }
 
-           g.DrawEllipse(p, (float)camry.cameraPosition.x, (float)camry.cameraPosition.y, 4, 4);
+           g.DrawEllipse(pen, (float)camera.cameraPos.x, (float)camera.cameraPos.y, 4, 4);
 
         }
 

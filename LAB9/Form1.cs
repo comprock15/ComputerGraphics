@@ -13,78 +13,75 @@ using System.Windows.Forms;
 using static Microsoft.FSharp.Core.ByRefKinds;
 
 namespace LAB9 {
+
+    enum ProjectionMode { Perspective, Other};
+    enum DrawingMode { EdgesOnly, Zbuff, InvisibleFacesCut, InvisFacesCutZBUFF };
+    enum LightingMode { Disable, Guro, Phong};
+    enum TexturingMode { Disable, ShowAllTextures };
+
     /// <summary>
-    /// Форма
+    /// Главная форма
     /// </summary>
-    public partial class Form1 : Form {
+    public partial class Form1 : Form 
+    {
         /// <summary>
         /// Многогранник
         /// </summary>
         Polyhedron cur_polyhedron;
+        /// <summary>
+        /// Список всех многогранников на сцене
+        /// </summary>
+        List<Polyhedron> all_polyhedrons;
+
+
         Graphics g;
         Graphics g2;
-        Pen p;
+
+        Pen pen = new Pen(Color.Black, 2);
         List<Color> colors;
         private Random random = new Random();
         private Vector3 lightPosition = new Vector3(100, 100, 1000);
 
 
-        //camry
-        Camry camry;
-        PointF worldCenter;
-        double zScreenNear;
-        double zScreenFar;
-        double fov;
-        double[,] parallelProjectionMatrix;
-        double[,] perspectiveProjectionMatrix;
+        Camera camera;
+
+
+        // Mods
+        ProjectionMode proj_mode;
+        DrawingMode draw_mode;
+        LightingMode light_mode;
+        TexturingMode textur_mode;
 
 
         /// <summary>
         /// Инициализация формы
         /// </summary>
-        public Form1() {
+        public Form1() 
+        {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
             g2 = pictureBox3.CreateGraphics();
-            camry = new Camry();
-            p = new Pen(Color.Black, 2);
+            camera = new Camera(pictureBox3.Width, pictureBox3.Height);
             colors = new List<Color>{ };
-            comboBox1.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
-            comboBox3.SelectedIndex = 0;
-            comboBox4.SelectedIndex = 0;
-            comboBox6.SelectedIndex = 0;
-
-            lightningComboBox.SelectedIndex = 0;
+            all_polyhedrons = new List<Polyhedron> { };
 
 
-           
-
-
-            //camry
-            
-            worldCenter = new PointF(pictureBox3.Width / 2, pictureBox3.Height / 2);
-            zScreenNear = 1;
-            zScreenFar = 100;
-            fov = 45;
-            
-            parallelProjectionMatrix = new double[,] { 
-                { 1.0 / pictureBox3.Width, 0,                       0,                                 0},
-                { 0,                      1.0 / pictureBox3.Height, 0,                                 0},
-                { 0,                      0,                       -2.0 / (zScreenFar - zScreenNear), -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear)},
-                { 0,                      0,                        0,                                 1} 
-            };
-
-            perspectiveProjectionMatrix = new double[,] {
-                { pictureBox3.Height / (Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)) * pictureBox3.Width), 0, 0, 0},
-                { 0, 1.0 / Math.Tan(AffineTransformations.DegreesToRadians(fov / 2)), 0, 0},
-                { 0, 0, -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear), -2 * (zScreenFar * zScreenNear) / (zScreenFar - zScreenNear)},
-                { 0, 0, -1, 0}
-            };
+            SetStartSelectorsSettings();
 
             RedrawCamryField();
 
             RedrawField();
+        }
+
+        private void SetStartSelectorsSettings()
+        {
+            //comboBox1.SelectedIndex = 0;
+            projectionModeSelector.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
+            comboBox4.SelectedIndex = 0;
+            DrawModeSelector.SelectedIndex = 0;
+            lightningComboBox.SelectedIndex = 0;
+            textur_mode = TexturingMode.Disable;
         }
 
         private void pictureBox1_SizeChanged(object sender, EventArgs e) {
@@ -136,13 +133,23 @@ namespace LAB9 {
             if (old_polyhedron != cur_polyhedron)
             {
                 objects_list.Items.Add(cur_polyhedron);
+                all_polyhedrons.Add(cur_polyhedron);
                 colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
-                RedrawField();
+                Redraw();
             }
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) => RedrawField();
+        private void Redraw()
+        {
+            RedrawField();
+            RedrawCamryField();
+        }
 
+        /// <summary>
+        /// Проверка значения в текстовом полес числом
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBox_TextChanged(object sender, EventArgs e) {
             double num;
             if (double.TryParse((sender as TextBox).Text, out num) == false)
@@ -164,14 +171,41 @@ namespace LAB9 {
         private void objects_list_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             if (objects_list.SelectedIndex != -1)
-                cur_polyhedron = objects_list.SelectedItems[0] as Polyhedron;
+            {
+                cur_polyhedron = all_polyhedrons[objects_list.SelectedIndex];
+            }
+                
         }
 
-        private void createCameraButton_Click(object sender, EventArgs e)
+        /// <summary>Выбор типа проекции</summary>
+        private void projectionMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CameraForm cameraForm = new CameraForm(objects_list.Items);
-            this.AddOwnedForm(cameraForm);
-            cameraForm.Show();
+            if (projectionModeSelector.SelectedIndex != -1)
+                proj_mode = (ProjectionMode)projectionModeSelector.SelectedIndex;
+            Redraw();
+        }
+        /// <summary>Выбор типа рисования</summary>
+        private void DrawModeSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DrawModeSelector.SelectedIndex != -1)
+                draw_mode = (DrawingMode)DrawModeSelector.SelectedIndex;
+            Redraw();
+        }
+        /// <summary>Выбор типа освещения</summary>
+        private void lightningComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lightningComboBox.SelectedIndex != -1)
+                light_mode = (LightingMode)lightningComboBox.SelectedIndex;
+            Redraw();
+        }
+
+        private void textureCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (textureCheckBox.Checked)
+                textur_mode = TexturingMode.ShowAllTextures;
+            else
+                textur_mode = TexturingMode.Disable;
+            Redraw();
         }
     }
 }

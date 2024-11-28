@@ -87,31 +87,36 @@ namespace LAB9
             this.loadButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.projectionModeSelector = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
             this.saveStatusTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.button_delete_obj = new System.Windows.Forms.Button();
             this.objects_list = new System.Windows.Forms.ListBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
-            this.createCameraButton = new System.Windows.Forms.Button();
+            this.DrawModeSelector = new System.Windows.Forms.ComboBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.lightningComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.textureCheckBox = new System.Windows.Forms.CheckBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.cameraUpButton = new System.Windows.Forms.Button();
+            this.cameraLeft_button = new System.Windows.Forms.Button();
+            this.cameraRight_button = new System.Windows.Forms.Button();
+            this.cameraDown_button = new System.Windows.Forms.Button();
+            this.cameraForward_button = new System.Windows.Forms.Button();
+            this.cameraBackward_button = new System.Windows.Forms.Button();
+            this.cameraRotateLeft_button = new System.Windows.Forms.Button();
+            this.cameraRotateRight_button = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.cameraRotateUp_button = new System.Windows.Forms.Button();
+            this.cameraRotateDown_button = new System.Windows.Forms.Button();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -129,14 +134,13 @@ namespace LAB9
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(251, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(591, 350);
+            this.pictureBox1.Size = new System.Drawing.Size(591, 359);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
@@ -685,9 +689,9 @@ namespace LAB9
             // loadButton
             // 
             this.loadButton.BackColor = System.Drawing.Color.White;
-            this.loadButton.Location = new System.Drawing.Point(118, 153);
+            this.loadButton.Location = new System.Drawing.Point(120, 159);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(104, 33);
+            this.loadButton.Size = new System.Drawing.Size(112, 33);
             this.loadButton.TabIndex = 15;
             this.loadButton.Text = "Загрузить";
             this.loadButton.UseVisualStyleBackColor = false;
@@ -696,9 +700,9 @@ namespace LAB9
             // saveButton
             // 
             this.saveButton.BackColor = System.Drawing.Color.White;
-            this.saveButton.Location = new System.Drawing.Point(8, 153);
+            this.saveButton.Location = new System.Drawing.Point(6, 159);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(104, 33);
+            this.saveButton.Size = new System.Drawing.Size(113, 33);
             this.saveButton.TabIndex = 14;
             this.saveButton.Text = "Сохранить";
             this.saveButton.UseVisualStyleBackColor = false;
@@ -707,7 +711,7 @@ namespace LAB9
             // groupBox3
             // 
             this.groupBox3.BackColor = System.Drawing.Color.Gainsboro;
-            this.groupBox3.Controls.Add(this.comboBox2);
+            this.groupBox3.Controls.Add(this.projectionModeSelector);
             this.groupBox3.Location = new System.Drawing.Point(6, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(239, 47);
@@ -715,22 +719,23 @@ namespace LAB9
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Тип проекции";
             // 
-            // comboBox2
+            // projectionModeSelector
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.projectionModeSelector.FormattingEnabled = true;
+            this.projectionModeSelector.Items.AddRange(new object[] {
             "Перспективная",
             "Аксонометрическая"});
-            this.comboBox2.Location = new System.Drawing.Point(10, 20);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(223, 21);
-            this.comboBox2.TabIndex = 0;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.projectionModeSelector.Location = new System.Drawing.Point(10, 20);
+            this.projectionModeSelector.Name = "projectionModeSelector";
+            this.projectionModeSelector.Size = new System.Drawing.Size(223, 21);
+            this.projectionModeSelector.TabIndex = 0;
+            this.projectionModeSelector.SelectedIndexChanged += new System.EventHandler(this.projectionMode_SelectedIndexChanged);
             // 
             // label32
             // 
+            this.label32.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(9, 671);
+            this.label32.Location = new System.Drawing.Point(1018, 649);
             this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(69, 13);
@@ -762,7 +767,7 @@ namespace LAB9
             this.button_delete_obj.BackColor = System.Drawing.Color.White;
             this.button_delete_obj.Location = new System.Drawing.Point(6, 120);
             this.button_delete_obj.Name = "button_delete_obj";
-            this.button_delete_obj.Size = new System.Drawing.Size(218, 33);
+            this.button_delete_obj.Size = new System.Drawing.Size(227, 33);
             this.button_delete_obj.TabIndex = 1;
             this.button_delete_obj.Text = "Удалить выбранный объект";
             this.button_delete_obj.UseVisualStyleBackColor = false;
@@ -772,17 +777,17 @@ namespace LAB9
             // 
             this.objects_list.BackColor = System.Drawing.Color.WhiteSmoke;
             this.objects_list.FormattingEnabled = true;
-            this.objects_list.Location = new System.Drawing.Point(8, 19);
+            this.objects_list.Location = new System.Drawing.Point(6, 19);
             this.objects_list.Name = "objects_list";
             this.objects_list.ScrollAlwaysVisible = true;
-            this.objects_list.Size = new System.Drawing.Size(214, 95);
+            this.objects_list.Size = new System.Drawing.Size(226, 95);
             this.objects_list.TabIndex = 0;
             this.objects_list.SelectedIndexChanged += new System.EventHandler(this.objects_list_SelectedIndexChanged_1);
             // 
             // groupBox10
             // 
             this.groupBox10.BackColor = System.Drawing.Color.Gainsboro;
-            this.groupBox10.Controls.Add(this.comboBox6);
+            this.groupBox10.Controls.Add(this.DrawModeSelector);
             this.groupBox10.Location = new System.Drawing.Point(6, 65);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(239, 47);
@@ -790,32 +795,19 @@ namespace LAB9
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Алгоритм отображения граней";
             // 
-            // comboBox6
+            // DrawModeSelector
             // 
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Items.AddRange(new object[] {
+            this.DrawModeSelector.FormattingEnabled = true;
+            this.DrawModeSelector.Items.AddRange(new object[] {
             "Только рёбра",
             "Отсечение нелицевых граней + Z-буфер",
             "Отсечение нелицевых граней",
             "Z-буфер"});
-            this.comboBox6.Location = new System.Drawing.Point(10, 20);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(223, 21);
-            this.comboBox6.TabIndex = 0;
-            this.comboBox6.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-            // 
-            // createCameraButton
-            // 
-            this.createCameraButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.createCameraButton.BackColor = System.Drawing.Color.White;
-            this.createCameraButton.Location = new System.Drawing.Point(848, 651);
-            this.createCameraButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.createCameraButton.Name = "createCameraButton";
-            this.createCameraButton.Size = new System.Drawing.Size(239, 33);
-            this.createCameraButton.TabIndex = 12;
-            this.createCameraButton.Text = "Создать камеру";
-            this.createCameraButton.UseVisualStyleBackColor = false;
-            this.createCameraButton.Click += new System.EventHandler(this.createCameraButton_Click);
+            this.DrawModeSelector.Location = new System.Drawing.Point(10, 20);
+            this.DrawModeSelector.Name = "DrawModeSelector";
+            this.DrawModeSelector.Size = new System.Drawing.Size(223, 21);
+            this.DrawModeSelector.TabIndex = 0;
+            this.DrawModeSelector.SelectedIndexChanged += new System.EventHandler(this.DrawModeSelector_SelectedIndexChanged);
             // 
             // groupBox11
             // 
@@ -839,28 +831,40 @@ namespace LAB9
             this.lightningComboBox.Name = "lightningComboBox";
             this.lightningComboBox.Size = new System.Drawing.Size(227, 21);
             this.lightningComboBox.TabIndex = 0;
-            this.lightningComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.lightningComboBox.SelectedIndexChanged += new System.EventHandler(this.lightningComboBox_SelectedIndexChanged);
             // 
             // groupBox12
             // 
             this.groupBox12.BackColor = System.Drawing.Color.Gainsboro;
+            this.groupBox12.Controls.Add(this.textureCheckBox);
             this.groupBox12.Controls.Add(this.pictureBox2);
             this.groupBox12.Controls.Add(this.button5);
             this.groupBox12.Controls.Add(this.button4);
             this.groupBox12.Location = new System.Drawing.Point(6, 430);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(239, 81);
+            this.groupBox12.Size = new System.Drawing.Size(239, 107);
             this.groupBox12.TabIndex = 14;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Текстурирование";
+            // 
+            // textureCheckBox
+            // 
+            this.textureCheckBox.AutoSize = true;
+            this.textureCheckBox.Location = new System.Drawing.Point(10, 20);
+            this.textureCheckBox.Name = "textureCheckBox";
+            this.textureCheckBox.Size = new System.Drawing.Size(146, 17);
+            this.textureCheckBox.TabIndex = 3;
+            this.textureCheckBox.Text = "Включить все текстуры";
+            this.textureCheckBox.UseVisualStyleBackColor = true;
+            this.textureCheckBox.CheckedChanged += new System.EventHandler(this.textureCheckBox_CheckedChanged);
             // 
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(16, 19);
+            this.pictureBox2.Location = new System.Drawing.Point(10, 43);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.pictureBox2.Padding = new System.Windows.Forms.Padding(3);
             this.pictureBox2.Size = new System.Drawing.Size(50, 50);
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
@@ -868,9 +872,9 @@ namespace LAB9
             // button5
             // 
             this.button5.BackColor = System.Drawing.Color.White;
-            this.button5.Location = new System.Drawing.Point(79, 48);
+            this.button5.Location = new System.Drawing.Point(73, 72);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(154, 23);
+            this.button5.Size = new System.Drawing.Size(160, 23);
             this.button5.TabIndex = 1;
             this.button5.Text = "Применить к полигону";
             this.button5.UseVisualStyleBackColor = false;
@@ -878,139 +882,217 @@ namespace LAB9
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(79, 19);
+            this.button4.Location = new System.Drawing.Point(73, 43);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(153, 23);
+            this.button4.Size = new System.Drawing.Size(160, 23);
             this.button4.TabIndex = 0;
             this.button4.Text = "Загрузить текстуру";
             this.button4.UseVisualStyleBackColor = false;
             // 
-            // button2
+            // cameraUpButton
             // 
-            this.button2.BackColor = System.Drawing.Color.White;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(69, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 30);
-            this.button2.TabIndex = 44;
-            this.button2.Text = "↑";
-            this.button2.UseVisualStyleBackColor = false;
+            this.cameraUpButton.BackColor = System.Drawing.Color.White;
+            this.cameraUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraUpButton.Location = new System.Drawing.Point(75, 46);
+            this.cameraUpButton.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraUpButton.Name = "cameraUpButton";
+            this.cameraUpButton.Size = new System.Drawing.Size(83, 29);
+            this.cameraUpButton.TabIndex = 44;
+            this.cameraUpButton.Text = "🡹";
+            this.cameraUpButton.UseVisualStyleBackColor = false;
+            this.cameraUpButton.Click += new System.EventHandler(this.CameraUpButton_Click);
             // 
-            // button3
+            // cameraLeft_button
             // 
-            this.button3.BackColor = System.Drawing.Color.White;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(69, 51);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(30, 50);
-            this.button3.TabIndex = 45;
-            this.button3.Text = "←";
-            this.button3.UseVisualStyleBackColor = false;
+            this.cameraLeft_button.BackColor = System.Drawing.Color.White;
+            this.cameraLeft_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraLeft_button.Location = new System.Drawing.Point(75, 73);
+            this.cameraLeft_button.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraLeft_button.Name = "cameraLeft_button";
+            this.cameraLeft_button.Size = new System.Drawing.Size(29, 55);
+            this.cameraLeft_button.TabIndex = 45;
+            this.cameraLeft_button.Text = "🡸";
+            this.cameraLeft_button.UseVisualStyleBackColor = false;
+            this.cameraLeft_button.Click += new System.EventHandler(this.CameraLeftButton_Click);
             // 
-            // button6
+            // cameraRight_button
             // 
-            this.button6.BackColor = System.Drawing.Color.White;
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button6.Location = new System.Drawing.Point(136, 51);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(30, 50);
-            this.button6.TabIndex = 46;
-            this.button6.Text = "→";
-            this.button6.UseVisualStyleBackColor = false;
+            this.cameraRight_button.BackColor = System.Drawing.Color.White;
+            this.cameraRight_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraRight_button.Location = new System.Drawing.Point(129, 73);
+            this.cameraRight_button.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraRight_button.Name = "cameraRight_button";
+            this.cameraRight_button.Size = new System.Drawing.Size(29, 55);
+            this.cameraRight_button.TabIndex = 46;
+            this.cameraRight_button.Text = "🡺";
+            this.cameraRight_button.UseVisualStyleBackColor = false;
+            this.cameraRight_button.Click += new System.EventHandler(this.CameraRightButton_Click);
             // 
-            // button7
+            // cameraDown_button
             // 
-            this.button7.BackColor = System.Drawing.Color.White;
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button7.Location = new System.Drawing.Point(69, 101);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(97, 30);
-            this.button7.TabIndex = 47;
-            this.button7.Text = "↓";
-            this.button7.UseVisualStyleBackColor = false;
+            this.cameraDown_button.BackColor = System.Drawing.Color.White;
+            this.cameraDown_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraDown_button.Location = new System.Drawing.Point(75, 126);
+            this.cameraDown_button.Name = "cameraDown_button";
+            this.cameraDown_button.Size = new System.Drawing.Size(83, 29);
+            this.cameraDown_button.TabIndex = 47;
+            this.cameraDown_button.Text = "🡻";
+            this.cameraDown_button.UseVisualStyleBackColor = false;
+            this.cameraDown_button.Click += new System.EventHandler(this.CameraDownButton_Click);
             // 
-            // button8
+            // cameraForward_button
             // 
-            this.button8.BackColor = System.Drawing.Color.White;
-            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button8.Location = new System.Drawing.Point(105, 51);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(25, 25);
-            this.button8.TabIndex = 48;
-            this.button8.Text = "+";
-            this.button8.UseVisualStyleBackColor = false;
+            this.cameraForward_button.BackColor = System.Drawing.Color.White;
+            this.cameraForward_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraForward_button.Location = new System.Drawing.Point(102, 73);
+            this.cameraForward_button.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraForward_button.Name = "cameraForward_button";
+            this.cameraForward_button.Size = new System.Drawing.Size(29, 29);
+            this.cameraForward_button.TabIndex = 48;
+            this.cameraForward_button.Text = "+";
+            this.cameraForward_button.UseVisualStyleBackColor = false;
+            this.cameraForward_button.Click += new System.EventHandler(this.CameraPlusButton_Click);
             // 
-            // button9
+            // cameraBackward_button
             // 
-            this.button9.BackColor = System.Drawing.Color.White;
-            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button9.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button9.Location = new System.Drawing.Point(105, 76);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(25, 25);
-            this.button9.TabIndex = 49;
-            this.button9.Text = "-";
-            this.button9.UseVisualStyleBackColor = false;
+            this.cameraBackward_button.BackColor = System.Drawing.Color.White;
+            this.cameraBackward_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraBackward_button.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.cameraBackward_button.Location = new System.Drawing.Point(102, 99);
+            this.cameraBackward_button.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraBackward_button.Name = "cameraBackward_button";
+            this.cameraBackward_button.Size = new System.Drawing.Size(29, 29);
+            this.cameraBackward_button.TabIndex = 49;
+            this.cameraBackward_button.Text = "-";
+            this.cameraBackward_button.UseVisualStyleBackColor = false;
+            this.cameraBackward_button.Click += new System.EventHandler(this.CameraMinusButton_Click);
             // 
-            // button10
+            // cameraRotateLeft_button
             // 
-            this.button10.BackColor = System.Drawing.Color.White;
-            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button10.Location = new System.Drawing.Point(38, 19);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(25, 112);
-            this.button10.TabIndex = 50;
-            this.button10.Text = "↰";
-            this.button10.UseVisualStyleBackColor = false;
+            this.cameraRotateLeft_button.BackColor = System.Drawing.Color.White;
+            this.cameraRotateLeft_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraRotateLeft_button.Location = new System.Drawing.Point(48, 46);
+            this.cameraRotateLeft_button.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraRotateLeft_button.Name = "cameraRotateLeft_button";
+            this.cameraRotateLeft_button.Size = new System.Drawing.Size(29, 109);
+            this.cameraRotateLeft_button.TabIndex = 50;
+            this.cameraRotateLeft_button.Text = "⮢";
+            this.cameraRotateLeft_button.UseVisualStyleBackColor = false;
+            this.cameraRotateLeft_button.Click += new System.EventHandler(this.CameraLeftRotateButton_Click);
             // 
-            // button11
+            // cameraRotateRight_button
             // 
-            this.button11.BackColor = System.Drawing.Color.White;
-            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button11.Location = new System.Drawing.Point(172, 19);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(25, 112);
-            this.button11.TabIndex = 51;
-            this.button11.Text = "↱";
-            this.button11.UseVisualStyleBackColor = false;
+            this.cameraRotateRight_button.BackColor = System.Drawing.Color.White;
+            this.cameraRotateRight_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraRotateRight_button.Location = new System.Drawing.Point(156, 46);
+            this.cameraRotateRight_button.Margin = new System.Windows.Forms.Padding(0);
+            this.cameraRotateRight_button.Name = "cameraRotateRight_button";
+            this.cameraRotateRight_button.Size = new System.Drawing.Size(29, 109);
+            this.cameraRotateRight_button.TabIndex = 51;
+            this.cameraRotateRight_button.Text = "⮣";
+            this.cameraRotateRight_button.UseVisualStyleBackColor = false;
+            this.cameraRotateRight_button.Click += new System.EventHandler(this.CameraRightRotateButton_Click);
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.button2);
-            this.groupBox6.Controls.Add(this.button11);
-            this.groupBox6.Controls.Add(this.button3);
-            this.groupBox6.Controls.Add(this.button10);
-            this.groupBox6.Controls.Add(this.button6);
-            this.groupBox6.Controls.Add(this.button9);
-            this.groupBox6.Controls.Add(this.button7);
-            this.groupBox6.Controls.Add(this.button8);
-            this.groupBox6.Location = new System.Drawing.Point(6, 517);
+            this.groupBox6.Controls.Add(this.cameraRotateUp_button);
+            this.groupBox6.Controls.Add(this.cameraRotateDown_button);
+            this.groupBox6.Controls.Add(this.cameraUpButton);
+            this.groupBox6.Controls.Add(this.cameraRotateRight_button);
+            this.groupBox6.Controls.Add(this.cameraLeft_button);
+            this.groupBox6.Controls.Add(this.cameraRotateLeft_button);
+            this.groupBox6.Controls.Add(this.cameraDown_button);
+            this.groupBox6.Controls.Add(this.cameraRight_button);
+            this.groupBox6.Controls.Add(this.cameraBackward_button);
+            this.groupBox6.Controls.Add(this.cameraForward_button);
+            this.groupBox6.Location = new System.Drawing.Point(6, 543);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(239, 150);
+            this.groupBox6.Size = new System.Drawing.Size(239, 191);
             this.groupBox6.TabIndex = 52;
             this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Управление камерой";
+            // 
+            // cameraRotateUp_button
+            // 
+            this.cameraRotateUp_button.BackColor = System.Drawing.Color.White;
+            this.cameraRotateUp_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraRotateUp_button.Location = new System.Drawing.Point(48, 19);
+            this.cameraRotateUp_button.Name = "cameraRotateUp_button";
+            this.cameraRotateUp_button.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cameraRotateUp_button.Size = new System.Drawing.Size(137, 29);
+            this.cameraRotateUp_button.TabIndex = 53;
+            this.cameraRotateUp_button.Text = "⮥";
+            this.cameraRotateUp_button.UseVisualStyleBackColor = false;
+            this.cameraRotateUp_button.Click += new System.EventHandler(this.CameraUpRotateButton_Click);
+            // 
+            // cameraRotateDown_button
+            // 
+            this.cameraRotateDown_button.BackColor = System.Drawing.Color.White;
+            this.cameraRotateDown_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cameraRotateDown_button.Location = new System.Drawing.Point(48, 153);
+            this.cameraRotateDown_button.Name = "cameraRotateDown_button";
+            this.cameraRotateDown_button.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cameraRotateDown_button.Size = new System.Drawing.Size(137, 29);
+            this.cameraRotateDown_button.TabIndex = 52;
+            this.cameraRotateDown_button.Text = "⮦";
+            this.cameraRotateDown_button.UseVisualStyleBackColor = false;
+            this.cameraRotateDown_button.Click += new System.EventHandler(this.CameraDownRotateButton_Click);
             // 
             // pictureBox3
             // 
-            this.pictureBox3.BackColor = System.Drawing.Color.Gainsboro;
-            this.pictureBox3.Location = new System.Drawing.Point(251, 369);
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.BackColor = System.Drawing.Color.White;
+            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox3.Location = new System.Drawing.Point(251, 377);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(591, 315);
+            this.pictureBox3.Size = new System.Drawing.Size(591, 373);
             this.pictureBox3.TabIndex = 53;
             this.pictureBox3.TabStop = false;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(848, 649);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(117, 13);
+            this.label13.TabIndex = 54;
+            this.label13.Text = "Координаты объекта:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 737);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(115, 13);
+            this.label14.TabIndex = 55;
+            this.label14.Text = "Координаты камеры:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(204, 737);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(69, 13);
+            this.label15.TabIndex = 56;
+            this.label15.Text = "Координаты";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
-            this.ClientSize = new System.Drawing.Size(1091, 695);
+            this.ClientSize = new System.Drawing.Size(1091, 762);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.label32);
             this.Controls.Add(this.groupBox12);
             this.Controls.Add(this.groupBox11);
-            this.Controls.Add(this.createCameraButton);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox3);
@@ -1033,6 +1115,7 @@ namespace LAB9
             this.groupBox10.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -1048,7 +1131,7 @@ namespace LAB9
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox projectionModeSelector;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label3;
@@ -1104,8 +1187,7 @@ namespace LAB9
         private Button button_delete_obj;
         private ListBox objects_list;
         private GroupBox groupBox10;
-        private ComboBox comboBox6;
-        private Button createCameraButton;
+        private ComboBox DrawModeSelector;
         private Label label32;
         private GroupBox groupBox11;
         private ComboBox lightningComboBox;
@@ -1113,15 +1195,21 @@ namespace LAB9
         private PictureBox pictureBox2;
         private Button button5;
         private Button button4;
-        private Button button2;
-        private Button button3;
-        private Button button6;
-        private Button button7;
-        private Button button8;
-        private Button button9;
-        private Button button10;
-        private Button button11;
+        private Button cameraUpButton;
+        private Button cameraLeft_button;
+        private Button cameraRight_button;
+        private Button cameraDown_button;
+        private Button cameraForward_button;
+        private Button cameraBackward_button;
+        private Button cameraRotateLeft_button;
+        private Button cameraRotateRight_button;
         private GroupBox groupBox6;
         private PictureBox pictureBox3;
+        private Label label13;
+        private Button cameraRotateUp_button;
+        private Button cameraRotateDown_button;
+        private Label label14;
+        private Label label15;
+        private CheckBox textureCheckBox;
     }
 }
