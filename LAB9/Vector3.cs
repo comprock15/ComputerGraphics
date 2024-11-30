@@ -34,6 +34,11 @@ public class Vector3
         return new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
     }
 
+    static public Vector3 operator -(Vector3 v)
+    {
+        return new Vector3(-v.x, -v.y, -v.z);
+    }
+
     static public Vector3 operator *(double c, Vector3 v) => new Vector3(c * v.x, c * v.y, c * v.z);
     static public Vector3 operator *(Vector3 v, double c) => c * v;
 

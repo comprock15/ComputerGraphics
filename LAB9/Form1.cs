@@ -25,6 +25,7 @@ namespace LAB9 {
         Pen p;
         List<Color> colors;
         private Random random = new Random();
+        // TODO: Аффинные преобразования для источника света
         private Vector3 lightPosition = new Vector3(100, 100, 1000);
 
         /// <summary>
