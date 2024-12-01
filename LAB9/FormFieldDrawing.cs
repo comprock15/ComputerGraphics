@@ -333,7 +333,8 @@ namespace LAB9
                     for (var x = min_x; x <= max_x; x++)
                     {
                         var y = FindYbyX(x, x1, y1, x2, y2);
-                        bmp.SetPixel((int)x, (int)y, Color.Black);
+                        if (DrawHelpers.InLimits((int)x, (int)y,bmp.Width,bmp.Height))
+                            bmp.SetPixel((int)x, (int)y, Color.Black);
                     }
                 }
                 else
@@ -343,7 +344,8 @@ namespace LAB9
                     for (var y = min_y; y <= max_y; y++)
                     {
                         var x = FindXbyY(y, x1, y1, x2, y2);
-                        bmp.SetPixel((int)x, (int)y, Color.Black);
+                        if (DrawHelpers.InLimits((int)x, (int)y, bmp.Width, bmp.Height))
+                            bmp.SetPixel((int)x, (int)y, Color.Black);
                     }
                 }
             }

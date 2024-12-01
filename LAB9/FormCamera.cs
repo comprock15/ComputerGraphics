@@ -212,13 +212,13 @@ namespace LAB9
 
         private void CameraRightRotateButton_Click(object sender, EventArgs e)
         {
-            camera.cameraRotate(shiftX: 10);
+            camera.cameraRotate(shiftX: -10);
             RedrawCamryField();
         }
 
         private void CameraUpRotateButton_Click(object sender, EventArgs e)
         {
-            camera.cameraRotate(shiftY: -10);
+            camera.cameraRotate(shiftY: 10);
             RedrawCamryField();
         }
 
