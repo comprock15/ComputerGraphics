@@ -72,7 +72,7 @@ namespace LAB9 {
         /// <param name="face">Вершины грани</param>
         /// <param name="vertices">Вершины многоугольника</param>
         /// <returns>Вектор нормали</returns>
-        public static Vertex Normalize(List<int> face, List<Vertex> vertices) => Polyhedron.CrossProduct(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]]);
+        public static Vertex Normalize(List<int> face, List<Vertex> vertices) => Vertex.CrossProduct(vertices[face[1]] - vertices[face[0]], vertices[face[2]] - vertices[face[0]]);
 
         /// <summary>
         /// Параллельная проекция вершины на 2D экран
