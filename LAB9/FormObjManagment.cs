@@ -16,20 +16,24 @@ namespace LAB9 {
             switch (comboBox1.SelectedIndex)
             {
                 case 0:
-                    cur_polyhedron = PolyhedronCollection.MakeTetrahedron();
+                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "polyhedrons_with_normals", "tetrahedron.obj"));
+                    cur_polyhedron.SetName("Тетраэдр");
                     break;
                 case 1:
-                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "..", "LAB7", "Polyhendrons", "cube_scaled.obj"));
+                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "polyhedrons_with_normals", "hexahedron.obj"));
                     cur_polyhedron.SetName("Гексаэдр");
                     break;
                 case 2:
-                    cur_polyhedron = PolyhedronCollection.MakeOctahedron();
+                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "polyhedrons_with_normals", "octahedron.obj"));
+                    cur_polyhedron.SetName("Октаэдр");
                     break;
                 case 3:
-                    cur_polyhedron = PolyhedronCollection.MakeIcosahedron();
+                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "polyhedrons_with_normals", "icosahedron.obj"));
+                    cur_polyhedron.SetName("Икосаэдр");
                     break;
                 case 4:
-                    cur_polyhedron = PolyhedronCollection.MakeDodecahedron();
+                    cur_polyhedron = OBJHandler.Load(Path.Combine("..", "..", "polyhedrons_with_normals", "dodecahedron.obj"));
+                    cur_polyhedron.SetName("Додекаэдр");
                     break;
                 case 5:
                     var f = new AddFunctionGraphicForm(pictureBox1.Width, pictureBox1.Height);
