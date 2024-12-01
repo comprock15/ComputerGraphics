@@ -38,6 +38,11 @@ public class Vector3
         return new Vector3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
     }
 
+    static public Vector3 operator -(Vector3 v)
+    {
+        return new Vector3(-v.x, -v.y, -v.z);
+    }
+
     static public Vector3 operator *(double c, Vector3 v) => new Vector3(c * v.x, c * v.y, c * v.z);
     static public Vector3 operator *(Vector3 v, double c) => c * v;
 

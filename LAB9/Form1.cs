@@ -35,6 +35,7 @@ namespace LAB9 {
         Pen pen = new Pen(Color.Black, 2);
         
         private Random random = new Random();
+        // TODO: Аффинные преобразования для источника света
         private Vector3 lightPosition = new Vector3(100, 100, 1000);
 
         Camera camera;
