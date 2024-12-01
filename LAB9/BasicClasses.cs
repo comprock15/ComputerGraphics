@@ -19,8 +19,35 @@ internal class Vertex {
     /// Координата по Z
     /// </summary>
     public double z;
+    /// <summary>
+    /// Координата U (по оси X текстуры)
+    /// </summary>
+    public double u;
+    /// <summary>
+    /// Координата V (по оси Y текстуры)
+    /// </summary>
+    public double v;
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="x">Координата по X</param>
+    /// <param name="y">Координата по Y</param>
+    /// <param name="z">Координата по Z</param>
     public Vertex(double x, double y, double z) { this.x = x; this.y = y; this.z = z; }
-    public Vertex(Vertex other) { this.x = other.x; this.y = other.y; this.z = other.z; }
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="x">Координата по X</param>
+    /// <param name="y">Координата по Y</param>
+    /// <param name="z">Координата по Z</param>
+    /// <param name="u">Координата U (по оси X текстуры)</param>
+    /// <param name="v">Координата V (по оси Y текстуры)</param>
+    public Vertex(double x, double y, double z, double u, double v) { this.x = x; this.y = y; this.z = z; this.u = u; this.v = v; }
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="other">Вершина</param>
+    public Vertex(Vertex other) { x = other.x; y = other.y; z = other.z; u = other.u; v = other.v; }
 
     /// <summary>
     /// Проверка на равенство двух вершин
@@ -54,11 +81,30 @@ internal class Vertex {
     /// <summary>
     /// Скалярное произведение векторов
     /// </summary>
-    /// <param name="v1">Вершина 1</param>
-    /// <param name="v2">Вершина 2</param>
-    static public double Dot(Vertex v1, Vertex v2)
-    {
-        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    /// <param name="vec1">Вектор 1</param>
+    /// <param name="vec2">Вектор 2</param>
+    static public double Dot(Vertex vec1, Vertex vec2) => vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
+
+    /// <summary>
+    /// Векторное произведение двух векторов
+    /// </summary>
+    /// <param name="vec1">Первый вектор</param>
+    /// <param name="vec2">Второй вектор</param>
+    /// <returns>Векторное произведение</returns>
+    static public Vertex CrossProduct(Vertex vec1, Vertex vec2) => new Vertex(
+            vec1.y * vec2.z - vec1.z * vec2.y,
+            vec1.z * vec2.x - vec1.x * vec2.z,
+            vec1.x * vec2.y - vec1.y * vec2.x
+        );
+
+    /// <summary>
+    /// Нормализация вектора
+    /// </summary>
+    /// <param name="vec">Вектор</param>
+    /// <returns>Нормализованный вектор</returns>
+    static public Vertex Normalize(Vertex vec) {
+        double length = Math.Sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+        return new Vertex(vec.x / length, vec.y / length, vec.z / length);
     }
     /// <summary>
     /// Строковое представление вершины
@@ -66,15 +112,18 @@ internal class Vertex {
     /// <returns>Координаты вершины</returns>
     public override string ToString() => $"X: {Math.Round(x, 2)}, Y: {Math.Round(y, 2)}, Z: {Math.Round(z, 2)}";
     /// <summary>
-    /// Возвращает строковое представление вершины или нормали в формате OBJ.
+    /// Возвращает строковое представление вершины или нормали в формате OBJ
     /// </summary>
-    /// <param name="prefix">Префикс строки (например, "v" для вершины или "vn" для нормали).</param>
+    /// <param name="prefix">Префикс строки (например, "v" для вершины или "vn" для нормали)</param>
     /// <returns>Строка в формате OBJ</returns>
-    public string ToObjString(string prefix = "v") => $"{prefix} {x.ToString("G", CultureInfo.InvariantCulture)} " +
+    public string ToOBJString(string prefix = "v") => $"{prefix} {x.ToString("G", CultureInfo.InvariantCulture)} " +
         $"{y.ToString("G", CultureInfo.InvariantCulture)} " +
         $"{z.ToString("G", CultureInfo.InvariantCulture)}";
-
-    
+    /// <summary>
+    /// Возвращает строковое представление текстурных координат в формате OBJ
+    /// </summary>
+    /// <returns>Строка в формате OBJ для текстурных координат</returns>
+    public string ToOBJTextureString() => $"vt {u.ToString("G", CultureInfo.InvariantCulture)} {v.ToString("G", CultureInfo.InvariantCulture)}";
 }
 
 /// <summary>
@@ -109,6 +158,10 @@ internal class Polyhedron {
     /// </summary>
     public List<Vertex> normals = new List<Vertex>();
     /// <summary>
+    /// Список текстурных координат
+    /// </summary>
+    public List<Vertex> textureCoordinates = new List<Vertex>();
+    /// <summary>
     /// Имя многогранника
     /// </summary>
     private string name;
@@ -140,12 +193,27 @@ internal class Polyhedron {
     /// <param name="vertices">Список вершин</param>
     /// <param name="edges">Список рёбер</param>
     /// <param name="faces">Список граней</param>
-    /// <param name="normals">Список нормалей</param>
+    /// <param name="normals">Список нормалей для каждой вершины</param>
     public Polyhedron(List<Vertex> vertices, List<List<int>> edges, List<List<int>> faces, List<Vertex> normals) {
         this.vertices = vertices;
         this.edges = edges;
         this.faces = faces;
         this.normals = normals;
+    }
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="vertices">Список вершин</param>
+    /// <param name="edges">Список рёбер</param>
+    /// <param name="faces">Список граней</param>
+    /// <param name="normals">Список нормалей для каждой вершины</param>
+    /// <param name="textureCoordinates">Список текстурных координат</param>
+    public Polyhedron(List<Vertex> vertices, List<List<int>> edges, List<List<int>> faces, List<Vertex> normals, List<Vertex> textureCoordinates) {
+        this.vertices = vertices;
+        this.edges = edges;
+        this.faces = faces;
+        this.normals = normals;
+        this.textureCoordinates = textureCoordinates;
     }
     /// <summary>
     /// Конструктор
@@ -172,9 +240,9 @@ internal class Polyhedron {
             var v3 = vertices[face[2]];
 
             // нормаль для грани
-            var normal = CrossProduct(v2 - v1, v3 - v1);
+            var normal = Vertex.CrossProduct(v2 - v1, v3 - v1);
 
-            normal = Normalize(normal);
+            normal = Vertex.Normalize(normal);
 
             normals[face[0]] += normal;
             normals[face[1]] += normal;
@@ -182,30 +250,8 @@ internal class Polyhedron {
         }
 
         for (int i = 0; i < normals.Count; ++i)
-            normals[i] = Normalize(normals[i]);
+            normals[i] = Vertex.Normalize(normals[i]);
     }
-
-    /// <summary>
-    /// Нормализация вектора
-    /// </summary>
-    /// <param name="vec">Вектор</param>
-    /// <returns>Нормализованный вектор</returns>
-    public static Vertex Normalize(Vertex vec) {
-        double length = Math.Sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-        return new Vertex(vec.x / length, vec.y / length, vec.z / length);
-    }
-
-    /// <summary>
-    /// Векторное произведение двух векторов
-    /// </summary>
-    /// <param name="vec1">Первый вектор</param>
-    /// <param name="vec2">Второй вектор</param>
-    /// <returns>Векторное произведение</returns>
-    public static Vertex CrossProduct(Vertex vec1, Vertex vec2) => new Vertex(
-            vec1.y * vec2.z - vec1.z * vec2.y,
-            vec1.z * vec2.x - vec1.x * vec2.z,
-            vec1.x * vec2.y - vec1.y * vec2.x
-        );
 
     /// <summary>
     /// Возвращает точку центра многогранника
@@ -222,10 +268,5 @@ internal class Polyhedron {
     /// Строковое представление
     /// </summary>
     /// <returns>Строковое представление</returns>
-    public override string ToString() {
-        if (name == null)
-            return base.ToString();
-        else
-            return name;
-    }
+    public override string ToString() => name ?? base.ToString();
 }
