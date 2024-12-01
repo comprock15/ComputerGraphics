@@ -802,7 +802,6 @@ namespace LAB9
             this.DrawModeSelector.Items.AddRange(new object[] {
             "Только рёбра",
             "Отсечение нелицевых граней + Z-буфер",
-            "Отсечение нелицевых граней",
             "Z-буфер"});
             this.DrawModeSelector.Location = new System.Drawing.Point(10, 20);
             this.DrawModeSelector.Name = "DrawModeSelector";
@@ -1074,7 +1073,7 @@ namespace LAB9
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(204, 737);
+            this.label15.Location = new System.Drawing.Point(176, 737);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(69, 13);
             this.label15.TabIndex = 56;
@@ -1100,10 +1099,8 @@ namespace LAB9
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox1);
-
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-
             this.Name = "Form1";
             this.Text = "LAB9";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

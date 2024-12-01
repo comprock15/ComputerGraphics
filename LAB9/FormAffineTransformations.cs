@@ -31,7 +31,7 @@ namespace LAB9
             if (checkBox9.Checked)
                 MakeReflection();
 
-            RedrawField();
+            Redraw();
             RedrawCamryField();
         }
 
