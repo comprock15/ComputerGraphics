@@ -15,7 +15,7 @@ using static Microsoft.FSharp.Core.ByRefKinds;
 namespace LAB9 {
 
     enum ProjectionMode { Perspective, Other};
-    enum DrawingMode { EdgesOnly, Zbuff, InvisibleFacesCut, InvisFacesCutZBUFF };
+    enum DrawingMode { EdgesOnly, InvisFacesCutZBUFF, Zbuff };
     enum LightingMode { Disable, Guro, Phong};
     enum TexturingMode { Disable, ShowAllTextures };
 
@@ -37,7 +37,7 @@ namespace LAB9 {
         private Random random = new Random();
         // TODO: Аффинные преобразования для источника света
         private Vector3 lightPosition = new Vector3(100, 100, 1000);
-
+        //private Vector3 lightPosition = new Vector3(-1000, 0, 0);
         Camera camera;
 
 
@@ -47,6 +47,9 @@ namespace LAB9 {
         LightingMode light_mode;
         TexturingMode textur_mode;
 
+        int p_w, p_h;
+
+
 
         /// <summary> Инициализация формы </summary>
         public Form1() 
@@ -54,16 +57,17 @@ namespace LAB9 {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
             g2 = pictureBox3.CreateGraphics();
-            camera = new Camera(pictureBox3.Width, pictureBox3.Height);
+            camera = new Camera(pictureBox1.Width, pictureBox1.Height);
             colors = new List<Color>{ };
             all_polyhedrons = new List<Polyhedron> { };
-
+            p_w = pictureBox1.Width;
+            p_h = pictureBox1.Height;
 
             SetStartSelectorsSettings();
 
-            RedrawCamryField();
+            
 
-            RedrawField();
+            Redraw();
         }
 
         /// <summary>
@@ -72,7 +76,7 @@ namespace LAB9 {
         private void SetStartSelectorsSettings()
         {
             //comboBox1.SelectedIndex = 0;
-            projectionModeSelector.SelectedIndex = 0;
+            projectionModeSelector.SelectedIndex = 1;
             comboBox3.SelectedIndex = 0;
             comboBox4.SelectedIndex = 0;
             DrawModeSelector.SelectedIndex = 0;
@@ -84,6 +88,10 @@ namespace LAB9 {
             if (g != null)
                 g.Dispose();
             g = pictureBox1.CreateGraphics();
+            p_w = pictureBox1.Width;
+            p_h = pictureBox1.Height;
+
+            camera.worldCenter = new PointF(pictureBox1.Width / 2, pictureBox1.Height / 2);
         }
 
         
@@ -92,7 +100,8 @@ namespace LAB9 {
         /// </summary>
         private void Redraw()
         {
-            RedrawField();
+            //RedrawField();
+            UltimateFieldRedraw();
             RedrawCamryField();
         }
 

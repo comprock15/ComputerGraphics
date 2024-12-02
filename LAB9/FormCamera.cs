@@ -24,7 +24,7 @@ namespace LAB9
             double zScreenNear = 1;
             double zScreenFar = 100;
             double fov = 45;
-            PointF worldCenter;
+            public PointF worldCenter;
             int screenWidth, screenHeight;
             double[,] parallelProjectionMatrix, perspectiveProjectionMatrix;
 
@@ -55,6 +55,9 @@ namespace LAB9
                     { 0, 0, -(zScreenFar + zScreenNear) / (zScreenFar - zScreenNear), -2 * (zScreenFar * zScreenNear) / (zScreenFar - zScreenNear)},
                     { 0, 0, -1, 0}
                 };
+
+
+
             }
 
             public void cameraMove(double leftright = 0, double forwardbackward = 0, double updown = 0)
@@ -88,38 +91,56 @@ namespace LAB9
             }
 
             
-            internal Vertex to2D(Vertex v)
+            internal Vertex to2D(Vertex v, ProjectionMode proj)
             {
                 var viewCoord = this.toCameraView(v);
-                if (viewCoord.z < 0)
+
+                switch (proj)
                 {
-                    return null;
+                    case ProjectionMode.Other:
+                       // if (viewCoord.z > 0)
+                        {
+                            return new Vertex(worldCenter.X + (float)viewCoord.x, worldCenter.Y + viewCoord.y, viewCoord.z);
+                        }
+                       // else
+                        //    return null;
+                       
+                    case ProjectionMode.Perspective:
+                        //if (viewCoord.z < 0)
+                        //{
+                        //    return null;
+                        //}
+
+                        var res = AffineTransformations.Multiply(new double[,] { { viewCoord.x, viewCoord.y, viewCoord.z, 1 } }, perspectiveProjectionMatrix);
+                        //if (res[0, 3] == 0)
+                        //{
+                        //    return null;
+
+                        //}
+
+                        var elem = 1.0 / res[0, 3];
+                        for (int i = 0; i < res.GetLength(0); i++)
+                        {
+                            for (int j = 0; j < res.GetLength(1); j++)
+                            {
+                                res[i, j] *= elem;
+                            }
+                        }
+
+                        res[0, 0] = Camera.Clamp(res[0, 0], -1, 1);
+                        res[0, 1] = Camera.Clamp(res[0, 1], -1, 1);
+
+                        //if (res[0, 2] < 0)
+                        //{
+                        //    return null;
+                        //}
+                        return new Vertex(worldCenter.X + res[0, 0] * worldCenter.X, worldCenter.Y + res[0, 1] * worldCenter.Y, (float)v.z);
+                    default:
+                        return null;
+                        
                 }
-
-                var res = AffineTransformations.Multiply(new double[,] { { viewCoord.x, viewCoord.y, viewCoord.z, 1 } }, perspectiveProjectionMatrix);
-                if (res[0, 3] == 0)
-                {
-                    return null;
-
-                }
-
-                var elem = 1.0 / res[0, 3];
-                for (int i = 0; i < res.GetLength(0); i++)
-                {
-                    for (int j = 0; j < res.GetLength(1); j++)
-                    {
-                        res[i, j] *= elem;
-                    }
-                }
-
-                res[0, 0] = Camera.Clamp(res[0, 0], -1, 1);
-                res[0, 1] = Camera.Clamp(res[0, 1], -1, 1);
-
-                if (res[0, 2] < 0)
-                {
-                    return null;
-                }
-                return new Vertex(worldCenter.X + res[0, 0] * worldCenter.X, worldCenter.Y + res[0, 1] * worldCenter.Y, (float)v.z);
+                
+                
 
             }
 
@@ -142,7 +163,7 @@ namespace LAB9
                 for (int i = 0; i < cur_poly.vertices.Count; i++)
                 {
                     
-                    line_start = camera.to2D(cur_poly.vertices[i]);
+                    line_start = camera.to2D(cur_poly.vertices[i], ProjectionMode.Other);
                     //line_start = new Vertex(cur_m[0, 0], cur_m[0, 1], 0);
 
                     //пробегает по всем граничным точкам и рисует линию
@@ -150,7 +171,7 @@ namespace LAB9
                     {
                         var ind = cur_poly.edges[i][j];
                         
-                        line_end = camera.to2D(cur_poly.vertices[ind]);
+                        line_end = camera.to2D(cur_poly.vertices[ind], ProjectionMode.Other);
                         //if (null != line_start && null != line_end)
                         if (!(line_start is null || line_end is null))
                             g2.DrawLine(pen, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
@@ -165,61 +186,64 @@ namespace LAB9
         private void CameraUpButton_Click(object sender, EventArgs e)
         {
             camera.cameraMove(updown: 15);
-            RedrawCamryField();
+            //camera.UpdateProjMatrix();
+            Redraw();
         }
 
         private void CameraDownButton_Click(object sender, EventArgs e)
         {
             camera.cameraMove(updown: -15);
-            RedrawCamryField();
+            //camera.UpdateProjMatrix();
+            Redraw();
         }
 
         private void CameraLeftButton_Click(object sender, EventArgs e)
         {
             camera.cameraMove(leftright: 15);
-            RedrawCamryField();
+            //camera.UpdateProjMatrix();
+            Redraw();
         }
 
         private void CameraRightButton_Click(object sender, EventArgs e)
         {
             camera.cameraMove(leftright: -15);
-            RedrawCamryField();
+            Redraw();
         }
 
         private void CameraLeftRotateButton_Click(object sender, EventArgs e)
         {
             camera.cameraRotate(shiftX: 10);
-            RedrawCamryField();
+            Redraw();
         }
 
         private void CameraRightRotateButton_Click(object sender, EventArgs e)
         {
-            camera.cameraRotate(shiftX: 10);
-            RedrawCamryField();
+            camera.cameraRotate(shiftX: -10);
+            Redraw();
         }
 
         private void CameraUpRotateButton_Click(object sender, EventArgs e)
         {
             camera.cameraRotate(shiftY: -10);
-            RedrawCamryField();
+            Redraw();
         }
 
         private void CameraDownRotateButton_Click(object sender, EventArgs e)
         {
-            camera.cameraRotate(shiftY: -10);
-            RedrawCamryField();
+            camera.cameraRotate(shiftY: 10);
+            Redraw();
         }
 
         private void CameraPlusButton_Click(object sender, EventArgs e)
         {
-            camera.cameraMove(forwardbackward: 15);
-            RedrawCamryField();
+            camera.cameraMove(forwardbackward: 35);
+            Redraw();
         }
 
         private void CameraMinusButton_Click(object sender, EventArgs e)
         {
-            camera.cameraMove(forwardbackward: -15);
-            RedrawCamryField();
+            camera.cameraMove(forwardbackward: -35);
+            Redraw();
         }
 
     }

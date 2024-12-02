@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using static Microsoft.FSharp.Core.ByRefKinds;
 
 static class PhongShading
 {
@@ -40,9 +41,15 @@ static class PhongShading
         return clr;
     }
 
+    //private static Color MultColor(double c, Color color)
+    //{
+    //    return Color.FromArgb(Math.Min((int)(c * color.R), 255), Math.Min((int)(c * color.G), 255), Math.Min((int)(c * color.R), 255));
+    //}
     private static Color MultColor(double c, Color color)
     {
-        return Color.FromArgb(Math.Min((int)(c * color.R), 255), Math.Min((int)(c * color.G), 255), Math.Min((int)(c * color.R), 255));
+        return Color.FromArgb(Math.Max(0, Math.Min((int)(c * color.R), 255)),
+                              Math.Max(0, Math.Min((int)(c * color.G), 255)),
+                              Math.Max(0, Math.Min((int)(c * color.B), 255)));
     }
 
     private static Vector3 Interpolate(Vector3 p, Vector3 v1, Vector3 n1, Vector3 v2, Vector3 n2, Vector3 v3, Vector3 n3)
@@ -59,7 +66,7 @@ static class PhongShading
         return (w1 * n1 + w2 * n2 + w3 * n3).Normalize(); 
     }
 
-    private static class ZBufferForPhong
+    public static class ZBufferForPhong
     {
         private static int h, w;
         public static Bitmap ZBuff(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height, Vector3 lightpos)
@@ -98,8 +105,6 @@ static class PhongShading
                     triangulated_faces = Triangulate(new_verts, face);
 
                     
-
-
                     foreach (var triangg in triangulated_faces)
                     {
                         DrawTriang(triangg, ref bmp, ref z_buff, c, polyhedrons[ind] as Polyhedron, new_verts, lightpos);
@@ -108,6 +113,15 @@ static class PhongShading
             }
 
             return bmp;
+        }
+
+        public static void DrawFace(List<int> face, ref Bitmap bmp, ref double[,] z_buff, Color c, Polyhedron poly, List<Vertex> new_verts, Vector3 lightpos)
+        {
+            var triangulated_faces = Triangulate(new_verts, face);
+            foreach (var triangg in triangulated_faces)
+            {
+                DrawTriang(triangg, ref bmp, ref z_buff, c, poly, new_verts, lightpos);
+            }
         }
 
         public static void DrawTriang(List<int> triangg, ref Bitmap bmp, ref double[,] z_buff, Color c, Polyhedron poly, List<Vertex> new_verts, Vector3 lightpos)
@@ -136,7 +150,7 @@ static class PhongShading
                     for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -150,7 +164,7 @@ static class PhongShading
                     for (double cur_x = x1; cur_x >= x2; cur_x -= 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -173,7 +187,7 @@ static class PhongShading
                     for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -187,7 +201,7 @@ static class PhongShading
                     for (double cur_x = x1; cur_x >= x2; cur_x -= 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -262,9 +276,9 @@ static class PhongShading
                 return (cur_x - x1) * (z2 - z1) / 0.0001 + z1;
         }
 
-        private static bool InLimits(int x, int y)
+        private static bool InLimits(int x, int y, int ww, int hh)
         {
-            return x >= 0 && y >= 0 && x < w && y < h;
+            return x >= 0 && y >= 0 && x < ww && y < hh;
         }
 
     }
@@ -324,7 +338,7 @@ static class GouraudShading
         return SumColor(MultColor(w1, c1), MultColor(w2, c2), MultColor(w3, c3));
     }
 
-    private static class ZBufferForGourard
+    public static class ZBufferForGourard
     {
         private static int h, w;
         public static Bitmap ZBuff(double[,] matrix, ListBox.ObjectCollection polyhedrons, int width, int height, Vector3 lightpos)
@@ -378,7 +392,8 @@ static class GouraudShading
 
                     foreach (var triangg in triangulated_faces)
                     {
-                        DrawTriang(triangg, ref bmp, ref z_buff, polyhedrons[ind] as Polyhedron, new_verts, verticesColors, lightpos);
+                        //DrawTriang(triangg, ref bmp, ref z_buff, polyhedrons[ind] as Polyhedron, new_verts, verticesColors, lightpos);
+                        DrawTriang(triangg, ref bmp, ref z_buff, polyhedrons[ind] as Polyhedron, new_verts, lightpos, c);
                     }
                 }
             }
@@ -386,17 +401,29 @@ static class GouraudShading
             return bmp;
         }
 
-        public static void DrawTriang(List<int> triangg, ref Bitmap bmp, ref double[,] z_buff, Polyhedron poly, List<Vertex> new_verts, List<Color> verticesColors, Vector3 lightpos)
+        public static void DrawFace(List<int> face, ref Bitmap bmp, ref double[,] z_buff, Color c, Polyhedron poly, List<Vertex> new_verts,  Vector3 lightpos)
+        {
+            var triangulated_faces = Triangulate(new_verts, face);
+            foreach (var triangg in triangulated_faces)
+            {
+                DrawTriang(triangg, ref bmp, ref z_buff, poly, new_verts, lightpos, c);
+            }
+        }
+
+        public static void DrawTriang(List<int> triangg, ref Bitmap bmp, ref double[,] z_buff, Polyhedron poly, List<Vertex> new_verts, Vector3 lightpos, Color c)//, List<Color> verticesColors)
         {
             var triang = triangg.Select(v => new_verts[v]).OrderBy(v => v.y).ToList();
             var up = triang[0]; var mid = triang[1]; var bot = triang[2];
 
             Vector3 v1 = new Vector3(new_verts[triangg[0]].x, new_verts[triangg[0]].y, new_verts[triangg[0]].z);
-            Color c1 = verticesColors[triangg[0]];
+            //Color c1 = verticesColors[triangg[0]];
             Vector3 v2 = new Vector3(new_verts[triangg[1]].x, new_verts[triangg[1]].y, new_verts[triangg[1]].z);
-            Color c2 = verticesColors[triangg[1]];
+          //  Color c2 = verticesColors[triangg[1]];
             Vector3 v3 = new Vector3(new_verts[triangg[2]].x, new_verts[triangg[2]].y, new_verts[triangg[2]].z);
-            Color c3 = verticesColors[triangg[2]];
+            //   Color c3 = verticesColors[triangg[2]];
+            Color c1 = LambertModel(new Vector3(poly.normals[triangg[0]]), (lightpos - new Vector3(poly.vertices[triangg[0]])), c);
+            Color c2 = LambertModel(new Vector3(poly.normals[triangg[1]]), (lightpos - new Vector3(poly.vertices[triangg[1]])), c);
+            Color c3 = LambertModel(new Vector3(poly.normals[triangg[2]]), (lightpos - new Vector3(poly.vertices[triangg[2]])), c);
 
             double x1, y1, z1, x2, y2, z2;
             for (var cur_y = up.y; cur_y <= mid.y; cur_y += 0.5)
@@ -412,7 +439,7 @@ static class GouraudShading
                     for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -426,7 +453,7 @@ static class GouraudShading
                     for (double cur_x = x1; cur_x >= x2; cur_x -= 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -449,7 +476,7 @@ static class GouraudShading
                     for (double cur_x = x1; cur_x <= x2; cur_x += 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -463,7 +490,7 @@ static class GouraudShading
                     for (double cur_x = x1; cur_x >= x2; cur_x -= 0.5)
                     {
                         double cur_z = FindZbyX(cur_x, x1, z1, x2, z2);
-                        if (InLimits((int)cur_x, (int)cur_y) && cur_z > z_buff[(int)cur_x, (int)cur_y])
+                        if (InLimits((int)cur_x, (int)cur_y, bmp.Width, bmp.Height) && cur_z > z_buff[(int)cur_x, (int)cur_y])
                         {
                             z_buff[(int)cur_x, (int)cur_y] = cur_z;
                             Vector3 p = new Vector3(cur_x, cur_y, cur_z);
@@ -538,9 +565,9 @@ static class GouraudShading
                 return (cur_x - x1) * (z2 - z1) / 0.0001 + z1;
         }
 
-        private static bool InLimits(int x, int y)
+        private static bool InLimits(int x, int y, int ww, int hh)
         {
-            return x >= 0 && y >= 0 && x < w && y < h;
+            return x >= 0 && y >= 0 && x < ww && y < hh;
         }
 
     }

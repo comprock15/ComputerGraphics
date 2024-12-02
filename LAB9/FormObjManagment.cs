@@ -92,7 +92,7 @@ namespace LAB9 {
                         objects_list.Items.Add(cur_polyhedron);
                         all_polyhedrons.Add(cur_polyhedron);
                         colors.Add(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256)));
-                        RedrawField();
+                        Redraw();
 
                         Text = "LAB9: Файл загружен успешно.";
                         saveStatusTimer.Start();

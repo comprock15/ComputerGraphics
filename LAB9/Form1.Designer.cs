@@ -114,7 +114,6 @@ namespace LAB9
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.cameraRotateUp_button = new System.Windows.Forms.Button();
             this.cameraRotateDown_button = new System.Windows.Forms.Button();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -130,18 +129,18 @@ namespace LAB9
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(251, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(591, 359);
+            this.pictureBox1.Size = new System.Drawing.Size(591, 722);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.SizeChanged += new System.EventHandler(this.pictureBox1_SizeChanged);
@@ -736,6 +735,7 @@ namespace LAB9
             // 
             this.label32.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label32.AutoSize = true;
+            this.label32.Enabled = false;
             this.label32.Location = new System.Drawing.Point(1018, 649);
             this.label32.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label32.Name = "label32";
@@ -802,7 +802,6 @@ namespace LAB9
             this.DrawModeSelector.Items.AddRange(new object[] {
             "Только рёбра",
             "Отсечение нелицевых граней + Z-буфер",
-            "Отсечение нелицевых граней",
             "Z-буфер"});
             this.DrawModeSelector.Location = new System.Drawing.Point(10, 20);
             this.DrawModeSelector.Name = "DrawModeSelector";
@@ -944,6 +943,7 @@ namespace LAB9
             // cameraForward_button
             // 
             this.cameraForward_button.BackColor = System.Drawing.Color.White;
+            this.cameraForward_button.Enabled = false;
             this.cameraForward_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cameraForward_button.Location = new System.Drawing.Point(102, 73);
             this.cameraForward_button.Margin = new System.Windows.Forms.Padding(0);
@@ -957,6 +957,7 @@ namespace LAB9
             // cameraBackward_button
             // 
             this.cameraBackward_button.BackColor = System.Drawing.Color.White;
+            this.cameraBackward_button.Enabled = false;
             this.cameraBackward_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.cameraBackward_button.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.cameraBackward_button.Location = new System.Drawing.Point(102, 99);
@@ -1039,23 +1040,11 @@ namespace LAB9
             this.cameraRotateDown_button.UseVisualStyleBackColor = false;
             this.cameraRotateDown_button.Click += new System.EventHandler(this.CameraDownRotateButton_Click);
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.BackColor = System.Drawing.Color.White;
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Location = new System.Drawing.Point(251, 377);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(591, 373);
-            this.pictureBox3.TabIndex = 53;
-            this.pictureBox3.TabStop = false;
-            // 
             // label13
             // 
             this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label13.AutoSize = true;
+            this.label13.Enabled = false;
             this.label13.Location = new System.Drawing.Point(848, 649);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(117, 13);
@@ -1065,6 +1054,7 @@ namespace LAB9
             // label14
             // 
             this.label14.AutoSize = true;
+            this.label14.Enabled = false;
             this.label14.Location = new System.Drawing.Point(3, 737);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(115, 13);
@@ -1074,7 +1064,8 @@ namespace LAB9
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(204, 737);
+            this.label15.Enabled = false;
+            this.label15.Location = new System.Drawing.Point(176, 737);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(69, 13);
             this.label15.TabIndex = 56;
@@ -1089,7 +1080,6 @@ namespace LAB9
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.label32);
             this.Controls.Add(this.groupBox12);
@@ -1100,10 +1090,8 @@ namespace LAB9
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox1);
-
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-
             this.Name = "Form1";
             this.Text = "LAB9";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -1123,7 +1111,6 @@ namespace LAB9
             this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1209,7 +1196,6 @@ namespace LAB9
         private Button cameraRotateLeft_button;
         private Button cameraRotateRight_button;
         private GroupBox groupBox6;
-        private PictureBox pictureBox3;
         private Label label13;
         private Button cameraRotateUp_button;
         private Button cameraRotateDown_button;
