@@ -56,7 +56,7 @@ namespace LAB9 {
         {
             InitializeComponent();
             g = pictureBox1.CreateGraphics();
-            g2 = pictureBox3.CreateGraphics();
+            //g2 = pictureBox3.CreateGraphics();
             camera = new Camera(pictureBox1.Width, pictureBox1.Height);
             colors = new List<Color>{ };
             all_polyhedrons = new List<Polyhedron> { };
@@ -102,7 +102,7 @@ namespace LAB9 {
         {
             //RedrawField();
             UltimateFieldRedraw();
-            RedrawCamryField();
+            //RedrawCamryField();
         }
 
         /// <summary>
