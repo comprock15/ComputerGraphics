@@ -134,6 +134,10 @@ internal class Polygon {
     /// Список вершин
     /// </summary>
     public List<Vertex> vertices = new List<Vertex>();
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="vertices">Список вершин</param>
     public Polygon(List<Vertex> vertices) => this.vertices = vertices;
 }
 
@@ -162,14 +166,91 @@ internal class Polyhedron {
     /// </summary>
     public List<Vertex> textureCoordinates = new List<Vertex>();
     /// <summary>
+    /// Список индексов текстурных координат для каждой грани
+    /// </summary>
+    public List<List<int>> faceTextureIndices = new List<List<int>>();
+    /// <summary>
+    /// Список индексов нормалей для каждой грани
+    /// </summary>
+    public List<List<int>> faceNormalIndices = new List<List<int>>();
+
+    /// <summary>
     /// Имя многогранника
     /// </summary>
     private string name;
-
     /// <summary>
     /// Задать имя многогранника
     /// </summary>
     public void SetName(string name) => this.name = name;
+    /// <summary>
+    /// Получить индексы текстурных координат для грани
+    /// </summary>
+    /// <param name="faceIndex">Индекс грани</param>
+    /// <returns>Список индексов текстурных координат</returns>
+    public List<int> GetTextureIndices(int faceIndex) {
+        if (faceTextureIndices == null || faceIndex < 0 || faceTextureIndices.Count <= faceIndex)
+            return new List<int>();
+        return faceTextureIndices[faceIndex];
+    }
+    /// <summary>
+    /// Получить индексы нормалей для грани
+    /// </summary>
+    /// <param name="faceIndex">Индекс грани</param>
+    /// <returns>Список индексов нормалей</returns>
+    public List<int> GetNormalIndices(int faceIndex) {
+        if (faceNormalIndices == null || faceIndex < 0 || faceNormalIndices.Count <= faceIndex)
+            return new List<int>();
+        return faceNormalIndices[faceIndex];
+    }
+    /// <summary>
+    /// Задать индексы текстурных координат для грани
+    /// </summary>
+    /// <param name="faceIndex">Индекс грани</param>
+    /// <param name="indices">Список индексов текстурных координат</param>
+    public void SetTextureIndices(int faceIndex, List<int> indices) {
+        if (faceTextureIndices == null)
+            faceTextureIndices = new List<List<int>>();
+        while (faceTextureIndices.Count <= faceIndex)
+            faceTextureIndices.Add(new List<int>());
+        faceTextureIndices[faceIndex] = indices;
+    }
+    /// <summary>
+    /// Задать индексы нормалей для грани
+    /// </summary>
+    /// <param name="faceIndex">Индекс грани</param>
+    /// <param name="indices">Список индексов нормалей</param>
+    public void SetNormalIndices(int faceIndex, List<int> indices) {
+        if (faceNormalIndices == null)
+            faceNormalIndices = new List<List<int>>();
+        while (faceNormalIndices.Count <= faceIndex)
+            faceNormalIndices.Add(new List<int>());
+        faceNormalIndices[faceIndex] = indices;
+    }
+    /// <summary>
+    /// Добавить текстурный индекс для вершины в грани
+    /// </summary>
+    /// <param name="faceIndex">Индекс грани</param>
+    /// <param name="textureIndex">Индекс текстуры</param>
+    public void AddTextureIndex(int faceIndex, int textureIndex) {
+        if (faceTextureIndices == null)
+            faceTextureIndices = new List<List<int>>();
+        while (faceTextureIndices.Count <= faceIndex)
+            faceTextureIndices.Add(new List<int>());
+        faceTextureIndices[faceIndex].Add(textureIndex);
+    }
+    /// <summary>
+    /// Добавить нормальный индекс для вершины в грани
+    /// </summary>
+    /// <param name="faceIndex">Индекс грани</param>
+    /// <param name="normalIndex">Индекс нормали</param>
+    public void AddNormalIndex(int faceIndex, int normalIndex) {
+        if (faceNormalIndices == null)
+            faceNormalIndices = new List<List<int>>();
+        while (faceNormalIndices.Count <= faceIndex)
+            faceNormalIndices.Add(new List<int>());
+        faceNormalIndices[faceIndex].Add(normalIndex);
+    }
+
 
     /// <summary>
     /// Конструктор по умолчанию
@@ -208,12 +289,22 @@ internal class Polyhedron {
     /// <param name="faces">Список граней</param>
     /// <param name="normals">Список нормалей для каждой вершины</param>
     /// <param name="textureCoordinates">Список текстурных координат</param>
-    public Polyhedron(List<Vertex> vertices, List<List<int>> edges, List<List<int>> faces, List<Vertex> normals, List<Vertex> textureCoordinates) {
-        this.vertices = vertices;
-        this.edges = edges;
-        this.faces = faces;
-        this.normals = normals;
+    public Polyhedron(List<Vertex> vertices, List<List<int>> edges, List<List<int>> faces, List<Vertex> normals, List<Vertex> textureCoordinates) : this(vertices, edges, faces, normals) {
         this.textureCoordinates = textureCoordinates;
+    }
+    /// <summary>
+    ///Конструктор
+    /// </summary>
+    /// <param name="vertices">Список вершин</param>
+    /// <param name="edges">Список рёбер</param>
+    /// <param name="faces">Список граней</param>
+    /// <param name="normals">Список нормалей для каждой вершины</param>
+    /// <param name="textureCoordinates">Список текстурных координат</param>
+    /// <param name="faceTextureIndices">Список индексов текстурных координат для каждой грани</param>
+    /// <param name="faceNormalIndices">Список индексов нормалей для каждой грани</param>
+    public Polyhedron(List<Vertex> vertices, List<List<int>> edges, List<List<int>> faces, List<Vertex> normals, List<Vertex> textureCoordinates, List<List<int>> faceTextureIndices, List<List<int>> faceNormalIndices) : this(vertices, edges, faces, normals, textureCoordinates) {
+        this.faceTextureIndices = faceTextureIndices;
+        this.faceNormalIndices = faceNormalIndices;
     }
     /// <summary>
     /// Конструктор
@@ -224,6 +315,9 @@ internal class Polyhedron {
         edges = polyhedron.edges;
         faces = polyhedron.faces;
         normals = polyhedron.normals;
+        textureCoordinates = polyhedron.textureCoordinates;
+        faceTextureIndices = polyhedron.faceTextureIndices;
+        faceNormalIndices = polyhedron.faceNormalIndices;
     }
 
     /// <summary>
