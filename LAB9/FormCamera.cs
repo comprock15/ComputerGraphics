@@ -155,7 +155,7 @@ namespace LAB9
 
         public void RedrawCamryField()
         {
-            g2.Clear(Color.White);
+            //g2.Clear(Color.White);
             Vertex line_start, line_end;
             foreach (var obj in objects_list.Items)
             {
@@ -173,8 +173,8 @@ namespace LAB9
                         
                         line_end = camera.to2D(cur_poly.vertices[ind], ProjectionMode.Other);
                         //if (null != line_start && null != line_end)
-                        if (!(line_start is null || line_end is null))
-                            g2.DrawLine(pen, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
+                        //if (!(line_start is null || line_end is null))
+                        //    g2.DrawLine(pen, (float)line_start.x, (float)line_start.y, (float)line_end.x, (float)line_end.y);
                     }
                 }
             }

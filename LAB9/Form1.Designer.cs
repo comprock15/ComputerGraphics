@@ -99,10 +99,10 @@ namespace LAB9
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.lightningComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.textureCheckBox = new System.Windows.Forms.CheckBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.enableAllTexturesCheckBox = new System.Windows.Forms.CheckBox();
+            this.texturePictureBox = new System.Windows.Forms.PictureBox();
+            this.applyTextureButton = new System.Windows.Forms.Button();
+            this.loadTextureButton = new System.Windows.Forms.Button();
             this.cameraUpButton = new System.Windows.Forms.Button();
             this.cameraLeft_button = new System.Windows.Forms.Button();
             this.cameraRight_button = new System.Windows.Forms.Button();
@@ -127,7 +127,7 @@ namespace LAB9
             this.groupBox10.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox12.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.texturePictureBox)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -836,10 +836,10 @@ namespace LAB9
             // groupBox12
             // 
             this.groupBox12.BackColor = System.Drawing.Color.Gainsboro;
-            this.groupBox12.Controls.Add(this.textureCheckBox);
-            this.groupBox12.Controls.Add(this.pictureBox2);
-            this.groupBox12.Controls.Add(this.button5);
-            this.groupBox12.Controls.Add(this.button4);
+            this.groupBox12.Controls.Add(this.enableAllTexturesCheckBox);
+            this.groupBox12.Controls.Add(this.texturePictureBox);
+            this.groupBox12.Controls.Add(this.applyTextureButton);
+            this.groupBox12.Controls.Add(this.loadTextureButton);
             this.groupBox12.Location = new System.Drawing.Point(6, 430);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(239, 107);
@@ -847,47 +847,50 @@ namespace LAB9
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Текстурирование";
             // 
-            // textureCheckBox
+            // enableAllTexturesCheckBox
             // 
-            this.textureCheckBox.AutoSize = true;
-            this.textureCheckBox.Location = new System.Drawing.Point(10, 20);
-            this.textureCheckBox.Name = "textureCheckBox";
-            this.textureCheckBox.Size = new System.Drawing.Size(146, 17);
-            this.textureCheckBox.TabIndex = 3;
-            this.textureCheckBox.Text = "Включить все текстуры";
-            this.textureCheckBox.UseVisualStyleBackColor = true;
-            this.textureCheckBox.CheckedChanged += new System.EventHandler(this.textureCheckBox_CheckedChanged);
+            this.enableAllTexturesCheckBox.AutoSize = true;
+            this.enableAllTexturesCheckBox.Location = new System.Drawing.Point(10, 20);
+            this.enableAllTexturesCheckBox.Name = "enableAllTexturesCheckBox";
+            this.enableAllTexturesCheckBox.Size = new System.Drawing.Size(146, 17);
+            this.enableAllTexturesCheckBox.TabIndex = 3;
+            this.enableAllTexturesCheckBox.Text = "Включить все текстуры";
+            this.enableAllTexturesCheckBox.UseVisualStyleBackColor = true;
+            this.enableAllTexturesCheckBox.CheckedChanged += new System.EventHandler(this.enableAllTexturesCheckBox_CheckedChanged);
             // 
-            // pictureBox2
+            // texturePictureBox
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(10, 43);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Padding = new System.Windows.Forms.Padding(3);
-            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
+            this.texturePictureBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.texturePictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.texturePictureBox.Location = new System.Drawing.Point(10, 43);
+            this.texturePictureBox.Name = "texturePictureBox";
+            this.texturePictureBox.Padding = new System.Windows.Forms.Padding(3);
+            this.texturePictureBox.Size = new System.Drawing.Size(50, 50);
+            this.texturePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.texturePictureBox.TabIndex = 2;
+            this.texturePictureBox.TabStop = false;
             // 
-            // button5
+            // applyTextureButton
             // 
-            this.button5.BackColor = System.Drawing.Color.White;
-            this.button5.Location = new System.Drawing.Point(73, 72);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(160, 23);
-            this.button5.TabIndex = 1;
-            this.button5.Text = "Применить к полигону";
-            this.button5.UseVisualStyleBackColor = false;
+            this.applyTextureButton.BackColor = System.Drawing.Color.White;
+            this.applyTextureButton.Location = new System.Drawing.Point(73, 72);
+            this.applyTextureButton.Name = "applyTextureButton";
+            this.applyTextureButton.Size = new System.Drawing.Size(160, 23);
+            this.applyTextureButton.TabIndex = 1;
+            this.applyTextureButton.Text = "Применить к полигону";
+            this.applyTextureButton.UseVisualStyleBackColor = false;
+            this.applyTextureButton.Click += new System.EventHandler(this.applyTextureButton_Click);
             // 
-            // button4
+            // loadTextureButton
             // 
-            this.button4.BackColor = System.Drawing.Color.White;
-            this.button4.Location = new System.Drawing.Point(73, 43);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(160, 23);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "Загрузить текстуру";
-            this.button4.UseVisualStyleBackColor = false;
+            this.loadTextureButton.BackColor = System.Drawing.Color.White;
+            this.loadTextureButton.Location = new System.Drawing.Point(73, 43);
+            this.loadTextureButton.Name = "loadTextureButton";
+            this.loadTextureButton.Size = new System.Drawing.Size(160, 23);
+            this.loadTextureButton.TabIndex = 0;
+            this.loadTextureButton.Text = "Загрузить текстуру";
+            this.loadTextureButton.UseVisualStyleBackColor = false;
+            this.loadTextureButton.Click += new System.EventHandler(this.loadTextureButton_Click);
             // 
             // cameraUpButton
             // 
@@ -1109,7 +1112,7 @@ namespace LAB9
             this.groupBox11.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.texturePictureBox)).EndInit();
             this.groupBox6.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1184,9 +1187,9 @@ namespace LAB9
         private GroupBox groupBox11;
         private ComboBox lightningComboBox;
         private GroupBox groupBox12;
-        private PictureBox pictureBox2;
-        private Button button5;
-        private Button button4;
+        private PictureBox texturePictureBox;
+        private Button applyTextureButton;
+        private Button loadTextureButton;
         private Button cameraUpButton;
         private Button cameraLeft_button;
         private Button cameraRight_button;
@@ -1201,6 +1204,6 @@ namespace LAB9
         private Button cameraRotateDown_button;
         private Label label14;
         private Label label15;
-        private CheckBox textureCheckBox;
+        private CheckBox enableAllTexturesCheckBox;
     }
 }
