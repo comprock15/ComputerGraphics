@@ -173,7 +173,10 @@ internal class Polyhedron {
     /// Список индексов нормалей для каждой грани
     /// </summary>
     public List<List<int>> faceNormalIndices = new List<List<int>>();
-
+    /// <summary>
+    /// Текстура, связанная с многогранником
+    /// </summary>
+    public System.Drawing.Bitmap texture { get; set; } = null;
     /// <summary>
     /// Имя многогранника
     /// </summary>
@@ -182,6 +185,11 @@ internal class Polyhedron {
     /// Задать имя многогранника
     /// </summary>
     public void SetName(string name) => this.name = name;
+    /// <summary>
+    /// Вернуть имя многогранника
+    /// </summary>
+    /// <returns>Имя многогранника</returns>
+    public string GetName() => name;
     /// <summary>
     /// Получить индексы текстурных координат для грани
     /// </summary>
@@ -250,7 +258,6 @@ internal class Polyhedron {
             faceNormalIndices.Add(new List<int>());
         faceNormalIndices[faceIndex].Add(normalIndex);
     }
-
 
     /// <summary>
     /// Конструктор по умолчанию

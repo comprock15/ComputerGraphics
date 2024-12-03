@@ -95,8 +95,7 @@ namespace LAB9
                     visibleFaces = all_polyhedrons[ind].faces;
 
 
-                switch (light_mode)
-                {
+                switch (light_mode) {
                     case LightingMode.Phong:
                         foreach (var face in visibleFaces)
                             PhongShading.ZBufferForPhong.DrawFace(face, ref bmp, ref z_buff, colors[ind], all_polyhedrons[ind], transformedVertices, lightPosition);
@@ -104,19 +103,21 @@ namespace LAB9
                     case LightingMode.Guro:
                         foreach (var face in visibleFaces)
                             GouraudShading.ZBufferForGourard.DrawFace(face, ref bmp, ref z_buff, colors[ind], all_polyhedrons[ind], transformedVertices, lightPosition);
-
                         break;
                     default:
-                        // if ТЕКСТУРИРОВАНИЕ ВКЛЮЧЕНО 
-                        // метод
-                        //else
-                        // foreach (var face in visibleFaces)
-                        foreach (var face in visibleFaces)
-                            DrawFacePlain(face, ref bmp, ref z_buff, colors[ind], transformedVertices);
+                        if (texturing == TexturingMode.ShowAllTextures) {
+                            if (all_polyhedrons[ind].texture == null)
+                                foreach (var face in visibleFaces)
+                                    DrawFacePlain(face, ref bmp, ref z_buff, colors[ind], transformedVertices);
+                            else
+                                foreach (var face in visibleFaces)
+                                    Texturing.DrawTexturedFace(face, ref bmp, ref z_buff, all_polyhedrons[ind].texture, transformedVertices, all_polyhedrons[ind].textureCoordinates);
+                        }
+                        else
+                            foreach (var face in visibleFaces)
+                                DrawFacePlain(face, ref bmp, ref z_buff, colors[ind], transformedVertices);
                         break;
                 }
-
-
             }
         }
 
