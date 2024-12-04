@@ -110,8 +110,8 @@ namespace LAB9
                                 foreach (var face in visibleFaces)
                                     DrawFacePlain(face, ref bmp, ref z_buff, colors[ind], transformedVertices);
                             else
-                                foreach (var face in visibleFaces)
-                                    Texturing.DrawTexturedFace(face, ref bmp, ref z_buff, all_polyhedrons[ind].texture, transformedVertices, all_polyhedrons[ind].textureCoordinates);
+                                for (int i = 0; i < visibleFaces.Count; ++i)
+                                    Texturing.DrawTexturedFace(visibleFaces[i], ref bmp, ref z_buff, all_polyhedrons[ind].texture, transformedVertices, all_polyhedrons[ind].textureCoordinates, all_polyhedrons[ind].faceTextureIndices[i]);
                         }
                         else
                             foreach (var face in visibleFaces)

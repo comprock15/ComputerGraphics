@@ -5,11 +5,12 @@ using System.Drawing;
 using System.Linq;
 
 static class Texturing {
-    public static void DrawTexturedFace(List<int> face, ref Bitmap bmp, ref double[,] zBuffer, Bitmap texture, List<Vertex> transformedVertices, List<Vertex> uvs) {
-        var triangles = ZBuffer.Triangulate(transformedVertices, face);
-        foreach (var triangle in triangles) {
-            var texCoords = triangle.Select(v => uvs[transformedVertices.IndexOf(v)]).ToList();
-            DrawTexturedTriangle(triangle, ref bmp, ref zBuffer, texture, texCoords);
+    public static void DrawTexturedFace(List<int> face, ref Bitmap bmp, ref double[,] zBuffer, Bitmap texture, List<Vertex> transformedVertices, List<Vertex> uvs, List<int> uvind) {
+        List<List<int>> picked_inds = new List<List<int>>();
+        var triangles = ZBuffer.Triangulate(transformedVertices, face, picked_inds);
+        for (int i = 0; i < triangles.Count; ++i) {
+            var texCoords = picked_inds[i].Select(v => uvs[uvind[face.IndexOf(v)]]).ToList();
+            DrawTexturedTriangle(triangles[i], ref bmp, ref zBuffer, texture, texCoords);
         }
     }
 

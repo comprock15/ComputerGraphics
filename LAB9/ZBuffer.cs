@@ -194,13 +194,15 @@ namespace LAB9
 
 
         }
-
-        public static List<List<Vertex>> Triangulate(List<Vertex> all_verts, List<int> picked_verts)
+        
+        public static List<List<Vertex>> Triangulate(List<Vertex> all_verts, List<int> picked_verts, List<List<int>> picked_inds = null)
         {
             List<List<Vertex>> triangulations = new List<List<Vertex>> { };
             for (int i = 2; i < picked_verts.Count; i++)
             {
                 triangulations.Add(new List<Vertex> { all_verts[picked_verts[0]], all_verts[picked_verts[i - 1]], all_verts[picked_verts[i]] });
+                if (picked_inds != null)
+                    picked_inds.Add(new List<int> { picked_verts[0], picked_verts[i - 1], picked_verts[i] });
             }
             return triangulations;
         }
