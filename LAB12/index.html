@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAB12</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <th>Градиентный тетраэдр</th>
+            <th>Куб с текстурой и цветом</th>
+            <th>Куб с двумя смешанными текстурами</th>
+            <th>Градиентный круг</th>
+        </tr>
+        <tr>
+            <td><canvas id="canvas1" width="200" height="200" align="center">1. Градиентный тетраэдр</canvas></td>
+            <td><canvas id="canvas2" width="200" height="200" align="center">2. Куб с текстурой и цветом</canvas></td>
+            <td><canvas id="canvas3" width="200" height="200" align="center">3. Куб с двумя смешанными текстурами</canvas></td>
+            <td><canvas id="canvas4" width="200" height="200" align="center">4. Градиентный круг</canvas></td>
+        </tr>
+        <tr>
+            <td align="center">
+                Изменить положение<br>
+                <table>
+                    <tr>
+                        <td>X</td>
+                        <td><button id="moveX-">-</button></td>
+                        <td><button id="moveX+">+</button></td>
+                    </tr>
+                    <tr>
+                        <td>Y</td>
+                        <td><button id="moveY-">-</button></td>
+                        <td><button id="moveY+">+</button></td>
+                    </tr>
+                    <tr>
+                        <td>Z</td>
+                        <td><button id="moveZ-">-</button></td>
+                        <td><button id="moveZ+">+</button></td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center">
+                Цвет
+                <input id="slider1" type="range" min="0" max="100" step="1">
+                Текстура
+            </td>
+            <td align="center">
+                Текстура 1
+                <input id="slider2" type="range" min="0" max="100" step="1">
+                Текстура 2
+            </td>
+            <td align="center">
+                Изменить масштаб<br>
+                <table>
+                    <tr>
+                        <td>X</td>
+                        <td><button id="scaleX-">-</button></td>
+                        <td><button id="scaleX+">+</button></td>
+                    </tr>
+                    <tr>
+                        <td>Y</td>
+                        <td><button id="scaleY-">-</button></td>
+                        <td><button id="scaleY+">+</button></td>
+                    </tr>
+                    <tr>
+                        <td>Z</td>
+                        <td><button id="scaleZ-">-</button></td>
+                        <td><button id="scaleZ+">+</button></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <script src="task1.js"></script>
+    <script src="task2.js"></script>
+    <script src="task3.js"></script>
+    <script src="task4.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
