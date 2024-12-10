@@ -189,19 +189,22 @@ namespace Indiv2
         }
 
 
-        // http://www.lighthouse3d.com/tutorials/maths/ray-sphere-intersection/
+        
         public override Tuple<Point, Vector> getIntersect(Vector direction, Point origin)
         {
             direction = direction.Normalize();
             Vector sourceToCenter = new Vector(origin, center);
-              // Центр сферы за точкой выпуска луча
-            if (Vector.Dot(sourceToCenter, direction) < 0)
+              //определяем угол между векторами
+            if (Vector.Dot(sourceToCenter, direction) < 0)   // Если меньше нуля значит векторы напралены в разные стороны и вектор направления направелен не в сторону центар сферы
+                                                             // Центр сферы за точкой выпуска луча
             {
-                if (Geometry.distance(origin, center) > radius)                       // Пересечения нет
+                if (Geometry.distance(origin, center) > radius)                       //расстояние от точки начала ветора от центра сферы больше чем радиус значит
+                                                                                      //Пересечения нет
                 {
                     return null;
                 }
-                else if (Geometry.distance(origin, center) - radius < 0.000001)       // Мы на сфере
+                else if (Geometry.distance(origin, center) - radius < 0.000001)       // расстояние от точки начала вектора до центра сферы равно радиусу
+                                                                                      // Мы на сфере
                 {
                     
                     return null;
@@ -214,21 +217,24 @@ namespace Indiv2
                     return Tuple.Create(intersection, new Vector(center, intersection, true));
                 }
             }
-            else        // Центр сферы можно спроецировать на луч
+            else     // луч направлен на сферу
             {
+                //проекция центра сферы на вектор
                 Point projection = Geometry.getPointProjection(origin, direction, center);
+                // если радиус меньше чем расстояние от точки проекции от центра сферы значит точка проекции лежит не на сфере значит она не является точкой пересечения значит она не нужна
                 if (Geometry.distance(center, projection) > radius)
                 {
                     return null;
                 }
                 else
                 {
+                    // рассчёт расстояния до точки пересечения (теорема пифагора)
                     double distance = Math.Sqrt(Math.Pow(radius, 2) - Math.Pow(Geometry.distance(center, projection), 2));
-                    if (Geometry.distance(origin, center) > radius)
+                    if (Geometry.distance(origin, center) > radius) // начало луча за сферой
                     {
                         distance = Geometry.distance(origin, projection) - distance;
                     }
-                    else
+                    else // начало луча в сфере
                     {
                         distance = Geometry.distance(origin, projection) + distance;
                     }
