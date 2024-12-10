@@ -29,8 +29,6 @@ namespace Indiv2
             for (int x = 0; x < frameSize.Width; x++)
                 for (int y = 0; y < frameSize.Height; y++)
                 {
-                    if (x == 250 && y == 1)
-                        x = 250;
                     var fov_tan = Math.Tan(Geometry.degreesToRadians(fov / 2));
                     Vector ray = new Vector(
                         (2 * (x + 0.5) / frameSize.Width  - 1) * fov_tan * frameSize.Width / frameSize.Height,
@@ -46,14 +44,14 @@ namespace Indiv2
 
         Color shootRay(Vector viewRay, Point origin, int depth = 0)
         {
-            double nearestPoint = double.MaxValue;
             if (depth > 4)
-            {
                 return Color.Gray;
-            }
+            double nearestPoint = double.MaxValue;
             Color res = Color.Black;
-            foreach (var shape in sceneObjects)
+
+            foreach (var shape in sceneObjects)  //для каждого объекта сцены
             {
+                // выясняем пересекает ли луч объект и является ли этот объект ближайшим
                 Tuple<Point, Vector> intersectionAndNormale = shape.getIntersect(viewRay, origin);
                 if (intersectionAndNormale != null && intersectionAndNormale.Item1.z < nearestPoint)
                 {
@@ -61,6 +59,7 @@ namespace Indiv2
                     res = changeColorIntensity(shape.color, computeLightness(shape, intersectionAndNormale, viewRay));
                     if (shape.material.reflectivity > 0)
                     {
+                        // вычисляем вектор отражения от поверхности который зависит от вектора обзора и выпускам луч в этом направлении из точки пересечени с фигурой
                         var reflectedColor = shootRay(getViewReflectionRay(viewRay, intersectionAndNormale.Item2), intersectionAndNormale.Item1, depth + 1);
                         res = mixColors(res, reflectedColor, shape.material.reflectivity);
                     }
@@ -109,7 +108,7 @@ namespace Indiv2
             {
                 // луч выходящий из точки пересечения в точку источника света
                 var shadowRay = new Vector(intersectionAndNormale.Item1, lightSource.location, true);
-                // луч отражения 
+                // луч отражения света
                 var reflectionRay = getLightReflectionRay(shadowRay, intersectionAndNormale.Item2);
 
 
@@ -121,11 +120,9 @@ namespace Indiv2
                 }
 
 
-                diffuseLightness += lightSource.intensity * Geometry.Clamp(Vector.Dot(shadowRay, intersectionAndNormale.Item2),
-                    0.0, double.MaxValue);
+                diffuseLightness += lightSource.intensity * Geometry.Clamp(Vector.Dot(shadowRay, intersectionAndNormale.Item2), 0.0, double.MaxValue);
                 specularLightness += lightSource.intensity *
-                                     Math.Pow(Geometry.Clamp(Vector.Dot(reflectionRay, (-1 * viewRay)), 0.0, double.MaxValue),
-                                         shape.material.shininess);
+                                     Math.Pow(Geometry.Clamp(Vector.Dot(reflectionRay, (-1 * viewRay)), 0.0, double.MaxValue), shape.material.shininess);
             }
 
             return shape.material.ambient + diffuseLightness * shape.material.diffuse + specularLightness * shape.material.specular;
@@ -138,9 +135,9 @@ namespace Indiv2
             
         }
 
+        // находдит луч отражения взгляда камеры от поверхности по нормали поверхности 
         Vector getViewReflectionRay(Vector viewRay, Vector normale)
         {
-           // return (2 * ((-1 * viewRay) ^ normale) * normale - (-1 * viewRay)).normalize();
             return (2 * Vector.Dot((-1 * viewRay) , normale) * normale - (-1 * viewRay)).Normalize();
         }
 
