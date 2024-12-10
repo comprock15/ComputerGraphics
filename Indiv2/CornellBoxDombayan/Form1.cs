@@ -39,7 +39,7 @@ namespace Indiv2
         Face ceiling;
         Face floor;
 
-        LightSource mainLight = new LightSource(new Point(0, 9, 9), 0.9);
+        LightSource mainLight = new LightSource(new Point(0, 7, 10), 0.9);
         LightSource additionalLight = new LightSource(new Point(-7, 7, 0), 0.8);
 
         public Form1()
@@ -57,8 +57,6 @@ namespace Indiv2
             ray_tracer = new RayTracer();
 
 
-            currentItemType = SelectedItem.BackWall;
-            currentItem = backWall;
 
         }
 
@@ -85,15 +83,15 @@ namespace Indiv2
 
         void initShapes(Point center, double roomSide)
         {
-            sphere_big = new Sphere(new Point(-5, -7, 15), 
+            sphere_big = new Sphere(new Point(-3, -7, 15), 
                 4, Color.DodgerBlue,
                 new Material(40, 0.25, 0.9, 0.05));
 
-            cube = new Cube(new Point(5, -7, 16), 
+            cube = new Cube(new Point(6, -7, 16), 
                 6, Color.Orange,
                 new Material(40, 0.25, 0.9, 0.05));
 
-            sphere_small = new Sphere(new Point(6, -1, 15), 
+            sphere_small = new Sphere(new Point(6, -2, 15), 
                 2, Color.Green,
                 new Material(40, 0.25, 0.9, 0.05));
 
@@ -116,20 +114,20 @@ namespace Indiv2
                 new Point(center.x, center.y, center.z + roomSide / 2),
                 new Vector(0, 0, -1),
                 new Vector(0, 1, 0),
-                roomSide, roomSide, Color.Gray,
+                roomSide, roomSide, Color.PapayaWhip,
                 new Material(0, 0, 0.9, 0.1)
             );
             cameraWall = new Face(
                 new Point(center.x, center.y, center.z - roomSide / 2), 
                 new Vector(0, 0, 1), new Vector(0, 1, 0), 
-                roomSide, roomSide, Color.Gray, 
+                roomSide, roomSide, Color.Fuchsia, 
                 new Material(0, 0, 0.9, 0.1)
             );
             ceiling = new Face(
                 new Point(center.x, center.y + roomSide / 2, center.z), 
                 new Vector(0, -1, 0), 
                 new Vector(0, 0, -1), 
-                roomSide, roomSide, Color.Gray, 
+                roomSide, roomSide, Color.ForestGreen, 
                 new Material(0, 0, 0.9, 0.1)
             );
             floor = new Face(
@@ -192,8 +190,57 @@ namespace Indiv2
             additionalLight.intensity = (double)additLightValue.Value;
         }
 
+        
+
+        private void reflectCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            var thisCheckBox = sender as CheckBox;
+            var thisNumericUpDown = Controls.Find("numericUpDown" + thisCheckBox.Name.Last(),true).First() as NumericUpDown;
+            thisNumericUpDown.Enabled = thisCheckBox.Checked;
+            thisNumericUpDown.Value = 0;
+        }
+
+        private void reflectNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            var numb = int.Parse((sender as NumericUpDown).Name.Last().ToString());
 
 
+            switch (numb)
+            {
+                case 1:
+                    sphere_big.material.reflectivity = (double)numericUpDown1.Value;
+                    break;
+                case 2:
+                    sphere_small.material.reflectivity = (double)numericUpDown2.Value;
+                    break;
+                case 3:
+                    cube.material.reflectivity = (double)numericUpDown3.Value;
+                    break;
+                case 4:
+                    backWall.material.reflectivity = (double)numericUpDown4.Value;
+                    break;
+                case 5:
+                    cameraWall.material.reflectivity = (double)numericUpDown5.Value;
+                    break;
+                case 6:
+                    leftWall.material.reflectivity = (double)numericUpDown6.Value;
+                    break;
+                case 7:
+                    rightWall.material.reflectivity = (double)numericUpDown7.Value;
+                    break;
+                case 8:
+                    floor.material.reflectivity = (double)numericUpDown8.Value;
+                    break;
+                case 9:
+                    ceiling.material.reflectivity = (double)numericUpDown9.Value;
+                    break;
+                default:
+                    throw new Exception();
 
+            }
+        }
+
+
+       
     }
 }

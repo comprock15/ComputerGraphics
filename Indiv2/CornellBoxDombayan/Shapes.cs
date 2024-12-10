@@ -35,6 +35,9 @@ namespace Indiv2
         // an ambient reflection constant, the ratio of reflection of the ambient term present in all points in the scene rendered
         public double ambient;
 
+        public double reflectivity = 0.0;
+        
+
         public Material(double shininess, double specular, double diffuse, double ambient)
         {
             this.shininess = shininess;

@@ -44,10 +44,13 @@ namespace Indiv2
             return bmp;
         }
 
-        Color shootRay(Vector viewRay, Point origin)
+        Color shootRay(Vector viewRay, Point origin, int depth = 0)
         {
             double nearestPoint = double.MaxValue;
-
+            if (depth > 4)
+            {
+                return Color.Gray;
+            }
             Color res = Color.Black;
             foreach (var shape in sceneObjects)
             {
@@ -56,6 +59,12 @@ namespace Indiv2
                 {
                     nearestPoint = intersectionAndNormale.Item1.z;
                     res = changeColorIntensity(shape.color, computeLightness(shape, intersectionAndNormale, viewRay));
+                    if (shape.material.reflectivity > 0)
+                    {
+                        var reflectedColor = shootRay(getViewReflectionRay(viewRay, intersectionAndNormale.Item2), intersectionAndNormale.Item1, depth + 1);
+                        res = mixColors(res, reflectedColor, shape.material.reflectivity);
+                    }
+                    
                 }
             }
             return res;
@@ -129,9 +138,19 @@ namespace Indiv2
             
         }
 
-        
+        Vector getViewReflectionRay(Vector viewRay, Vector normale)
+        {
+           // return (2 * ((-1 * viewRay) ^ normale) * normale - (-1 * viewRay)).normalize();
+            return (2 * Vector.Dot((-1 * viewRay) , normale) * normale - (-1 * viewRay)).Normalize();
+        }
+
+        Color mixColors(Color first, Color second, double secondToFirstRatio)
+        {
+            return Color.FromArgb((byte)((second.R * secondToFirstRatio) + first.R * (1 - secondToFirstRatio)), (byte)((second.G * secondToFirstRatio) + first.G * (1 - secondToFirstRatio)), (byte)((second.B * secondToFirstRatio) + first.B * (1 - secondToFirstRatio)));
+        }
 
 
-        
+
+
     }
 }
