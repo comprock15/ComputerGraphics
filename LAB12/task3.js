@@ -101,6 +101,8 @@ function task3() {
     const attrib_texCoord = gl.getAttribLocation(program, 'texCoord');
     const uniform_mixRatio = gl.getUniformLocation(program, "mixRatio");
     const uniform_MVP = gl.getUniformLocation(program, "MVPmatr");
+    const uniform_texture1 = gl.getUniformLocation(program, "ourTexture1");
+    const uniform_texture2 = gl.getUniformLocation(program, "ourTexture2");
 
     // Vertex Array Object - позволяет настроить атрибуты лишь единожды, потом использовать VAO
     const VAO = initVAO(gl);
@@ -113,9 +115,9 @@ function task3() {
     mat4.perspective(projectionMatrix, Math.PI / 4, canvas.width / canvas.height, 0.1, 100.0);
     mat4.scale(projectionMatrix, projectionMatrix, [1, 1, -1]);
     let translation = [0.0, 0.0, 2.5];
-    let rotationX = -Math.PI / 6;
-    let rotationY = 2*Math.PI / 3;
-    let rotationZ = -Math.PI / 12;
+    let rotationX = Math.PI / 6;
+    let rotationY = -2*Math.PI / 3;
+    let rotationZ = 0;
 
     function updateModelViewMatrix() {
         mat4.identity(modelViewMatrix);
@@ -182,17 +184,6 @@ function task3() {
 
         const IBO = initIBO(gl, indices);
 
-        const texture1 = getTexture(gl, "texture1.png");
-        const texture2 = getTexture(gl, "texture2.png");
-
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, texture1);
-        gl.uniform1i(gl.getUniformLocation(program, "ourTexture1"), 0);
-        
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, texture2);
-        gl.uniform1i(gl.getUniformLocation(program, "ourTexture2"), 1);
-
         gl.bindVertexArray(null);
 
         return VAO;
@@ -205,21 +196,32 @@ function task3() {
         return IBO;
     }
 
-    function getTexture(gl, imageSource) {
-        const texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
+    function loadImage(url, callback) {
         let image = new Image();
-        image.src = imageSource;
-        image.onload = () => {
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-            gl.generateMipmap(gl.TEXTURE_2D);
-            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            draw();
-        }; 
-        return texture;
+        image.src = url;
+        image.onload = callback;
+        return image;
+    }
+
+    function loadImages(urls, callback) {
+        let images = [];
+        let imagesToLoad = urls.length;
+       
+        // вызывается каждый раз при загрузке изображения
+        let onImageLoad = function() {
+          --imagesToLoad;
+          // если все объекты загрузились, вызываем callback
+          if (imagesToLoad == 0) {
+            callback(images);
+          }
+        };
+       
+        for (let ii = 0; ii < imagesToLoad; ++ii) {
+          let image = loadImage(urls[ii], onImageLoad);
+          images.push(image);
+        }
+
+        return images;
     }
 
     function draw() {
@@ -230,6 +232,16 @@ function task3() {
         gl.useProgram(program);
 
         gl.bindVertexArray(VAO);
+
+        // set which texture units to render with.
+        gl.uniform1i(uniform_texture1, 0);  // texture unit 0
+        gl.uniform1i(uniform_texture2, 1);  // texture unit 1
+
+        // Set each texture unit to use a particular texture.
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, textures[0]);
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, textures[1]);
 
         gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
     }
@@ -242,6 +254,31 @@ function task3() {
         gl.uniform1f(uniform_mixRatio, slider.value);
         draw();
     }
+    let textures = [];
+    let images = loadImages([
+        "texture1.png",
+        "texture2.png",
+      ], render);
 
-    //draw();
+    function render() {
+        // создаём 2 текстуры
+        for (let ii = 0; ii < 2; ++ii) {
+            let texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            
+            // задаём параметры для отображения изображения любого размера
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+            
+            // загружаем изображение в текстуру
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, images[ii]);
+            
+            // добавляем текстуру в массив текстур
+            textures.push(texture);
+        }
+
+        draw();
+    }
 }
