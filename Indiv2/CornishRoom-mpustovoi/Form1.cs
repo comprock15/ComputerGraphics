@@ -48,10 +48,6 @@ namespace CornishRoom_mpustovoi {
             InitializeComponent();
             height = cornishRoomPictureBox.Height;
             width = cornishRoomPictureBox.Width;
-            bmp = new Bitmap(width, height);
-            colors = new Color[width, height];
-            pixels = new Vertor[width, height];
-            RayTrace();
         }
 
         /// <summary>
@@ -60,6 +56,8 @@ namespace CornishRoom_mpustovoi {
         /// <param name="sender">Источник события</param>
         /// <param name="e">Данные события</param>
         private void redrawButton_Click(object sender, EventArgs e) {
+            height = cornishRoomPictureBox.Height;
+            width = cornishRoomPictureBox.Height;
             bmp = new Bitmap(width, height);
             colors = new Color[width, height];
             pixels = new Vertor[width, height];

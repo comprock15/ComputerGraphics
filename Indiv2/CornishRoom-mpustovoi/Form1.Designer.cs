@@ -25,7 +25,6 @@ namespace CornishRoom_mpustovoi {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.cornishRoomPictureBox = new System.Windows.Forms.PictureBox();
             this.redrawButton = new System.Windows.Forms.Button();
             this.firstCubeSpecularityCheckBox = new System.Windows.Forms.CheckBox();
             this.firstSphereSpecularityCheckBox = new System.Windows.Forms.CheckBox();
@@ -47,19 +46,13 @@ namespace CornishRoom_mpustovoi {
             this.specularityLabel = new System.Windows.Forms.Label();
             this.transparencyLabel = new System.Windows.Forms.Label();
             this.lightSourcesLabel = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.cornishRoomPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cornishRoomPictureBox)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cornishRoomPictureBox
-            // 
-            this.cornishRoomPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cornishRoomPictureBox.Location = new System.Drawing.Point(123, 11);
-            this.cornishRoomPictureBox.Margin = new System.Windows.Forms.Padding(2);
-            this.cornishRoomPictureBox.Name = "cornishRoomPictureBox";
-            this.cornishRoomPictureBox.Size = new System.Drawing.Size(670, 670);
-            this.cornishRoomPictureBox.TabIndex = 0;
-            this.cornishRoomPictureBox.TabStop = false;
             // 
             // redrawButton
             // 
@@ -281,6 +274,32 @@ namespace CornishRoom_mpustovoi {
             this.lightSourcesLabel.TabIndex = 21;
             this.lightSourcesLabel.Text = "Освещение";
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.cornishRoomPictureBox);
+            this.splitContainer1.Size = new System.Drawing.Size(804, 692);
+            this.splitContainer1.SplitterDistance = 128;
+            this.splitContainer1.TabIndex = 22;
+            // 
+            // cornishRoomPictureBox
+            // 
+            this.cornishRoomPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cornishRoomPictureBox.Image = global::CornishRoom_mpustovoi.Properties.Resources.Missing_Texture;
+            this.cornishRoomPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.cornishRoomPictureBox.Margin = new System.Windows.Forms.Padding(2);
+            this.cornishRoomPictureBox.Name = "cornishRoomPictureBox";
+            this.cornishRoomPictureBox.Size = new System.Drawing.Size(672, 692);
+            this.cornishRoomPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.cornishRoomPictureBox.TabIndex = 0;
+            this.cornishRoomPictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -308,11 +327,14 @@ namespace CornishRoom_mpustovoi {
             this.Controls.Add(this.firstSphereSpecularityCheckBox);
             this.Controls.Add(this.firstCubeSpecularityCheckBox);
             this.Controls.Add(this.redrawButton);
-            this.Controls.Add(this.cornishRoomPictureBox);
+            this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Корнуэльская комната";
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cornishRoomPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -343,5 +365,6 @@ namespace CornishRoom_mpustovoi {
         private System.Windows.Forms.Label specularityLabel;
         private System.Windows.Forms.Label transparencyLabel;
         private System.Windows.Forms.Label lightSourcesLabel;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
