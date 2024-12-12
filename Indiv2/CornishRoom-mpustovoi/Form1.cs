@@ -268,18 +268,18 @@ namespace CornishRoom_mpustovoi {
             var vertices = polyhedrons[0].edges[5].vertices;
             Vertor shiftUp = (vertices[1] - vertices[0]) / (width - 1);
             Vertor shiftDown = (vertices[2] - vertices[3]) / (width - 1);
+            Vertor up = new Vertor(vertices[0]);
+            Vertor down = new Vertor(vertices[3]);
 
             Parallel.For(0, width, i => {
-                Vertor up = vertices[0] + shiftUp * i;
-                Vertor down = vertices[3] + shiftDown * i;
-
-                Vertor yShift = (up - down) / (height - 1);
+                Vertor yStep = (up - down) / (height - 1);
                 Vertor d = new Vertor(down);
-
                 for (int j = 0; j < height; ++j) {
                     pixels[i, j] = d;
-                    d += yShift;
+                    d += yStep;
                 }
+                up += shiftUp;
+                down += shiftDown;
             });
         }
 
