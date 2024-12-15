@@ -24,14 +24,25 @@ function render() {
 
 function trace(ray, depth, currentObj) {
     if (depth <= 0) { return scene.bgcolor; }
-    results = scene.objects.filter(o => o != currentObj).map(o => o.collision(ray))
+
+    // Пускаем луч к объектам
+    let results = scene.objects.filter(o => o != currentObj).map(o => o.collision(ray))
+    // Ищем ближайшее пересечение
     let result = results
-        .filter(a => a.collide)
+        .filter(a => a.collide) // Убираем объекты, с которыми луч не пересекся
         .reduce((a, b) => {
             return a.dist <= b.dist ? a : b
         }, { collide: false, dist: Infinity })
 
+    // Луч не пересек никакой из объектов
     if (!result.collide) { return scene.bgcolor; }
+
+    // Считаем освещенность в точке
+    let lightIntensity = 0;
+    for (let light of scene.lights) {
+        let lightDirection = Vector.subtract(light.position, result.point).normalize();
+        lightIntensity += light.intensity * Math.max(0, Vector.dot(lightDirection, result.normal));
+    }
 
     // let glow = result.obj.properties.glow
 
@@ -48,6 +59,6 @@ function trace(ray, depth, currentObj) {
     //     g: glow.g + reflectivity.g * reflection.g,
     //     b: glow.b + reflectivity.b * reflection.b
     // })
-
-    return result.obj.properties.color;
+    let color = result.obj.properties.color
+    return Color.scale(color, lightIntensity);
 }

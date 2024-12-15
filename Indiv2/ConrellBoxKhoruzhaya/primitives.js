@@ -1,7 +1,8 @@
 class Scene {
-    constructor(objects = [], bgcolor) {
+    constructor(objects = [], lights = [], bgcolor = new Color(0,0,0)) {
         this.objects = objects;
         this.bgcolor = bgcolor;
+        this.lights = lights;
     }
 
     add(object) {
@@ -10,6 +11,14 @@ class Scene {
 
     remove(object) {
         this.objects = this.objects.filter(o => o != object);
+    }
+}
+
+// Источник света
+class Light {
+    constructor(position, intensity) {
+        this.position = position;
+        this.intensity = intensity;
     }
 }
 
@@ -88,6 +97,14 @@ class Color {
         this.g += c.g;
         this.b += c.b;
         return this;
+    }
+
+    static add(c1, c2) {
+        return new Color(c1.r + c2.r, c1.g + c2.g, c1.b + c2.b);
+    }
+
+    static scale(c, s) {
+        return new Color(c.r * s, c.g * s, c.b * s);
     }
 }
 
