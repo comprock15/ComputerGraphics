@@ -9,6 +9,7 @@ function paintCanvas(pixels) {
     }
 }
 
+// Отрендерить сцену
 function render() {
     for (let i = 0; i < width; ++i) {
         for (let j = 0; j < height; ++j) {
@@ -22,6 +23,7 @@ function render() {
     paintCanvas(pixelGrid);
 }
 
+// Пустить луч
 function trace(ray, depth, currentObj) {
     if (depth <= 0) { return scene.bgcolor; }
 
