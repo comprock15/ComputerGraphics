@@ -124,55 +124,61 @@ class Plane extends Shape {
             if (col1.dist < col.dist)
                 col = col1;
         }
+        col.obj = this;
         return col;
     }
 }
 
 // Класс параллелепипеда
 class Box extends Shape {
-    constructor(location, scale_x, scale_y, scale_z, properties) {
+    constructor(position, scale_x, scale_y, scale_z, properties) {
         super(properties)
-        this.location = location
+        this.position = position
         this.scale_x = scale_x
         this.scale_y = scale_y
         this.scale_z = scale_z
-        this.set_triangles();
+        this.set_faces();
     }
 
-    set_triangles() {
-        let p1, p2, p3, p4, p5, p6, p7, p8;
-        p1 = new Vector(-this.scale_x/2, -this.scale_y/2, -this.scale_z/2).add(this.location);
-        p2 = new Vector(this.scale_x/2, -this.scale_y/2, -this.scale_z/2).add(this.location);
-        p3 = new Vector(-this.scale_x/2, this.scale_y/2, -this.scale_z/2).add(this.location);
-        p4 = new Vector(-this.scale_x/2, -this.scale_y/2, this.scale_z/2).add(this.location);
-        p5 = new Vector(this.scale_x/2, this.scale_y/2, -this.scale_z/2).add(this.location);
-        p6 = new Vector(-this.scale_x/2, this.scale_y/2, this.scale_z/2).add(this.location);
-        p7 = new Vector(this.scale_x/2, -this.scale_y/2, this.scale_z/2).add(this.location);
-        p8 = new Vector(this.scale_x/2, this.scale_y/2, this.scale_z/2).add(this.location);
+    set_faces() {
+        let sx = this.scale_x/2;
+        let sy = this.scale_y/2;
+        let sz = this.scale_z/2;
 
-        this.triangles = [
-            new Triangle([p1, p2, p3], this.properties),
-            new Triangle([p5, p2, p3], this.properties),
-            new Triangle([p1, p2, p4], this.properties), 
-            new Triangle([p7, p2, p4], this.properties), 
-            new Triangle([p1, p4, p3], this.properties),
-            new Triangle([p6, p4, p3], this.properties),
-            new Triangle([p8, p4, p6], this.properties),
-            new Triangle([p8, p4, p7], this.properties),
-            new Triangle([p8, p2, p7], this.properties),
-            new Triangle([p8, p2, p5], this.properties),
-            new Triangle([p8, p3, p6], this.properties),
-            new Triangle([p8, p3, p5], this.properties)
+        let p1, p2, p3, p4, p5, p6, p7, p8;
+        p1 = new Vector(-sx, +sy, -sz).add(this.position);
+        p2 = new Vector(-sx, +sy, +sz).add(this.position);
+        p3 = new Vector(+sx, +sy, +sz).add(this.position);
+        p4 = new Vector(+sx, +sy, -sz).add(this.position);
+        p5 = new Vector(-sx, -sy, -sz).add(this.position);
+        p6 = new Vector(-sx, -sy, +sz).add(this.position);
+        p7 = new Vector(+sx, -sy, +sz).add(this.position);
+        p8 = new Vector(+sx, -sy, -sz).add(this.position);
+
+        this.faces = [
+            // Верхняя
+            new Plane([p1, p2, p3, p4], this.properties),
+            // Нижняя
+            new Plane([p8, p7, p6, p5], this.properties),
+            // Передняя
+            new Plane([p1, p4, p8, p5], this.properties),
+            // Задняя
+            new Plane([p2, p6, p7, p3], this.properties),
+            // Левая
+            new Plane([p2, p1, p5, p6], this.properties),
+            // Правая
+            new Plane([p4, p3, p7, p8], this.properties),
         ];
     }
 
     collision(ray) {
-        let col = this.triangles[0].collision(ray);
-        for (let i = 1; i < this.triangles.length; ++i) {
-            let col1 = this.triangles[i].collision(ray);
+        let col = this.faces[0].collision(ray);
+        for (let i = 1; i < this.faces.length; ++i) {
+            let col1 = this.faces[i].collision(ray);
             if (col1.dist < col.dist)
                 col = col1;
         }
+        col.obj = this;
         return col;
     }
 }

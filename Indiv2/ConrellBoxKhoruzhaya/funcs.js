@@ -23,10 +23,7 @@ function render() {
     paintCanvas(pixelGrid);
 }
 
-// Пустить луч
-function trace(ray, depth, currentObj) {
-    if (depth <= 0) { return scene.bgcolor; }
-
+function scene_collide(ray, currentObj) {
     // Пускаем луч к объектам
     let results = scene.objects.filter(o => o != currentObj).map(o => o.collision(ray))
     // Ищем ближайшее пересечение
@@ -35,6 +32,16 @@ function trace(ray, depth, currentObj) {
         .reduce((a, b) => {
             return a.dist <= b.dist ? a : b
         }, { collide: false, dist: Infinity })
+    return result;
+}
+
+// Пустить луч
+function trace(ray, depth, currentObj) {
+    if (depth <= 0) { return scene.bgcolor; }
+
+    let result = scene_collide(ray, currentObj);
+    let point = result.point;
+    let normal = result.normal;
 
     // Луч не пересек никакой из объектов
     if (!result.collide) { return scene.bgcolor; }
@@ -42,8 +49,16 @@ function trace(ray, depth, currentObj) {
     // Считаем освещенность в точке
     let lightIntensity = 0;
     for (let light of scene.lights) {
-        let lightDirection = Vector.subtract(light.position, result.point).normalize();
-        lightIntensity += light.intensity * Math.max(0, Vector.dot(lightDirection, result.normal));
+        let lightDirection = Vector.subtract(light.position, point).normalize();
+        let lightDistance = Vector.subtract(light.position, point).length;
+
+        // Выпускаем теневой луч
+        let shadowRay = new Ray(point, lightDirection);
+        if (scene_collide(shadowRay, result.obj) < lightDistance){
+            continue;
+        }   
+
+        lightIntensity += light.intensity * Math.max(0, Vector.dot(lightDirection, normal));
     }
 
     // let glow = result.obj.properties.glow
