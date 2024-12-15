@@ -1,3 +1,18 @@
+class Scene {
+    constructor(objects = [], bgcolor) {
+        this.objects = objects;
+        this.bgcolor = bgcolor;
+    }
+
+    add(object) {
+        this.objects.push(object);
+    }
+
+    remove(object) {
+        this.objects = this.objects.filter(o => o != object);
+    }
+}
+
 class Shape {
     constructor(properties) {
         this.properties = properties;
@@ -48,8 +63,31 @@ class Camera {
 // Луч
 class Ray {
     constructor(origin, direction) {
-        this.origin = origin
-        this.direction = direction
+        this.origin = origin;
+        this.direction = direction;
+    }
+}
+
+// Цвет
+class Color {
+    constructor(r, g, b) {
+        this.r = Math.max(0, Math.min(r, 255));
+        this.g = Math.max(0, Math.min(g, 255));
+        this.b = Math.max(0, Math.min(b, 255));
+    }
+
+    scale(s) {
+        this.r *= s;
+        this.g *= s;
+        this.b *= s;
+        return this;
+    }
+
+    add(c) {
+        this.r += c.r;
+        this.g += c.g;
+        this.b += c.b;
+        return this;
     }
 }
 

@@ -14,26 +14,24 @@ function render() {
         for (let j = 0; j < height; ++j) {
             x = (2*(i + 0.5)/width - 1)*Math.tan(camera.fieldOfView/2)*(width/height);
             y = -(2*(j + 0.5)/height - 1)*Math.tan(camera.fieldOfView/2);
-            let ray = new Ray(camera.position, new Vector(x, y, camera.fieldOfView).normalize())
-            color = trace(ray, 0, sphere);
-            pixelGrid[i][j].r += color.r // samples
-            pixelGrid[i][j].g += color.g // samples
-            pixelGrid[i][j].b += color.b // samples
+            let ray = new Ray(camera.position, new Vector(x, y, camera.fieldOfView).normalize());
+            color = trace(ray, 1);
+            pixelGrid[i][j] = color;
         }
     }
     paintCanvas(pixelGrid);
 }
 
 function trace(ray, depth, currentObj) {
-    //if (depth <= 0) { return { r: 0, g: 0, b: 0 }; }
-    // results = world.objects.filter(o => o != currentObj).map(o => o.collision(ray))
-    // let result = results
-    //     .filter(a => a.collide)
-    //     .reduce((a, b) => {
-    //         return a.dist <= b.dist ? a : b
-    //     }, { collide: false, dist: Infinity })
+    if (depth <= 0) { return scene.bgcolor; }
+    results = scene.objects.filter(o => o != currentObj).map(o => o.collision(ray))
+    let result = results
+        .filter(a => a.collide)
+        .reduce((a, b) => {
+            return a.dist <= b.dist ? a : b
+        }, { collide: false, dist: Infinity })
 
-    // if (!result.collide) { return { r: 0, g: 0, b: 0 } }
+    if (!result.collide) { return scene.bgcolor; }
 
     // let glow = result.obj.properties.glow
 
@@ -51,9 +49,5 @@ function trace(ray, depth, currentObj) {
     //     b: glow.b + reflectivity.b * reflection.b
     // })
 
-    let collision = currentObj.collision(ray);
-    if (!collision.collide) {
-        return { r: 0, g: 0, b: 0 }
-    }
-    return { r: 100, g: 10, b: 100 }
+    return result.obj.properties.color;
 }
