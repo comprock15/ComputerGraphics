@@ -38,20 +38,22 @@ function draw(gl, frame)
     const projectionMatrix = getCameraProjectionMatrix();
     const viewMatrix = getCameraViewMatrix();
 
-    drawObj(gl, viewMatrix, projectionMatrix, frame, 0, [0, 0, 0], [0, 0, 0]);
-    drawObj(gl, viewMatrix, projectionMatrix, frame, 1, [0, 0, 0], [1.0, 0.1, 0.1]);
+    drawObj(gl, viewMatrix, projectionMatrix, frame, 0, [0, 10, 0], [0.1, 0.1, 0.1], 0.5 );
+    drawObj(gl, viewMatrix, projectionMatrix, frame, 1, [0, 0, 0], [0.0, 1.0, 0.0], 1.3);
 
 };
 
-function drawObj(gl, camViewMatr, camProjMatr, frame, objIndex, position, rotation)
+function drawObj(gl, camViewMatr, camProjMatr, frame, objIndex, position, rotation, scale)
 {
-    mat4.translate(camViewMatr, camViewMatr, position);
-    mat4.rotateX(camViewMatr, camViewMatr, frame * rotation[0]);
-    mat4.rotateY(camViewMatr, camViewMatr, frame * rotation[1]);
-    mat4.rotateZ(camViewMatr, camViewMatr, frame * rotation[2]);
+    let objViewMatrix = mat4.clone(camViewMatr);
+    mat4.translate(objViewMatrix, objViewMatrix, position);
+    mat4.rotateX(objViewMatrix, objViewMatrix, frame * rotation[0]);
+    mat4.rotateY(objViewMatrix, objViewMatrix, frame * rotation[1]);
+    mat4.rotateZ(objViewMatrix, objViewMatrix, frame * rotation[2]);
+    mat4.scale(objViewMatrix, objViewMatrix, [scale, scale, scale]);
 
     gl.uniformMatrix4fv(uniform_projectionMatrix, false, camProjMatr);
-    gl.uniformMatrix4fv(uniform_modelViewMatrix, false, camViewMatr);
+    gl.uniformMatrix4fv(uniform_modelViewMatrix, false, objViewMatrix);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, objectsData[objIndex].positionBuffer);
     gl.vertexAttribPointer(attrib_vertexPosition, 3, gl.FLOAT, false, 0, 0);

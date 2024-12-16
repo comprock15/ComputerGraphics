@@ -1,4 +1,4 @@
-const cameraPosition = [0, 0, -5];
+const cameraPosition = [0, 0, -25];
 const cameraRotation = [0, 0, 0];
 const cameraSpeed = 0.1;
 const rotationSpeed = 0.02;
@@ -6,14 +6,16 @@ const rotationSpeed = 0.02;
 // Обработка событий клавиатуры
 document.addEventListener('keydown', (event) => {
     switch (event.key) {
-        case 'w': cameraPosition[2] -= cameraSpeed; break;
-        case 's': cameraPosition[2] += cameraSpeed; break;
-        case 'a': cameraPosition[0] -= cameraSpeed; break;
-        case 'd': cameraPosition[0] += cameraSpeed; break;
-        case 'ArrowUp': cameraRotation[1] += rotationSpeed; break;
-        case 'ArrowDown': cameraRotation[1] -= rotationSpeed; break;
-        case 'ArrowLeft': cameraRotation[2] += rotationSpeed; break;
-        case 'ArrowRight': cameraRotation[2] -= rotationSpeed; break;
+        case 'w': cameraPosition[1] -= cameraSpeed; break;
+        case 's': cameraPosition[1] += cameraSpeed; break;
+        case 'a': cameraPosition[0] += cameraSpeed; break;
+        case 'd': cameraPosition[0] -= cameraSpeed; break;
+        case 'q': cameraPosition[2] += cameraSpeed; break;
+        case 'e': cameraPosition[2] -= cameraSpeed; break;
+        case 'ArrowUp': cameraRotation[0] += rotationSpeed; break;
+        case 'ArrowDown': cameraRotation[0] -= rotationSpeed; break;
+        case 'ArrowLeft': cameraRotation[1] += rotationSpeed; break;
+        case 'ArrowRight': cameraRotation[1] -= rotationSpeed; break;
     }
 });
 
