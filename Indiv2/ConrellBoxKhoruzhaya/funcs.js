@@ -48,6 +48,7 @@ function trace(ray, depth, currentObj) {
 
     // Считаем освещенность в точке
     let lightIntensity = 0;
+    let shadowCoeff = 0.3 / scene.lights.length;
     for (let light of scene.lights) {
         let lightDirection = Vector.subtract(light.position, point).normalize();
         let lightDistance = Vector.subtract(light.position, point).length;
@@ -55,12 +56,13 @@ function trace(ray, depth, currentObj) {
         // Выпускаем теневой луч
         let shadowRay = new Ray(point, lightDirection);
         if (scene_collide(shadowRay, result.obj).dist < lightDistance){
-            lightIntensity += 0.3 * light.intensity * Math.max(0, Vector.dot(lightDirection, normal));
+            lightIntensity += shadowCoeff * light.intensity * Math.max(0, Vector.dot(lightDirection, normal));
             continue;
         }   
 
         lightIntensity += light.intensity * Math.max(0, Vector.dot(lightDirection, normal));
     }
+    lightIntensity /= scene.lights.length;
 
     // let glow = result.obj.properties.glow
 

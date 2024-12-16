@@ -26,16 +26,16 @@
                     <tr>
                         <td>Диффузность</td>
                         <td>
-                            <input type="radio" value="none" checked name="sphere1"/>
+                            <input type="radio" value="diffuse" checked name="sphere1"/>
                         </td>
                         <td>
-                            <input type="radio" value="none" checked name="sphere2"/>
+                            <input type="radio" value="diffuse" checked name="sphere2"/>
                         </td>
                         <td>
-                            <input type="radio" value="none" checked name="cube1"/>
+                            <input type="radio" value="diffuse" checked name="cube1"/>
                         </td>
                         <td>
-                            <input type="radio" value="none" checked name="cube2"/>
+                            <input type="radio" value="diffuse" checked name="cube2"/>
                         </td>
                     </tr>
                     <tr>
@@ -56,16 +56,16 @@
                     <tr>
                         <td>Прозрачность</td>
                         <td>
-                            <input type="radio" value="none" name="sphere1"/>
+                            <input type="radio" value="transparent" name="sphere1"/>
                         </td>
                         <td>
-                            <input type="radio" value="none" name="sphere2"/>
+                            <input type="radio" value="transparent" name="sphere2"/>
                         </td>
                         <td>
-                            <input type="radio" value="none" name="cube1"/>
+                            <input type="radio" value="transparent" name="cube1"/>
                         </td>
                         <td>
-                            <input type="radio" value="none" name="cube2"/>
+                            <input type="radio" value="transparent" name="cube2"/>
                         </td>
                     </tr>
                 </table>
@@ -112,22 +112,22 @@
                     <tr>
                         <td>Зеркальность</td>
                         <td>
-                            <input type="radio" value="reflective" checked name="upwall"/>
+                            <input type="radio" value="reflective" name="upwall"/>
                         </td>
                         <td>
-                            <input type="radio" value="reflective" checked name="downwall"/>
+                            <input type="radio" value="reflective" name="downwall"/>
                         </td>
                         <td>
-                            <input type="radio" value="reflective" checked name="leftwall"/>
+                            <input type="radio" value="reflective" name="leftwall"/>
                         </td>
                         <td>
-                            <input type="radio" value="reflective" checked name="rightwall"/>
+                            <input type="radio" value="reflective" name="rightwall"/>
                         </td>
                         <td>
-                            <input type="radio" value="reflective" checked name="frontwall"/>
+                            <input type="radio" value="reflective" name="frontwall"/>
                         </td>
                         <td>
-                            <input type="radio" value="reflective" checked name="backwall"/>
+                            <input type="radio" value="reflective" name="backwall"/>
                         </td>
                     </tr>
                 </table>
@@ -135,13 +135,16 @@
         </tr>
         <tr>
             <td>
-            <button id="render" class="glow-on-hover"><b>РЕНДЕР</b></button>
+            <img src="lizard.gif" height="100">
+            <button id="render" class="glow-on-hover"><b>РЕНДЕР</b></button>    
+            <img src="lizard.gif" height="100">
         </td>
         </tr>
     </table>
     <!--Загрузка -->
     <script src="primitives.js"></script>
     <script src="funcs.js"></script>
+    <script src="changeProperties.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
