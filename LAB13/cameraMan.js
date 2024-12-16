@@ -1,4 +1,4 @@
-const cameraPosition = [0, 0, -100];
+const cameraPosition = [0, 0, -5];
 const cameraRotation = [0, 0, 0];
 const cameraSpeed = 0.1;
 const rotationSpeed = 0.02;

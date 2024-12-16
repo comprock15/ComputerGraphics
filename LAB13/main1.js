@@ -39,7 +39,7 @@ function draw(gl, frame)
     const viewMatrix = getCameraViewMatrix();
 
     drawObj(gl, viewMatrix, projectionMatrix, frame, 0, [0, 0, 0], [0, 0, 0]);
-    drawObj(gl, viewMatrix, projectionMatrix, frame, 1, [0, 0, 0], [0, 0, 0]);
+    drawObj(gl, viewMatrix, projectionMatrix, frame, 1, [0, 0, 0], [1.0, 0.1, 0.1]);
 
 };
 

@@ -66,7 +66,8 @@ async function loadAndParseObj(file) {
       reader.readAsText(file);
     });
 }
-  
+
+
 function parseObj(objText) {
     const lines = objText.split('\n');
     const vertices = [];
@@ -93,7 +94,7 @@ function parseObj(objText) {
                   break;
               case 'f':
                   const face = data.map(part => {
-                      const indices = part.split('/').map(index => index ? parseInt(index) - 1 : null);
+                      const indices = part.split('/').map(index => index ? parseInt(index) - 1: null);
                       return indices;
                   });
                   faces.push(face);
@@ -104,119 +105,82 @@ function parseObj(objText) {
       }
       return  processData(vertices, normals, textures, faces);
 };
-  
+
 function processData(vertices, normals, textures, faces) {
-      const positions = [];
-      const normalData = [];
-      const textureCoords = [];
-      const indices = [];
+    const positions = [];
+    const normalData = [];
+    const textureCoords = [];
+    const indices = [];
   
   
-      for(const face of faces){
-          if(face.length === 3) {
-              // Triangles
-              for(const point of face){
-                  positions.push(...vertices[point[0]]);
+    for(const face of faces){
+        const baseIndex = positions.length / 3;
+        if(face.length === 3) { // Triangles
+            for(const point of face){
+                positions.push(...vertices[point[0]]);
+
+                if(normals.length)
+                   normalData.push(...normals[point[2] || 0]);
+                else 
+                   normalData.push(0,0,1);
+                if(textures.length)
+                    textureCoords.push(...textures[point[1] || 0]);
+                else
+                   textureCoords.push(0,0)
+
+            }
   
-                  if(normals.length)
-                     normalData.push(...normals[point[2] || 0]);
-                  else 
-                     normalData.push(0,0,1);
-                  if(textures.length)
-                      textureCoords.push(...textures[point[1] || 0]);
-                  else
-                     textureCoords.push(0,0)
+            //indices.push(indices.length, indices.length+1, indices.length+2)
+            indices.push(baseIndex, baseIndex + 1, baseIndex + 2);
+        }
+        else if(face.length === 4) { // Quad to 2 triangles
+            const v1 = face[0];
+            const v2 = face[1];
+            const v3 = face[2];
+            const v4 = face[3];
   
-               }
-  
+// Triangle 1 (v1, v2, v3)
+            positions.push(...vertices[v1[0]]);
+            textureCoords.push(...(textures.length ? textures[v1[1] || 0] : [0, 0]));
+            normalData.push(...(normals.length? normals[v1[2] || 0] : [0, 0, 1]));
+            
+            positions.push(...vertices[v2[0]]);
+            textureCoords.push(...(textures.length ? textures[v2[1] || 0] : [0, 0]));
+            normalData.push(...(normals.length? normals[v2[2] || 0] : [0, 0, 1]));
+            
+            positions.push(...vertices[v3[0]]);
+            textureCoords.push(...(textures.length ? textures[v3[1] || 0] : [0, 0]));
+            normalData.push(...(normals.length? normals[v3[2] || 0] : [0, 0, 1]));
+
+            //indices.push(indices.length, indices.length+1, indices.length+2);
+            indices.push(baseIndex, baseIndex + 1, baseIndex + 2);
+
+// Triangle 2 (v1, v3, v4)
+            positions.push(...vertices[v1[0]]);
+            textureCoords.push(...(textures.length ? textures[v1[1] || 0] : [0, 0]));
+            normalData.push(...(normals.length? normals[v1[2] || 0] : [0, 0, 1]));
+            
+            positions.push(...vertices[v3[0]]);
+            textureCoords.push(...(textures.length ? textures[v3[1] || 0] : [0, 0]));
+            normalData.push(...(normals.length? normals[v3[2] || 0] : [0, 0, 1]));
+            
+            positions.push(...vertices[v4[0]]);
+            textureCoords.push(...(textures.length ? textures[v4[1] || 0] : [0, 0]));
+            normalData.push(...(normals.length? normals[v4[2] || 0] : [0, 0, 1]));
+            
             indices.push(indices.length, indices.length+1, indices.length+2)
-             }else if(face.length === 4) {
-                  // Quad to 2 triangles
-                  const v1 = face[0];
-                  const v2 = face[1];
-                  const v3 = face[2];
-                  const v4 = face[3];
+            //indices.push(baseIndex, baseIndex + 2, baseIndex + 3);
+        }
+    }
   
-                  // Triangle 1 (v1, v2, v3)
-                    positions.push(...vertices[v1[0]]);
-                    if(normals.length)
-                      normalData.push(...normals[v1[2] || 0]);
-                    else
-                       normalData.push(0,0,1);
-                   if(textures.length)
-                      textureCoords.push(...textures[v1[1] || 0]);
-                  else
-                       textureCoords.push(0,0)
+     // console.debug(textureCoords);
   
-                   positions.push(...vertices[v2[0]]);
-                   if(normals.length)
-                      normalData.push(...normals[v2[2] || 0]);
-                   else
-                     normalData.push(0,0,1);
-                   if(textures.length)
-                      textureCoords.push(...textures[v2[1] || 0]);
-                   else
-                      textureCoords.push(0,0);
-  
-                   positions.push(...vertices[v3[0]]);
-                   if(normals.length)
-                     normalData.push(...normals[v3[2] || 0]);
-                   else
-                      normalData.push(0,0,1);
-  
-                   if(textures.length)
-                       textureCoords.push(...textures[v3[1] || 0]);
-                  else
-                      textureCoords.push(0,0);
-  
-                    indices.push(indices.length, indices.length+1, indices.length+2)
-  
-  
-                    positions.push(...vertices[v1[0]]);
-                     if(normals.length)
-                          normalData.push(...normals[v1[2] || 0]);
-                     else
-                       normalData.push(0,0,1);
-                       if(textures.length)
-                            textureCoords.push(...textures[v1[1] || 0]);
-                      else
-                       textureCoords.push(0,0)
-  
-  
-                      positions.push(...vertices[v3[0]]);
-                     if(normals.length)
-                        normalData.push(...normals[v3[2] || 0]);
-                     else
-                        normalData.push(0,0,1);
-                     if(textures.length)
-                         textureCoords.push(...textures[v3[1] || 0]);
-                    else
-                      textureCoords.push(0,0);
-  
-  
-  
-                      positions.push(...vertices[v4[0]]);
-                       if(normals.length)
-                          normalData.push(...normals[v4[2] || 0]);
-                       else
-                          normalData.push(0,0,1);
-                       if(textures.length)
-                             textureCoords.push(...textures[v4[1] || 0]);
-                      else
-                        textureCoords.push(0,0);
-  
-                      indices.push(indices.length, indices.length+1, indices.length+2)
-  
-              }
-      }
-  
-  
-      return {
-          positions: new Float32Array(positions),
-          normals: new Float32Array(normalData),
-          textureCoords: new Float32Array(textureCoords),
-          indices: new Uint32Array(indices),
-      };
+    return {
+        positions: new Float32Array(positions),
+        normals: new Float32Array(normalData),
+        textureCoords: new Float32Array(textureCoords),
+        indices: new Uint32Array(indices),
+    };
 };
 
 console.debug('objLoader.js compile');
