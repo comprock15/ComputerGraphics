@@ -90,7 +90,8 @@ function parseObj(objText) {
                   normals.push(data.map(parseFloat));
                   break;
               case 'vt':
-                  textures.push(data.map(parseFloat));
+                  let cccc= data.map(parseFloat);
+                  textures.push([cccc[0], 1.0 - cccc[1]]);
                   break;
               case 'f':
                   const face = data.map(part => {
