@@ -4,24 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cornell box</title>
-    <style>
-        h1 {
-            text-align: center;
-        }
- 
-        canvas {
-            display: block;
-            margin: auto;
-            border: 2px solid black;
-            background-color: #ffffff;
-            width: 500px;
-            height: 500px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Корнуэльская комната</h1>
-    <canvas id="canvas">Элемент сanvas не поддерживается</canvas>
+    <table>
+        <tr>
+            <td rowspan="2">
+                <canvas id="canvas">Элемент сanvas не поддерживается</canvas>
+            </td>
+            <!--Задание параметров объектов-->
+            <td>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Сфера 1</th>
+                        <th>Сфера 2</th>
+                        <th>Куб 1</th>
+                        <th>Куб 2</th>
+                    </tr>
+                    <tr>
+                        <td>Диффузность</td>
+                        <td>
+                            <input type="radio" value="none" checked name="sphere1"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="none" checked name="sphere2"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="none" checked name="cube1"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="none" checked name="cube2"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Зеркальность</td>
+                        <td>
+                            <input type="radio" value="reflective" name="sphere1"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" name="sphere2"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" name="cube1"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" name="cube2"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Прозрачность</td>
+                        <td>
+                            <input type="radio" value="none" name="sphere1"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="none" name="sphere2"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="none" name="cube1"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="none" name="cube2"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <!--Задание параметров сцены-->
+            <td>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th colspan="6">СТЕНЫ</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>Верхняя</th>
+                        <th>Нижняя</th>
+                        <th>Левая</th>
+                        <th>Правая</th>
+                        <th>Передняя</th>
+                        <th>Задняя</th>
+                    </tr>
+                    <tr>
+                        <td>Диффузность</td>
+                        <td>
+                            <input type="radio" value="diffuse" checked name="upwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="diffuse" checked name="downwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="diffuse" checked name="leftwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="diffuse" checked name="rightwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="diffuse" checked name="frontwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="diffuse" checked name="backwall"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Зеркальность</td>
+                        <td>
+                            <input type="radio" value="reflective" checked name="upwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" checked name="downwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" checked name="leftwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" checked name="rightwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" checked name="frontwall"/>
+                        </td>
+                        <td>
+                            <input type="radio" value="reflective" checked name="backwall"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <button id="render" class="glow-on-hover"><b>РЕНДЕР</b></button>
+        </td>
+        </tr>
+    </table>
+    <!--Загрузка -->
     <script src="primitives.js"></script>
     <script src="funcs.js"></script>
     <script src="main.js"></script>

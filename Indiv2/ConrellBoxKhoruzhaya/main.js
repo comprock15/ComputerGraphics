@@ -37,9 +37,9 @@ let scene = new Scene([
     new Sphere(new Vector(2, 1, 7), 3, {color: new Color(50, 0, 200)}),
     new Box(new Vector(-2, -6, 2), 3, 1, 1, {color: new Color(100, 0, 100)})
 ], [ // Источники света
-    new Light(new Vector(0, 9, 3), 1.5)
+    new Light(new Vector(0, 9, 3), 1)
 ], // Цвет фона
 new Color(0, 0, 0));
 
 
-render();
+document.getElementById("render").onclick = () => render();

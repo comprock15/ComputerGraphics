@@ -54,7 +54,8 @@ function trace(ray, depth, currentObj) {
 
         // Выпускаем теневой луч
         let shadowRay = new Ray(point, lightDirection);
-        if (scene_collide(shadowRay, result.obj) < lightDistance){
+        if (scene_collide(shadowRay, result.obj).dist < lightDistance){
+            lightIntensity += 0.3 * light.intensity * Math.max(0, Vector.dot(lightDirection, normal));
             continue;
         }   
 
