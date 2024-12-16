@@ -6,10 +6,11 @@
     <title>LAB12</title>
 </head>
 <body>
+    <input type="file" id="fileInput" accept=".obj" multiple>
     <table>
         <tr>
             <td>
-                <canvas id="maincanvas" width="400" height="400"></canvas>
+                <canvas id="glcanvas" width="400" height="400"></canvas>
             </td>
             <td>
                 <table border="2">
@@ -54,8 +55,17 @@
 
    
         
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script> 
+   <!-- <script src="main.js"></script> -->
     
-    
-
+    <!-- Файл с исходным кодом шейдеров и с функциями инициализации шейдеров -->
+    <script src="shaders.js"></script>
+    <!-- Файл с настройками камеры и её поведения -->
+    <script src="cameraMan.js"></script>
+    <!-- Загрузка текстур -->
+    <script src="textures.js"></script>
+    <!-- Файл с парсингом obj файла -->
+     <script src="objLoader.js"></script>
+    <!-- Главный исполняемый файл который объединяет все функции -->
+    <script src="main1.js"></script>
 </body>
