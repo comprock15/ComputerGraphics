@@ -23,7 +23,6 @@ function changeHandler(radio, obj) {
         obj.properties.reflectivity = false;
         obj.properties.transparency = true;
     }
-    console.log(obj.properties);
 }
 
 Array.prototype.forEach.call(leftWallRadios, function(radio) {
