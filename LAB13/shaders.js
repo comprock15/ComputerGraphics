@@ -1,11 +1,13 @@
 const canvas = document.getElementById('glcanvas');
 const gl = canvas.getContext('webgl2');
 
+// Проверка поддержки WebGL2
 if (!gl) {
-    alert("Unable to initialize WebGL2. Your browser may not support it.");
-};
+  alert('Ваш браузер не поддерживает WebGL2!');
+  throw new Error('WebGL2 not supported');
+}
 
-// Шейдеры
+// Вершинный шейдер
 const vsSource = `#version 300 es
 in vec4 aVertexPosition;
 in vec3 aVertexNormal;
@@ -24,6 +26,7 @@ void main() {
 }
 `;
 
+// Фрагментный шейдер
 const fsSource = `#version 300 es
 precision mediump float;
 
@@ -33,47 +36,45 @@ in vec2 vTextureCoord;
 uniform vec3 uLightDirection;
 uniform sampler2D uSampler;
 
-
 out vec4 fragColor;
 
 void main() {
   vec3 normal = normalize(vNormal);
-  //float diffuse = max(dot(normal, uLightDirection), 0.1);
   vec4 texelColor = texture(uSampler, vTextureCoord);
- //fragColor = vec4(texelColor.rgb * diffuse, texelColor.a);
-   fragColor = vec4(texelColor.rgb , texelColor.a);
+  fragColor = vec4(texelColor.rgb, texelColor.a);
 }
 `;
 
+// Создание и компиляция шейдера
 function getShader(gl, shaderType, shaderSource) {
-    let shader = gl.createShader(shaderType);
-    gl.shaderSource(shader, shaderSource);
-    gl.compileShader(shader);
-     
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      alert("Ошибка компиляции шейдера: " + gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader);   
-      return null;
-    }
-    return shader;  
-};
+  let shader = gl.createShader(shaderType);
+  gl.shaderSource(shader, shaderSource);
+  gl.compileShader(shader);
 
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    alert("Ошибка компиляции шейдера: " + gl.getShaderInfoLog(shader));
+    gl.deleteShader(shader);
+    return null;
+  }
+  return shader;
+}
+
+// Инициализация программы шейдеров
 function initShaderProgram(gl, vertexShaderSource, fragmentShaderSource) {
-    let vertexShader = getShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    let fragmentShader = getShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-  
-    let program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-  
-    gl.linkProgram(program);  
-  
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error("Не удалсь установить шейдеры");
-      return null;
-    }
+  let vertexShader = getShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+  let fragmentShader = getShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
 
-    return program;
-};
+  let program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.error("Не удалсь установить шейдеры");
+    return null;
+  }
+
+  return program;
+}
 
 console.debug('shaders.js compile');
