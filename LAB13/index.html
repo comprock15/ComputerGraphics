@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LAB12</title>
-</head>
-<body>
-    <canvas id="glcanvas" width="500" height="500"></canvas>
-    <input type="file" id="fileInput" accept=".obj" multiple>
-    
-       
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script> 
-   <!-- <script src="main.js"></script> -->
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAB13</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 20px;
+      }
+      canvas {
+        border: 1px solid black;
+        margin-top: 10px;
+      }
+      p {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Солнечная система</h1>
+
+    <!-- Кнопка для загрузки файлов -->
+    <input type="file" id="fileInput" accept=".obj" multiple />
+    <br />
+
+    <!-- Холст для отрисовки объектов -->
+    <canvas id="glcanvas" width="800" height="600"></canvas>
+
+    <!-- Подключение библиотеки для работы с линейной алгеброй -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
+
     <!-- Файл с исходным кодом шейдеров и с функциями инициализации шейдеров -->
     <script src="shaders.js"></script>
     <!-- Файл с настройками камеры и её поведения -->
@@ -21,7 +39,8 @@
     <!-- Загрузка текстур -->
     <script src="textures.js"></script>
     <!-- Файл с парсингом obj файла -->
-     <script src="objLoader.js"></script>
-    <!-- Главный исполняемый файл который объединяет все функции -->
+    <script src="objLoader.js"></script>
+    <!-- Главный исполняемый файл, который объединяет все функции -->
     <script src="main1.js"></script>
-</body>
+  </body>
+</html>
