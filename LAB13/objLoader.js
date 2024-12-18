@@ -39,11 +39,15 @@ function initObj(gl, objData) {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, objData.indices, gl.STATIC_DRAW);
 
+    const modelViewMatrixBuffer = gl.createBuffer(); // Буфер для модельно-видовой матрицы
+    gl.bindBuffer(gl.ARRAY_BUFFER, modelViewMatrixBuffer);
+
     // Добавляем буферы к данным объекта
     objData.positionBuffer = positionBuffer;
     objData.normalBuffer = normalBuffer;
     objData.textureCoordBuffer = textureCoordBuffer;
     objData.indexBuffer = indexBuffer;
+    objData.modelViewMatrixBuffer = modelViewMatrixBuffer;
 };
 
 // Загрузка файла и парсинг OBJ-данных

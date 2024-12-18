@@ -12,15 +12,15 @@ const vsSource = `#version 300 es
 in vec4 aVertexPosition;
 in vec3 aVertexNormal;
 in vec2 aTextureCoord;
+in mat4 aModelViewMatrix;
 
-uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
 
 out vec3 vNormal;
 out vec2 vTextureCoord;
 
 void main() {
-  gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+  gl_Position = uProjectionMatrix * aModelViewMatrix * aVertexPosition;
   vNormal = aVertexNormal;
   vTextureCoord = aTextureCoord;
 }

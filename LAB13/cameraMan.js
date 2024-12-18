@@ -1,5 +1,5 @@
 // Позиция камеры в пространстве
-const cameraPosition = [0, 0, -25];
+const cameraPosition = [0, 0, -35];
 // Углы поворота камеры вокруг осей
 const cameraRotation = [0, 0, 0];
 // Скорость перемещения камеры
