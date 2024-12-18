@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CornishRoom_mpustovoi {
@@ -48,10 +49,6 @@ namespace CornishRoom_mpustovoi {
             InitializeComponent();
             height = cornishRoomPictureBox.Height;
             width = cornishRoomPictureBox.Width;
-            bmp = new Bitmap(width, height);
-            colors = new Color[width, height];
-            pixels = new Vertor[width, height];
-            RayTrace();
         }
 
         /// <summary>
@@ -60,6 +57,8 @@ namespace CornishRoom_mpustovoi {
         /// <param name="sender">Источник события</param>
         /// <param name="e">Данные события</param>
         private void redrawButton_Click(object sender, EventArgs e) {
+            height = cornishRoomPictureBox.Height;
+            width = cornishRoomPictureBox.Height;
             bmp = new Bitmap(width, height);
             colors = new Color[width, height];
             pixels = new Vertor[width, height];
@@ -78,11 +77,16 @@ namespace CornishRoom_mpustovoi {
         public bool VisiblePoint(Vertor lightSourcePosition, Vertor lightIntersectionPosition) {
             double maxIntersect = (lightSourcePosition - lightIntersectionPosition).Length();
             Ray ray = new Ray(lightIntersectionPosition, lightSourcePosition);
-            foreach (var polyhedron in polyhedrons)
+
+            bool isVisible = true;
+            Parallel.ForEach(polyhedrons, (polyhedron, state) => {
                 if (polyhedron.IntersectPolyhedrons(ray, out double intersect, out Vertor normalVector))
-                    if (intersect < maxIntersect && 0.0001 < intersect)
-                        return false;
-            return true;
+                    if (intersect < maxIntersect && 0.001 < intersect) {
+                        isVisible = false;
+                        state.Break();
+                    }
+            });
+            return isVisible;
         }
 
         /// <summary>
@@ -107,8 +111,7 @@ namespace CornishRoom_mpustovoi {
         /// <param name="mediumRefraction">Преломление среды</param>
         /// <returns>Цвет</returns>
         public Vertor RayTrace(Ray ray, int iter, double mediumRefraction) {
-            if (iter <= 0)
-                return new Vertor(0, 0, 0);
+            if (iter <= 0) return new Vertor(0, 0, 0);
             double closestIntersectPosition = 0;
             Vertor normalVector = null;
             double[] material = new double[5];
@@ -116,7 +119,7 @@ namespace CornishRoom_mpustovoi {
             Vertor resColor = new Vertor(0, 0, 0);
             bool sharp = false;
 
-            foreach (var polyhedron in polyhedrons)
+            Parallel.ForEach(polyhedrons, (polyhedron) => {
                 if (polyhedron.IntersectPolyhedrons(ray, out double intersect, out Vertor Normalize))
                     if (intersect < closestIntersectPosition || closestIntersectPosition == 0) {
                         closestIntersectPosition = intersect;
@@ -124,6 +127,7 @@ namespace CornishRoom_mpustovoi {
                         material = polyhedron.material;
                         materialColor = polyhedron.materialColor;
                     }
+            });
 
             if (closestIntersectPosition == 0) return new Vertor(0, 0, 0);
 
@@ -134,11 +138,11 @@ namespace CornishRoom_mpustovoi {
 
             Vertor lightIntersectionPosition = ray.position + ray.direction * closestIntersectPosition;
 
-            foreach (var light in lightSources) {
+            Parallel.ForEach(lightSources, (light) => {
                 resColor += CalculateAmbientCoefficient(material, materialColor);
                 double shadingFactor = VisiblePoint(light.position, lightIntersectionPosition) ? 1 : 0.5;
                 resColor += light.Shading(lightIntersectionPosition, normalVector, materialColor, material[3]) * shadingFactor;
-            }
+            });
 
             if (material[0] > 0)
                 resColor = material[0] * RayTrace(ray.Reflect(lightIntersectionPosition, normalVector), iter - 1, mediumRefraction);
@@ -262,22 +266,24 @@ namespace CornishRoom_mpustovoi {
         /// </summary>
         public void CalcPixels() {
             var vertices = polyhedrons[0].edges[5].vertices;
-
             Vertor shiftUp = (vertices[1] - vertices[0]) / (width - 1);
             Vertor shiftDown = (vertices[2] - vertices[3]) / (width - 1);
             Vertor up = new Vertor(vertices[0]);
             Vertor down = new Vertor(vertices[3]);
 
             for (int i = 0; i < width; ++i) {
-                Vertor yShift = (up - down) / (height - 1);
+                Vertor yStep = (up - down) / (height - 1);
                 Vertor d = new Vertor(down);
                 for (int j = 0; j < height; ++j) {
                     pixels[i, j] = d;
-                    d += yShift;
+                    d += yStep;
                 }
                 up += shiftUp;
                 down += shiftDown;
             }
+            /*Parallel.For(0, width, i => {
+                
+            });*/
         }
 
         /// <summary>
@@ -287,7 +293,7 @@ namespace CornishRoom_mpustovoi {
             InitPolyhedrons();
             CalcPixels();
 
-            for (int i = 0; i < width; ++i)
+            Parallel.For(0, width, i => {
                 for (int j = 0; j < height; ++j) {
                     Ray r = new Ray(camera, pixels[i, j]) { position = new Vertor(pixels[i, j]) };
                     Vertor color = RayTrace(r, 10, 1);
@@ -295,6 +301,7 @@ namespace CornishRoom_mpustovoi {
                         color = Vertor.Normalize(color);
                     colors[i, j] = Color.FromArgb((int)(255 * color.x), (int)(255 * color.y), (int)(255 * color.z));
                 }
+            });
 
             for (int i = 0; i < width; ++i)
                 for (int j = 0; j < height; ++j)
