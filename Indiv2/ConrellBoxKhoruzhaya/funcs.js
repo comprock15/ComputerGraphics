@@ -90,6 +90,7 @@ function trace(ray, depth, currentObj) {
         color.add(reflection.scale(depth / maxDepth / 2));
     if (transparency)
         color.add(refraction.scale(depth / maxDepth / 2));
+        //color = refraction;
     return color;
 }
 
@@ -103,7 +104,7 @@ function reflect(point, ray, normal) {
 function refract(point, ray, normal) {
     let cosi = -Math.max(-1, Math.min(1, Vector.dot(ray.direction, normal)));
     let etai = 1;
-    let etaobj = 0.5;
+    let etaobj = 0.9;
     let norm = normal.copy();
     if (cosi < 0) {
         cosi = -cosi;
@@ -113,5 +114,6 @@ function refract(point, ray, normal) {
     let eta = etai / etaobj;
     let k = 1 - eta*eta*(1-cosi*cosi);
     let newDirection = Vector.scale(ray.direction, eta).add(Vector.scale(norm, eta * cosi - Math.sqrt(k)));
-    return new Ray(point, k < 0 ? new Vector(0,0,0) : newDirection)
+    //return new Ray(point, k < 0 ? new Vector(0,0,0) : newDirection)
+    return new Ray(point, newDirection)
 }
