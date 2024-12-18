@@ -66,13 +66,16 @@ function trace(ray, depth, currentObj) {
     }
     lightIntensity /= scene.lights.length;
 
-    // let glow = result.obj.properties.glow
-
     let reflectivity = result.obj.properties.reflectivity
     let reflection;
-    // let reflection = { r: 0, g: 0, b: 0 };
     if (reflectivity) {
         reflection = trace(reflect(result.point, ray, result.normal), depth - 1, result.obj);
+    }
+
+    let transparency = result.obj.properties.transparency
+    let refraction;
+    if (transparency) {
+        refraction = trace(refract(result.point, ray, result.normal), depth - 1, result.obj);
     }
             
 
@@ -85,12 +88,30 @@ function trace(ray, depth, currentObj) {
     color = Color.scale(color, lightIntensity);
     if (reflectivity)
         color.add(reflection.scale(depth / maxDepth / 2));
-
+    if (transparency)
+        color.add(refraction.scale(depth / maxDepth / 2));
     return color;
 }
 
-// Считает отражение
+// Отражение
 function reflect(point, ray, normal) {
     let newDirection = Vector.subtract(ray.direction, Vector.scale(normal, 2 * Vector.dot(ray.direction, normal)))
-    return (new Ray(point, newDirection))
+    return new Ray(point, newDirection)
+}
+
+// Преломление
+function refract(point, ray, normal) {
+    let cosi = -Math.max(-1, Math.min(1, Vector.dot(ray.direction, normal)));
+    let etai = 1;
+    let etaobj = 0.5;
+    let norm = normal.copy();
+    if (cosi < 0) {
+        cosi = -cosi;
+        etai = [etaobj, etaobj = etai][0];
+        norm.scale(-1);
+    }
+    let eta = etai / etaobj;
+    let k = 1 - eta*eta*(1-cosi*cosi);
+    let newDirection = Vector.scale(ray.direction, eta).add(Vector.scale(norm, eta * cosi - Math.sqrt(k)));
+    return new Ray(point, k < 0 ? new Vector(0,0,0) : newDirection)
 }

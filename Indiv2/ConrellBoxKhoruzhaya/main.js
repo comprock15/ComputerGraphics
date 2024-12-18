@@ -2,8 +2,8 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 // Настройки канваса
-let width = 300;
-let height = 300;
+let width = 500;
+let height = 500;
 ctx.canvas.width = width;
 ctx.canvas.height = height;
 
@@ -69,6 +69,9 @@ let box2 = new Box(new Vector(4, 3, 2), 2, 2, 2, {
     transparency: document.querySelector('input[name=cube2][value=transparent]').checked
 });
 
+
+let light1 = new Light(new Vector(-9, 0, 2), 1);
+
 let scene = new Scene([
     // Комната
     leftWall,
@@ -85,7 +88,7 @@ let scene = new Scene([
     box2
 ], [ // Источники света
     new Light(new Vector(0, 9, 2), 1),
-    //new Light(new Vector(-9, 0, 2), 1)
+    light1,
 ], // Цвет фона
 new Color(0, 0, 0));
 
