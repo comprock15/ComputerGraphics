@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -271,7 +271,7 @@ namespace CornishRoom_mpustovoi {
             Vertor up = new Vertor(vertices[0]);
             Vertor down = new Vertor(vertices[3]);
 
-            Parallel.For(0, width, i => {
+            for (int i = 0; i < width; ++i) {
                 Vertor yStep = (up - down) / (height - 1);
                 Vertor d = new Vertor(down);
                 for (int j = 0; j < height; ++j) {
@@ -280,7 +280,10 @@ namespace CornishRoom_mpustovoi {
                 }
                 up += shiftUp;
                 down += shiftDown;
-            });
+            }
+            /*Parallel.For(0, width, i => {
+                
+            });*/
         }
 
         /// <summary>
