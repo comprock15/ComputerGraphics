@@ -10,6 +10,8 @@ let sphere2Radios = document.querySelectorAll('input[name=sphere2]');
 let box1Radios = document.querySelectorAll('input[name=cube1]');
 let box2Radios = document.querySelectorAll('input[name=cube2]');
 
+let lightCheckbox = document.getElementById("light1");
+
 function changeHandler(radio, obj) {
     if (radio.value == 'diffuse') {
         obj.properties.reflectivity = false;
@@ -65,3 +67,14 @@ Array.prototype.forEach.call(box1Radios, function(radio) {
 Array.prototype.forEach.call(box2Radios, function(radio) {
     radio.onchange = () => changeHandler(radio, box2);
 });
+
+lightCheckbox.onchange = () => {
+    if (lightCheckbox.checked) {
+        //console.log("on")
+        scene.add(light1);
+    }
+    else {
+        //console.log("off")
+        scene.remove(light1);
+    }  
+}

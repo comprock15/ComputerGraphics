@@ -6,11 +6,11 @@ class Scene {
     }
 
     add(object) {
-        this.objects.push(object);
+        this.lights.push(object);
     }
 
     remove(object) {
-        this.objects = this.objects.filter(o => o != object);
+        this.lights = this.lights.filter(o => o != object);
     }
 }
 

@@ -87,8 +87,7 @@ let scene = new Scene([
     box1,
     box2
 ], [ // Источники света
-    new Light(new Vector(0, 9, 2), 1),
-    light1,
+    new Light(new Vector(0, 9, 2), 1)
 ], // Цвет фона
 new Color(0, 0, 0));
 
