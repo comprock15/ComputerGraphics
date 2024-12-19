@@ -26,7 +26,7 @@ async function main() {
   // Загрузка и компиляция шейдерных программ
   const phongProgram = await createProgram(gl, 'shaders/phong.vert', 'shaders/phong.frag');
   const toonProgram = await createProgram(gl, 'shaders/toon.vert', 'shaders/toon.frag');
-  const cookTorranceProgram = await createProgram(gl, 'shaders/cookTorrance.vert', 'shaders/cookTorrance.frag');
+  const orenNayar = await createProgram(gl, 'shaders/orenNayar.vert', 'shaders/orenNayar.frag');
 
   // Загрузка моделей из OBJ-файлов
   const models = {};
@@ -35,6 +35,8 @@ async function main() {
   models.model3 = await loadOBJ(gl, 'models/model3.obj');
   models.model4 = await loadOBJ(gl, 'models/model4.obj');
   models.model5 = await loadOBJ(gl, 'models/model5.obj');
+  models.model6 = await loadOBJ(gl, 'models/bowl.obj');
+  models.model7 = await loadOBJ(gl, 'models/teapot.obj');
 
   // Загрузка текстур для моделей
   const textures = {};
@@ -43,16 +45,108 @@ async function main() {
   textures.texture3 = await loadTexture(gl, 'textures/texture3.jpg');
   textures.texture4 = await loadTexture(gl, 'textures/texture4.jpg');
   textures.texture5 = await loadTexture(gl, 'textures/texture5.jpg');
+  textures.texture6 = await loadTexture(gl, 'textures/bowl.jpg');
+  textures.texture7 = await loadTexture(gl, 'textures/teapot.jpg');
 
   // Настройка объектов сцены (модель, текстура, трансформации, материал, шейдер)
   const sceneObjects = [
     {
-      model: models.model1,
-      texture: textures.texture1,
-      position: vec3.fromValues(0, -40, -50),
+      model: models.model6,
+      texture: textures.texture6,
+      position: vec3.fromValues(25, -30, -20),
       rotation: vec3.create(),
       scale: vec3.fromValues(5.0, 5.0, 5.0),
-      program: phongProgram,
+      program: phongProgram, // чашка с Фонгом
+      material: {
+        ambient: [0.2, 0.2, 0.2],
+        diffuse: [0.8, 0.8, 0.8],
+        specular: [0.5, 0.5, 0.5],
+        shininess: 32.0,
+        roughness: 0.3,
+      }
+    },
+    {
+      model: models.model6,
+      texture: textures.texture6,
+      position: vec3.fromValues(-25, -30, -20),
+      rotation: vec3.create(),
+      scale: vec3.fromValues(5.0, 5.0, 5.0),
+      program: toonProgram, // чашка с туншейдингом
+      material: {
+        ambient: [0.2, 0.2, 0.2],
+        diffuse: [0.8, 0.8, 0.8],
+        specular: [0.5, 0.5, 0.5],
+        shininess: 32.0,
+        roughness: 0.3,
+      }
+    },
+    {
+      model: models.model6,
+      texture: textures.texture6,
+      position: vec3.fromValues(0, -30, -20),
+      rotation: vec3.create(),
+      scale: vec3.fromValues(5.0, 5.0, 5.0),
+      program: orenNayar, // чашка с КФ
+      material: {
+        ambient: [0.2, 0.2, 0.2],
+        diffuse: [0.8, 0.5, 0.3],
+        specular: [0.5, 0.5, 0.5],
+        shininess: 32.0,
+        roughness: 0.5,
+      }
+    },
+    {
+      model: models.model7,
+      texture: textures.texture7,
+      position: vec3.fromValues(30, -30, -50),
+      rotation: vec3.create(),
+      scale: vec3.fromValues(20.0, 20.0, 20.0),
+      program: phongProgram, // чайник с Фонгом
+      material: {
+        ambient: [0.2, 0.2, 0.2],
+        diffuse: [0.8, 0.8, 0.8],
+        specular: [0.5, 0.5, 0.5],
+        shininess: 32.0,
+        roughness: 0.3,
+      }
+    },
+    {
+      model: models.model7,
+      texture: textures.texture7,
+      position: vec3.fromValues(-30, -30, -50),
+      rotation: vec3.create(),
+      scale: vec3.fromValues(20.0, 20.0, 20.0),
+      program: toonProgram, // чайник с туншейдингом
+      material: {
+        ambient: [0.2, 0.2, 0.2],
+        diffuse: [0.8, 0.8, 0.8],
+        specular: [0.5, 0.5, 0.5],
+        shininess: 32.0,
+        roughness: 0.3,
+      }
+    },
+    {
+      model: models.model7,
+      texture: textures.texture7,
+      position: vec3.fromValues(0, -30, -50),
+      rotation: vec3.create(),
+      scale: vec3.fromValues(20.0, 20.0, 20.0),
+      program: orenNayar, // чайник с КФ
+      material: {
+        ambient: [0.2, 0.2, 0.2],
+        diffuse: [0.8, 0.5, 0.3],
+        specular: [0.5, 0.5, 0.5],
+        shininess: 32.0,
+        roughness: 0.5,
+      }
+    },
+    {
+      model: models.model1,
+      texture: textures.texture1,
+      position: vec3.fromValues(0, -10, -50),
+      rotation: vec3.create(),
+      scale: vec3.fromValues(2.0, 2.0, 2.0),
+      program: toonProgram, // слон
       material: {
         ambient: [0.2, 0.2, 0.2],
         diffuse: [0.8, 0.8, 0.8],
@@ -64,10 +158,10 @@ async function main() {
     {
       model: models.model2,
       texture: textures.texture2,
-      position: vec3.fromValues(0, 0, -15),
+      position: vec3.fromValues(-10, 0, -15),
       rotation: vec3.create(),
-      scale: vec3.fromValues(1, 1, 1),
-      program: phongProgram,
+      scale: vec3.fromValues(2, 2, 2),
+      program: phongProgram, // 
       material: {
         ambient: [0.2, 0.2, 0.2],
         diffuse: [0.8, 0.8, 0.8],
@@ -79,9 +173,9 @@ async function main() {
     {
       model: models.model3,
       texture: textures.texture3,
-      position: vec3.fromValues(0, 0, 0),
+      position: vec3.fromValues(10, 0, -15),
       rotation: vec3.create(),
-      scale: vec3.fromValues(0.5, 0.5, 0.5),
+      scale: vec3.fromValues(1, 1, 1),
       program: phongProgram,
       material: {
         ambient: [0.2, 0.2, 0.2],
@@ -95,9 +189,9 @@ async function main() {
     {
       model: models.model4,
       texture: textures.texture4,
-      position: vec3.fromValues(0, -1.5, -5),
+      position: vec3.fromValues(-20, -1.5, -15),
       rotation: vec3.create(),
-      scale: vec3.fromValues(1, 1, 1),
+      scale: vec3.fromValues(2, 2, 2),
       program: phongProgram,
       material: {
         ambient: [0.2, 0.2, 0.2],
@@ -109,7 +203,7 @@ async function main() {
     {
       model: models.model5,
       texture: textures.texture5,
-      position: vec3.fromValues(7, -5, -15),
+      position: vec3.fromValues(20, -5, -15),
       rotation: vec3.create(),
       scale: vec3.fromValues(1, 1, 1),
       program: phongProgram,
@@ -177,7 +271,7 @@ async function main() {
   //Основной цикл отрисовки
   function render() {
     // Очистка экрана и буфера глубины
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.1, 0.1, 0.1, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.enable(gl.DEPTH_TEST);
 
