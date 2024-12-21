@@ -23,15 +23,31 @@ struct PointLight {
     vec3 color;
     float intensity;
 };
-
 uniform PointLight uPointLight;
+
+
+struct DirectionalLight {
+    vec3 direction;
+    vec3 color;
+    float intensity;
+};
+uniform DirectionalLight uDirectionalLight;
+
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 color;
+    float intensity;
+    float coneAngle;
+    float cutoffAngle;
+};
+uniform SpotLight uSpotLight;
 
 // Глобальный свет
 struct AmbientLight {
     vec3 color;
     float intensity;
 };
-
 uniform AmbientLight uAmbientLight;
 
 // Текстура
@@ -73,15 +89,35 @@ vec3 calculatePointLight(vec3 normal, vec3 fragPos, vec3 viewDir) {
     return diffuse * uPointLight.color * uPointLight.intensity * attenuation;
 }
 
+vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos, vec3 viewDir){
+    //vec3 lightDirection = normalize(-uDirectionalLight.direction);
+  //  float diffuseStrength = max(dot(normal, lightDirection), 0.0);
+   //  vec3 diffuse = diffuseStrength * uDirectionalLight.color * uMaterial.diffuse;
+    
+  //  vec3 viewDirection = normalize(-fragPos);
+  //  vec3 reflectDirection = reflect(-lightDirection, normal);
+  //  float specularStrength = pow(max(dot(viewDirection, reflectDirection), 0.0), uMaterial.shininess);
+  //  vec3 specular = specularStrength * uDirectionalLight.color * uMaterial.specular;
+
+  //  return (diffuse + specular) * uDirectionalLight.intensity;
+
+
+    vec3 lightDir = normalize(-uDirectionalLight.direction);
+
+    vec3 diffuse = orenNayar(normal, lightDir, viewDir, uMaterial.diffuse, uMaterial.roughness);
+    return diffuse * uDirectionalLight.color * uDirectionalLight.intensity;
+}
+
 void main() {
     vec3 normal = normalize(vNormal);
     vec3 viewDir = normalize(-vFragPos);
     vec3 ambient = uAmbientLight.color * uMaterial.ambient * uAmbientLight.intensity;
 
     vec3 pointLightResult = calculatePointLight(normal, vFragPos, viewDir);
+    vec3 directionalLightResult = calculateDirectionalLight(normal, vFragPos, viewDir);
     vec4 textureColor = texture(uTexture, vTexCoord);
 
-    vec3 totalLight = ambient + pointLightResult;
+    vec3 totalLight = ambient + pointLightResult + directionalLightResult;
 
     fragColor = vec4(totalLight * textureColor.rgb, 1.0);
 }
