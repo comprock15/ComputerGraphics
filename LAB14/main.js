@@ -223,14 +223,14 @@ async function main() {
       color: [0.1, 0.1, 0.1]
     },
     pointLight: {
-      position: vec3.fromValues(0, 0, 10),
+      position: vec3.fromValues(18, -22, -46),
       color: vec3.fromValues(1, 1, 1),
       intensity: 1.0
     },
     directionalLight: {
       direction: vec3.fromValues(0, -20, -1),
       color: vec3.fromValues(1, 1, 1),
-      intensity: 0.9
+      intensity: 1.0
     },
     spotLight: {
       position: vec3.fromValues(20, 20, 0),
@@ -242,32 +242,48 @@ async function main() {
     },
   };
 
-  // Настройка параметров камеры
+  document.getElementById("global_light").addEventListener('change', (e) => {lights.directionalLight.intensity = document.getElementById("global_light").valueAsNumber; });
+  document.getElementById("point_light").addEventListener('change', (e) => {lights.pointLight.intensity = document.getElementById("point_light").valueAsNumber;});
+  document.getElementById("proj_light").addEventListener('change', (e) => {lights.spotLight.intensity = document.getElementById("proj_light").valueAsNumber;});
+
+  document.getElementById("point_light_posX").addEventListener('change', (e) => {lights.pointLight.position[0] = document.getElementById("point_light_posX").valueAsNumber;});
+  document.getElementById("point_light_posY").addEventListener('change', (e) => {lights.pointLight.position[1] = document.getElementById("point_light_posY").valueAsNumber;});
+  document.getElementById("point_light_posZ").addEventListener('change', (e) => {lights.pointLight.position[2] = document.getElementById("point_light_posZ").valueAsNumber;});
+
+  document.getElementById("proj_light_posX").addEventListener('change', (e) => {lights.spotLight.position[0] = document.getElementById("proj_light_posX").valueAsNumber;});
+  document.getElementById("proj_light_posY").addEventListener('change', (e) => {lights.spotLight.position[1] = document.getElementById("proj_light_posY").valueAsNumber;});
+  document.getElementById("proj_light_posZ").addEventListener('change', (e) => {lights.spotLight.position[2] = document.getElementById("proj_light_posZ").valueAsNumber;});
+
+  document.getElementById("proj_light_rotX").addEventListener('change', (e) => {lights.spotLight.direction[0] = document.getElementById("proj_light_rotX").valueAsNumber;});
+  document.getElementById("proj_light_rotY").addEventListener('change', (e) => {lights.spotLight.direction[1] = document.getElementById("proj_light_rotY").valueAsNumber;});
+  document.getElementById("proj_light_rotZ").addEventListener('change', (e) => {lights.spotLight.direction[2] = document.getElementById("proj_light_rotZ").valueAsNumber;});
+
+
   const camera = {
-    eye: vec3.fromValues(0, 0, 10),      // Позиция камеры
-    center: vec3.fromValues(0, 0, -5),  // Точка, на которую смотрит камера
-    up: vec3.fromValues(0, 1, 0),       // Направление вверх
+    cameraPosition: vec3.fromValues(0, 0, -35),
+    // Углы поворота камеры вокруг осей
+    cameraRotation: vec3.fromValues(0, 0, 0),
   };
 
   // Управление камерой с помощью клавиш
   document.addEventListener('keydown', (event) => {
     switch (event.key) {
-      case 'w': camera.eye[1] -= 1.0; break; // Вверх
-      case 's': camera.eye[1] += 1.0; break; // Вниз
-      case 'a': camera.eye[0] += 1.0; break; // Влево
-      case 'd': camera.eye[0] -= 1.0; break; // Вправо
-      case 'q': camera.eye[2] += 1.0; break; // Приблизить
-      case 'e': camera.eye[2] -= 1.0; break; // Отдалить
-      // case 'ArrowUp': cameraRotation[0] += rotationSpeed; break;
-      // case 'ArrowDown': cameraRotation[0] -= rotationSpeed; break;
-      // case 'ArrowLeft': cameraRotation[1] += rotationSpeed; break;
-      // case 'ArrowRight': cameraRotation[1] -= rotationSpeed; break;
+      case 'w': camera.cameraPosition[1] -= 0.1; break; // Вниз по Y
+      case 's': camera.cameraPosition[1] += 0.1; break; // Вверх по Y
+      case 'a': camera.cameraPosition[0] += 0.1; break; // Вправо по X
+      case 'd': camera.cameraPosition[0] -= 0.1; break; // Влево по X
+      case 'q': camera.cameraPosition[2] += 0.1; break; // Вверх по Z
+      case 'e': camera.cameraPosition[2] -= 0.1; break; // Вниз по Z
+      case 'ArrowUp': camera.cameraRotation[0] += 0.02; break;
+      case 'ArrowDown': camera.cameraRotation[0] -= 0.02; break;
+      case 'ArrowLeft': camera.cameraRotation[1] += 0.02; break;
+      case 'ArrowRight': camera.cameraRotation[1] -= 0.02; break;
     }
   });
 
-  const viewMatrix = mat4.create();
+  let viewMatrix = mat4.create();
   const projectionMatrix = mat4.create();
-
+  
   //Основной цикл отрисовки
   function render() {
     // Очистка экрана и буфера глубины
@@ -276,8 +292,14 @@ async function main() {
     gl.enable(gl.DEPTH_TEST);
 
     // Установка матриц камеры и проекции
-    mat4.lookAt(viewMatrix, camera.eye, camera.center, camera.up);
     mat4.perspective(projectionMatrix, 45 * Math.PI / 180, canvas.width / canvas.height, 0.1, 1000.0);
+
+    viewMatrix = mat4.create();
+    mat4.translate(viewMatrix, viewMatrix, camera.cameraPosition);
+    mat4.rotateX(viewMatrix, viewMatrix, camera.cameraRotation[0]);
+    mat4.rotateY(viewMatrix, viewMatrix, camera.cameraRotation[1]);
+    mat4.rotateZ(viewMatrix, viewMatrix, camera.cameraRotation[2]);
+    
 
     // Отрисовка объектов сцены
     sceneObjects.forEach(obj => {
