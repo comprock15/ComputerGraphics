@@ -14,8 +14,8 @@ async function main() {
 
   // Функция для настройки размера канваса и области отображения
   const setCanvasSize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // canvas.width = window.innerWidth;
+    // canvas.height = window.innerHeight;
     gl.viewport(0, 0, canvas.width, canvas.height);
   };
 

@@ -3,19 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   
     <title>WebGL Scene</title>
     <style>
-      body {
+      /* body {
         margin: 0;
         overflow: hidden;
       }
       canvas {
         display: block;
+      } */
+      td {
+        padding: 5px;
       }
-    </style>
+    </style> 
   </head>
   <body>
-    <canvas id="glCanvas"></canvas>
+    <table>
+      <tr>
+        <td>
+          <canvas id="glCanvas" width="800" height="600"></canvas>
+        </td>
+        <td>
+          <table border="1">
+            <tr>
+              <th>Источник света</th>
+              <td>Глобальный </td>
+              <td>Точечный </td>
+              <td>Прожекторный </td>
+            </tr>
+            <tr>
+              <th>Интенсивность</th>
+              <td>
+                <input type="number" id="global_light" name="global_light" min="0.0" max="1.0" step="0.1" value="0.8"/>
+              </td>
+              <td>
+                <input type="number" id="point_light" name="point_light" min="0.0" max="1.0" step="0.1" value="0.8"/>
+              </td>
+              <td>
+                <input type="number" id="proj_light" name="proj_light" min="0.0" max="1.0" step="0.1" value="0.8"/>
+              </td>
+            </tr>
+            <tr>
+              <th rowspan="3">Положение</th>
+              <td rowspan="3"></td>
+              <td>
+                  <label for="point_light_posX">X</label>
+                  <input type="number" id="point_light_posX" name="point_light_posX" min="-100" max="100" step="1" value="0"/>
+              </td>
+              <td>
+                <label for="proj_light_posX">X</label>
+                <input type="number" id="proj_light_posX" name="proj_light_posX" min="-100" max="100" step="1" value="0"/>
+              </td>
+            </tr>
+            <tr>
+              
+              <td>
+                <label for="point_light_posY">Y</label>
+                <input type="number" id="point_light_posY" name="point_light_posY" min="-100" max="100" step="1" value="0"/>
+              </td>
+              <td>
+                <label for="proj_light_posY">Y</label>
+                <input type="number" id="proj_light_posY" name="proj_light_posY" min="-100" max="100" step="1" value="0"/>
+              </td>
+            </tr>
+            <tr>
+              
+              <td>
+                <label for="point_light_posZ">Z</label>
+                <input type="number" id="point_light_posZ" name="point_light_posZ" min="-100" max="100" step="1" value="0"/>
+              </td>
+              <td>
+                <label for="proj_light_posZ">Z</label>
+                <input type="number" id="proj_light_posZ" name="proj_light_posZ" min="-100" max="100" step="1" value="0"/>
+              </td>
+            </tr>
+      
+            <tr>
+              <th rowspan="4">Прочее</th>
+              <td rowspan="4"></td>
+              <td rowspan="4"></td>
+              <td>
+                <label for="proj_light_width">Ширина   конуса</label>
+                <input id="proj_light_width" type="range" min="0" max="100" value="50"/>
+              </td>
+            </tr>
+            <tr>
+              
+      
+              <td>
+                <label for="proj_light_rotX">Направление по X</label>
+                <input id="proj_light_rotX" type="range" min="-1" max="1" step="0.01" value="0"/>
+              </td>
+            </tr>
+            <tr>
+      
+              <td>
+                <label for="proj_light_rotY">Направление по Y</label>
+                <input id="proj_light_rotY" type="range" min="-1" max="1" step="0.01" value="0"/>
+              </td>
+            </tr>
+            <tr>
+      
+              <td>
+                <label for="proj_light_rotZ">Направление по Z</label>
+                <input id="proj_light_rotZ" type="range" min="-1" max="1" step="0.01" value="0"/>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
     <script type="module" src="main.js"></script>
   </body>
