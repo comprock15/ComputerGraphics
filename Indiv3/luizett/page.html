@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrain with Snow</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="glcanvas"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
+    <script>
+        const canvas = document.getElementById('glcanvas');
+        const gl = canvas.getContext('webgl2');
+
+        if (!gl) {
+            alert('WebGL2 not supported');
+        }
+    </script>
+    <script src="shaders_loader.js"></script>
+    <script src="cameraMan.js"></script>
+    <script src="obj_loader.js"></script>
+    <script src="textures_loader.js"></script>
+    <script src="sceneSettings.js"
+    <script src="main.js"></script>
+</body>
+</html>
