@@ -261,9 +261,9 @@ async function main() {
   document.getElementById("proj_light_width").addEventListener('change', (e) => {lights.spotLight.cutoffAngle = document.getElementById("proj_light_width").valueAsNumber * Math.PI / 180;})
 
   const camera = {
-    cameraPosition: vec3.fromValues(0, 0, -35),
+    cameraPosition: vec3.fromValues(0, 5, -40),
     // Углы поворота камеры вокруг осей
-    cameraRotation: vec3.fromValues(0, 0, 0),
+    cameraRotation: vec3.fromValues(20 * Math.PI/180, 0, 0),
     cameraSpeed: 0.5,
     cameraRotationSpeed: 0.02,
   };
