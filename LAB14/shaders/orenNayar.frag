@@ -108,6 +108,25 @@ vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos, vec3 viewDir){
     return diffuse * uDirectionalLight.color * uDirectionalLight.intensity;
 }
 
+vec3 calculateSpotLight(vec3 normal, vec3 fragPos) {
+    vec3 lightDirection = normalize(uSpotLight.direction - fragPos);
+    float distance = length(uSpotLight.position - fragPos);
+    float theta = dot(lightDirection, normalize(-uSpotLight.direction));
+    float epsilon = uSpotLight.cutoffAngle - uSpotLight.coneAngle;
+
+    if (theta > cos(uSpotLight.cutoffAngle)) {
+        float diffuseStrength = max(dot(normal, lightDirection), 0.0);
+        vec3 viewDirection = normalize(-fragPos);
+        vec3 diffuse = diffuseStrength * uSpotLight.color * orenNayar(normal, lightDirection, viewDirection, uMaterial.diffuse, uMaterial.roughness);
+
+        float attenuation = 1.0 / (0.01 + 0.01 * distance + 0.01 * distance * distance);
+       
+        float intensity = (theta - cos(uSpotLight.cutoffAngle)) / epsilon;
+        return attenuation * diffuse * uSpotLight.intensity * intensity;
+    }
+    return vec3(0,0,0);
+}
+
 void main() {
     vec3 normal = normalize(vNormal);
     vec3 viewDir = normalize(-vFragPos);
@@ -115,9 +134,10 @@ void main() {
 
     vec3 pointLightResult = calculatePointLight(normal, vFragPos, viewDir);
     vec3 directionalLightResult = calculateDirectionalLight(normal, vFragPos, viewDir);
-    vec4 textureColor = texture(uTexture, vTexCoord);
+    vec3 spotLightResult = calculateSpotLight(normal, vFragPos);
 
-    vec3 totalLight = ambient + pointLightResult + directionalLightResult;
+    vec4 textureColor = texture(uTexture, vTexCoord);
+    vec3 totalLight = ambient + pointLightResult + directionalLightResult + spotLightResult;
 
     fragColor = vec4(totalLight * textureColor.rgb, 1.0);
 }
