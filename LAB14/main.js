@@ -264,21 +264,29 @@ async function main() {
     cameraPosition: vec3.fromValues(0, 0, -35),
     // Углы поворота камеры вокруг осей
     cameraRotation: vec3.fromValues(0, 0, 0),
+    cameraSpeed: 0.5,
+    cameraRotationSpeed: 0.02,
   };
 
   // Управление камерой с помощью клавиш
   document.addEventListener('keydown', (event) => {
     switch (event.key) {
-      case 'w': camera.cameraPosition[1] -= 0.1; break; // Вниз по Y
-      case 's': camera.cameraPosition[1] += 0.1; break; // Вверх по Y
-      case 'a': camera.cameraPosition[0] += 0.1; break; // Вправо по X
-      case 'd': camera.cameraPosition[0] -= 0.1; break; // Влево по X
-      case 'q': camera.cameraPosition[2] += 0.1; break; // Вверх по Z
-      case 'e': camera.cameraPosition[2] -= 0.1; break; // Вниз по Z
-      case 'ArrowUp': camera.cameraRotation[0] += 0.02; break;
-      case 'ArrowDown': camera.cameraRotation[0] -= 0.02; break;
-      case 'ArrowLeft': camera.cameraRotation[1] += 0.02; break;
-      case 'ArrowRight': camera.cameraRotation[1] -= 0.02; break;
+      case 'ц':
+      case 'w': camera.cameraPosition[1] -= camera.cameraSpeed; break; // Вниз по Y
+      case 'ы':
+      case 's': camera.cameraPosition[1] += camera.cameraSpeed; break; // Вверх по Y
+      case 'ф':
+      case 'a': camera.cameraPosition[0] += camera.cameraSpeed; break; // Вправо по X
+      case 'в':
+      case 'd': camera.cameraPosition[0] -= camera.cameraSpeed; break; // Влево по X
+      case 'й':
+      case 'q': camera.cameraPosition[2] += camera.cameraSpeed; break; // Вверх по Z
+      case 'у':
+      case 'e': camera.cameraPosition[2] -= camera.cameraSpeed; break; // Вниз по Z
+      case 'ArrowUp': camera.cameraRotation[0] += camera.cameraRotationSpeed; break;
+      case 'ArrowDown': camera.cameraRotation[0] -= camera.cameraRotationSpeed; break;
+      case 'ArrowLeft': camera.cameraRotation[1] += camera.cameraRotationSpeed; break;
+      case 'ArrowRight': camera.cameraRotation[1] -= camera.cameraRotationSpeed; break;
     }
   });
 
