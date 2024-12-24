@@ -53,7 +53,7 @@ vec3 calculatePointLight(vec3 normal, vec3 fragPos) {
     float distance = length(uPointLight.position - fragPos);
     float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
    
-     return  attenuation * (diffuse + specular) * uPointLight.intensity;
+    return  attenuation * (diffuse + specular) * uPointLight.intensity;
 }
 
 vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos){
@@ -70,13 +70,12 @@ vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos){
 }
 
 vec3 calculateSpotLight(vec3 normal, vec3 fragPos) {
-    vec3 lightDirection = normalize(uSpotLight.position - fragPos);
-     float distance = length(uSpotLight.position - fragPos);
-    vec3 lightDir = normalize(-lightDirection);
-    float theta = dot(lightDir, normalize(-uSpotLight.direction));
+    vec3 lightDirection = normalize(uSpotLight.direction - fragPos);
+    float distance = length(uSpotLight.position - fragPos);
+    float theta = dot(lightDirection, normalize(-uSpotLight.direction));
     float epsilon = uSpotLight.cutoffAngle - uSpotLight.coneAngle;
 
-    if(theta > cos(uSpotLight.cutoffAngle)){
+    if (theta > cos(uSpotLight.cutoffAngle)) {
         float diffuseStrength = max(dot(normal, lightDirection), 0.0);
         vec3 diffuse = diffuseStrength * uSpotLight.color * uMaterial.diffuse;
 
@@ -84,12 +83,12 @@ vec3 calculateSpotLight(vec3 normal, vec3 fragPos) {
         vec3 reflectDirection = reflect(-lightDirection, normal);
         float specularStrength = pow(max(dot(viewDirection, reflectDirection), 0.0), uMaterial.shininess);
         vec3 specular = specularStrength * uSpotLight.color * uMaterial.specular;
-        float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
+        float attenuation = 1.0 / (0.01 + 0.01 * distance + 0.01 * distance * distance);
        
-      float intensity = (theta - cos(uSpotLight.cutoffAngle)) / epsilon;
-        return  attenuation *  (diffuse + specular) * uSpotLight.intensity * intensity;
+        float intensity = (theta - cos(uSpotLight.cutoffAngle)) / epsilon;
+        return attenuation * (diffuse + specular) * uSpotLight.intensity * intensity;
     }
-        return vec3(0,0,0);
+    return vec3(0,0,0);
 }
 
 

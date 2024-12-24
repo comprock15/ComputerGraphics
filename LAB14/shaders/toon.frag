@@ -79,7 +79,7 @@ vec3 calculateSpotLight(vec3 normal, vec3 fragPos) {
         float diffuseStrength = max(dot(normal, lightDirection), 0.0);
         vec3 diffuse = toonShading(diffuseStrength) * uSpotLight.color * uMaterial.diffuse;
 
-        float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance);
+        float attenuation = 1.0 / (0.01 + 0.01 * distance + 0.01 * distance * distance);
         float intensity = (theta - cos(uSpotLight.cutoffAngle)) / epsilon;
 
         return attenuation * diffuse * uSpotLight.intensity * intensity;

@@ -233,10 +233,10 @@ async function main() {
       intensity: 1.0
     },
     spotLight: {
-      position: vec3.fromValues(20, 20, 0),
-      direction: vec3.fromValues(0, -1, -1),
+      position: vec3.fromValues(0, 0, -35),
+      direction: vec3.fromValues(0, 0, -1),
       color: vec3.fromValues(1, 1, 1),
-      intensity: 1.0,
+      intensity: 5.0,
       coneAngle: 30 * Math.PI / 180,
       cutoffAngle: 40 * Math.PI / 180
     },
@@ -258,6 +258,7 @@ async function main() {
   document.getElementById("proj_light_rotY").addEventListener('change', (e) => {lights.spotLight.direction[1] = document.getElementById("proj_light_rotY").valueAsNumber;});
   document.getElementById("proj_light_rotZ").addEventListener('change', (e) => {lights.spotLight.direction[2] = document.getElementById("proj_light_rotZ").valueAsNumber;});
 
+  document.getElementById("proj_light_width").addEventListener('change', (e) => {lights.spotLight.cutoffAngle = document.getElementById("proj_light_width").valueAsNumber * Math.PI / 180;})
 
   const camera = {
     cameraPosition: vec3.fromValues(0, 0, -35),
