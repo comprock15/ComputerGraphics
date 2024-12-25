@@ -3,12 +3,12 @@
 // let viewMatrix = mat4.create();
 
 const camera = {
-    position: vec3.fromValues(0, -20, -50),
+    position: vec3.fromValues(0, -40, -50),
     rotation: vec3.fromValues(0, 0, 0),
     move_speed: 0.5,
     rot_speed: 0.02,
   };
-s
+
 // function cameraMatrixSetUp()
 // {
 //     mat4.perspective(projectionMatrix, 45 * Math.PI / 180, canvas.width / canvas.height, 0.1, 1000.0);

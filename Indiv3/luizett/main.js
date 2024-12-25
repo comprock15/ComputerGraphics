@@ -8,7 +8,7 @@ async function main(){
     // Источники света
     const lights = {
         ambientLight: {
-        color: [0.1, 0.1, 0.1]
+        color: [0.5, 0.5, 0.5]
         },
 
         directionalLight: {
@@ -21,8 +21,8 @@ async function main(){
             position: vec3.fromValues(0, 20, 0),
             direction: vec3.fromValues(0, -20, -1),
             color: vec3.fromValues(1, 1, 1),
-            intensity: 0.9,
-            cutoff: Math.cos(Math.PI / 24)
+            intensity: 0.5,
+            cutoff: Math.cos(Math.PI / 12)
         } 
     };
 
@@ -46,11 +46,11 @@ async function main(){
         {
           model: models.airship,
           texture: textures.airship,
-          position: vec3.fromValues(10, 15, 0),
-          rotation: vec3.fromValues(0, 0, 0),
+          position: vec3.fromValues(0, 40, 0),
+          rotation: vec3.fromValues(0, 3.2, 0),
           scale: vec3.fromValues(0.01, 0.01, 0.01),
           material: {
-            ambient: [0.2, 0.2, 0.2],
+            ambient: [0.4, 0.4, 0.4],
             diffuse: [0.8, 0.8, 0.8],
             specular: [0.5, 0.5, 0.5],
             shininess: 32.0,
@@ -60,25 +60,25 @@ async function main(){
         {
           model: models.cloud,
           texture: textures.cloud,
-          position: vec3.fromValues(0, 0, 0),
+          position: vec3.fromValues(0, 40, 0),
           rotation: vec3.fromValues(0, 0, 0),
-          scale: vec3.fromValues(0.01, 0.01, 0.01),
+          scale: vec3.fromValues(1.0, 1.0, 1.0),
           material: {
-            ambient: [0.2, 0.2, 0.2],
+            ambient: [1.0, 1.0, 1.0],
             diffuse: [0.8, 0.8, 0.8],
-            specular: [0.5, 0.5, 0.5],
-            shininess: 32.0,
+            specular: [1.5, 1.5, 1.5],
+            shininess: 50.0,
           }
         },
         // Воздушный шар
         {
           model: models.balloon,
           texture: textures.balloon,
-          position: vec3.fromValues(0, 0, 0),
+          position: vec3.fromValues(20, 40, 0),
           rotation: vec3.fromValues(0, 0, 0),
           scale: vec3.fromValues(0.2, 0.2, 0.2),
           material: {
-            ambient: [0.2, 0.2, 0.2],
+            ambient: [0.5, 0.5, 0.5],
             diffuse: [0.8, 0.8, 0.8],
             specular: [0.5, 0.5, 0.5],
             shininess: 32.0,
@@ -105,33 +105,33 @@ async function main(){
         switch (event.key) {
           case 'a': 
             camera.position[0] += camera.move_speed; 
-            lights.spotLight.position[0] += camera.move_speed;
-            sceneObjects.at(1).position += camera.move_speed;
+            lights.spotLight.position[0] -= camera.move_speed;
+            sceneObjects.at(1).position[0] -= camera.move_speed;
             break; // Вправо по X
           case 'd': 
             camera.position[0] -= camera.move_speed; 
-            lights.spotLight.position[0] -= camera.move_speed;
-            sceneObjects.at(1).position[0] -= camera.move_speed;
+            lights.spotLight.position[0] += camera.move_speed;
+            sceneObjects.at(1).position[0] += camera.move_speed;
             break; // Влево по X
           case 'w': 
             camera.position[1] -= camera.move_speed; 
             lights.spotLight.position[1] -= camera.move_speed;
-            sceneObjects.at(1).position[1] -= camera.move_speed;
+            sceneObjects.at(1).position[1] += camera.move_speed;
             break; // Вниз по Ya
           case 's': 
             camera.position[1] += camera.move_speed; 
             lights.spotLight.position[1] += camera.move_speed;
-            sceneObjects.at(1).position[1] += camera.move_speed;
+            sceneObjects.at(1).position[1] -= camera.move_speed;
             break; // Вверх по Y
           case 'q': 
             camera.position[2] += camera.move_speed; 
-            lights.spotLight.position[2] += camera.move_speed;
-            sceneObjects.at(1).position[2] += camera.move_speed;
+            lights.spotLight.position[2] -= camera.move_speed;
+            sceneObjects.at(1).position[2] -= camera.move_speed;
             break; // Вверх по Z
           case 'e': 
             camera.position[2] -= camera.move_speed; 
-            lights.spotLight.position[2] -= camera.move_speed;
-            sceneObjects.at(1).position[2] -= camera.move_speed;
+            lights.spotLight.position[2] += camera.move_speed;
+            sceneObjects.at(1).position[2] += camera.move_speed;
             break; // Вниз по Z
     
           case 'ArrowUp': 
@@ -144,11 +144,11 @@ async function main(){
             break;
           case 'ArrowLeft': 
             camera.rotation[1] += camera.rot_speed; 
-            lights.spotLight.rotation[1] += camera.rot_speed; 
+           // lights.spotLight.rotation[1] += camera.rot_speed; 
             break;
           case 'ArrowRight': 
             camera.rotation[1] -= camera.rot_speed; 
-            lights.spotLight.rotation[1] -= camera.rot_speed; 
+            //qlights.spotLight.rotation[1] -= camera.rot_speed; 
             break;
   
           case 't':
@@ -202,8 +202,41 @@ async function main(){
 
     let viewMatrix = mat4.create();
     let projectionMatrix = mat4.create();
+
+    let max = 50;
+    let min = -50;
+    let cloudsPositions = [];
+    let cloudsRotations = [];
+    for (let i = 0; i < 5; i++) {
+      cloudsPositions.push([Math.floor(Math.random() * (max - min + 1)) + min, Math.floor(Math.random() * (40 - 30 + 1)) + 30, Math.floor(Math.random() * (max - min + 1)) + min]);
+      cloudsRotations.push(Math.random());
+    }
+
+    let balloonsPositions = [];
+    for (let i = 0; i < 2; i++) {
+      balloonsPositions.push([Math.floor(Math.random() * (max - min + 1)) + min, Math.floor(Math.random() * (40 - 30 + 1)) + 30, Math.floor(Math.random() * (max - min + 1)) + min]);
+    }
+
+    let camMode = false;
+    document.addEventListener('keydown', (event) => {
+      if (event.key == 'n') { 
+        if (camMode){
+          camera.rotation =vec3.fromValues(0, 0, 0);
+          camera.position[2] -= 20;
+          camera.position[1] += -25;
+          camMode = false;
+        }
+        else {
+          camMode = true;
+          camera.rotation = vec3.fromValues(20, 0, 0);
+          camera.position[2] += 20;
+          camera.position[1] -= -25;
+        }
+      }
+    });
     
     let time = 0;
+    let cloudsTimestamp = [0, 0, 0, 0, 0];
     function render() {
         time += 0.01;
 
@@ -229,29 +262,6 @@ async function main(){
         for (let index = 0; index < sceneObjects.length; index++) {
             const obj = sceneObjects[index];
 
-
-
-        gl.uniformMatrix4fv(uViewMatrixLocation, false, viewMatrix);
-        gl.uniformMatrix4fv(uProjectionMatrixLocation, false, projectionMatrix);
-
-            gl.uniform1i(uIsTerrainLocation, index == 4);
-            gl.uniform1i(uIsAirshipLocation, index == 1);
-
-            //const modelMatrix = getObjViewMatrix(viewMatrix, obj.position, obj.rotation, obj.scale);
-            const modelMatrix = mat4.create();
-            mat4.translate(modelMatrix, modelMatrix, obj.position);
-            mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
-            mat4.rotateY(modelMatrix, modelMatrix, obj.rotation[1]);
-            mat4.rotateZ(modelMatrix, modelMatrix, obj.rotation[2]);
-            mat4.scale(modelMatrix, modelMatrix, obj.scale);
-            gl.uniformMatrix4fv(uModelMatrixLocation, false, modelMatrix);
-
-            const normalMatrix = mat4.create();
-            mat4.invert(normalMatrix, modelMatrix);
-            mat4.transpose(normalMatrix, normalMatrix);
-            gl.uniformMatrix4fv(uNormalMatrixLocation, false, normalMatrix);
-
-            
             gl.uniform3fv(uMaterialAmbientLocation, obj.material.ambient);
             gl.uniform3fv(uMaterialDiffuseLocation, obj.material.diffuse);
             gl.uniform3fv(uMaterialSpecularLocation, obj.material.specular);
@@ -259,21 +269,129 @@ async function main(){
 
             gl.uniform1i(uTextureLocation, index);
 
-            gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.vertexBuffer);
-            gl.vertexAttribPointer(positionAttribute, 3, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(positionAttribute);
-    
-            gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.normalBuffer);
-            gl.vertexAttribPointer(normalAttribute, 3, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(normalAttribute);
-    
-            gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.uvBuffer);
-            gl.vertexAttribPointer(uvAttribute, 2, gl.FLOAT, false, 0, 0);
-            gl.enableVertexAttribArray(uvAttribute);
-    
-          // Отрисовка модели
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.model.indexBuffer);
-            gl.drawElements(gl.TRIANGLES, obj.model.indices.length, gl.UNSIGNED_SHORT, 0);
+            gl.uniform1i(uIsTerrainLocation, index == 4);
+            gl.uniform1i(uIsAirshipLocation, index == 1);
+
+            //const modelMatrix = getObjViewMatrix(viewMatrix, obj.position, obj.rotation, obj.scale);
+            
+            // воздушные шары
+            if (index == 3)
+            {
+              for (let i = 0; i < 2; i++) {
+                const modelMatrix = mat4.create();
+                mat4.translate(modelMatrix, modelMatrix, balloonsPositions[i]);
+                mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
+                mat4.rotateY(modelMatrix, modelMatrix, obj.rotation[1]);
+                mat4.rotateZ(modelMatrix, modelMatrix, obj.rotation[2]);
+                mat4.scale(modelMatrix, modelMatrix, obj.scale);
+                gl.uniformMatrix4fv(uModelMatrixLocation, false, modelMatrix);
+
+                const normalMatrix = mat4.create();
+                mat4.invert(normalMatrix, modelMatrix);
+                mat4.transpose(normalMatrix, normalMatrix);
+                gl.uniformMatrix4fv(uNormalMatrixLocation, false, normalMatrix);
+
+                
+
+                gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.vertexBuffer);
+                gl.vertexAttribPointer(positionAttribute, 3, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(positionAttribute);
+        
+                gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.normalBuffer);
+                gl.vertexAttribPointer(normalAttribute, 3, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(normalAttribute);
+        
+                gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.uvBuffer);
+                gl.vertexAttribPointer(uvAttribute, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(uvAttribute);
+        
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.model.indexBuffer);
+                gl.drawElements(gl.TRIANGLES, obj.model.indices.length, gl.UNSIGNED_SHORT, 0);
+                
+              }
+
+            }
+            //облака
+            else if (index == 2)
+            {
+              for (let i = 0; i < 5; i++) {
+                const modelMatrix = mat4.create();
+
+                let pos = [3*Math.sin(time*(i*0.1+0.2)) + cloudsPositions[i][0], Math.sin(3*time*(i*0.1+0.2))+ cloudsPositions[i][1], 3*Math.cos(time*(i*0.1+0.2)) + cloudsPositions[i][2]];
+                let rot = obj.rotation[1] + cloudsRotations[i];
+                mat4.translate(modelMatrix, modelMatrix, pos);
+                mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
+                mat4.rotateY(modelMatrix, modelMatrix, rot);
+                mat4.rotateZ(modelMatrix, modelMatrix, obj.rotation[2]);
+                mat4.scale(modelMatrix, modelMatrix, obj.scale);
+                gl.uniformMatrix4fv(uModelMatrixLocation, false, modelMatrix);
+
+                const normalMatrix = mat4.create();
+                mat4.invert(normalMatrix, modelMatrix);
+                mat4.transpose(normalMatrix, normalMatrix);
+                gl.uniformMatrix4fv(uNormalMatrixLocation, false, normalMatrix);
+
+                //if ( (time * 10) % (i+1) <= 0.05 )
+                //if (time - cloudsTimestamp[i] > 0.5*(i*5)+1 ) {
+                if (Math.abs(Math.sin(time + i*0.1)) < 0.05 ) {
+                  gl.uniform1f( uMaterialShininessLocation, 0.1);
+                  cloudsTimestamp[i] = time;
+                }
+                  
+
+                gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.vertexBuffer);
+                gl.vertexAttribPointer(positionAttribute, 3, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(positionAttribute);
+        
+                gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.normalBuffer);
+                gl.vertexAttribPointer(normalAttribute, 3, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(normalAttribute);
+        
+                gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.uvBuffer);
+                gl.vertexAttribPointer(uvAttribute, 2, gl.FLOAT, false, 0, 0);
+                gl.enableVertexAttribArray(uvAttribute);
+        
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.model.indexBuffer);
+                gl.drawElements(gl.TRIANGLES, obj.model.indices.length, gl.UNSIGNED_SHORT, 0);
+                
+              }
+            }
+            else
+            {
+
+              const modelMatrix = mat4.create();
+              mat4.translate(modelMatrix, modelMatrix, obj.position);
+              mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
+              mat4.rotateY(modelMatrix, modelMatrix, obj.rotation[1]);
+              mat4.rotateZ(modelMatrix, modelMatrix, obj.rotation[2]);
+              mat4.scale(modelMatrix, modelMatrix, obj.scale);
+              gl.uniformMatrix4fv(uModelMatrixLocation, false, modelMatrix);
+
+              const normalMatrix = mat4.create();
+              mat4.invert(normalMatrix, modelMatrix);
+              mat4.transpose(normalMatrix, normalMatrix);
+              gl.uniformMatrix4fv(uNormalMatrixLocation, false, normalMatrix);
+
+              
+
+              gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.vertexBuffer);
+              gl.vertexAttribPointer(positionAttribute, 3, gl.FLOAT, false, 0, 0);
+              gl.enableVertexAttribArray(positionAttribute);
+      
+              gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.normalBuffer);
+              gl.vertexAttribPointer(normalAttribute, 3, gl.FLOAT, false, 0, 0);
+              gl.enableVertexAttribArray(normalAttribute);
+      
+              gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.uvBuffer);
+              gl.vertexAttribPointer(uvAttribute, 2, gl.FLOAT, false, 0, 0);
+              gl.enableVertexAttribArray(uvAttribute);
+      
+              gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.model.indexBuffer);
+              gl.drawElements(gl.TRIANGLES, obj.model.indices.length, gl.UNSIGNED_SHORT, 0);
+
+            }
+            
+            
 
         }
 

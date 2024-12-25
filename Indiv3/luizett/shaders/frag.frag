@@ -66,7 +66,8 @@ void main() {
     if (uIsAirShip)
     {
         vec3 normalFromMap = texture(uNormalMap, vTexCoord).xyz * 2.0 - 1.0;
-        normal = normalize(vNormal + normalFromMap);
+        //normal = normalize(vNormal + normalFromMap);
+        normal = normalize(vNormal * normalFromMap);
     }
     
     vec3 ambient = uAmbientLight.color * uMaterial.ambient;
