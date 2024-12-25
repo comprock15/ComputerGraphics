@@ -24,6 +24,14 @@ uniform struct DirectionalLight {
     float intensity;
 } uDirectionalLight;
 
+uniform struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 color;
+    float intensity;
+    float cutoff;
+} uSpotLight;
+
 uniform bool uIsAirShip;
 uniform sampler2D uNormalMap;
 
@@ -42,6 +50,17 @@ vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos){
     return (diffuse + specular) * uDirectionalLight.intensity;
 }
 
+vec3 calculateSpotLight(vec3 normal, vec3 fragPos) {
+    vec3 lightDir = normalize(uSpotLight.position - fragPos);
+    float theta = dot(lightDir, normalize(-uSpotLight.direction));
+    if (theta > uSpotLight.cutoff) {
+            float diff = max(dot(normal, lightDir), 0.0);
+            return uSpotLight.color * diff * uSpotLight.intensity;
+    }
+    return vec3(0.0);
+}
+
+
 void main() {
     vec3 normal = normalize(vNormal);
     if (uIsAirShip)
@@ -52,10 +71,10 @@ void main() {
     
     vec3 ambient = uAmbientLight.color * uMaterial.ambient;
     vec3 directionalLightResult = calculateDirectionalLight(normal, vFragPos);
-    
+    vec3 spotLightResult = calculateSpotLight(normal, vFragPos);
 
     vec4 textureColor = texture(uTexture, vTexCoord);
-    vec3 totalLight = ambient +  directionalLightResult;
+    vec3 totalLight = ambient +  directionalLightResult + spotLightResult;
 
     fragColor = vec4(totalLight * textureColor.rgb , 1.0);
 }

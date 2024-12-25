@@ -1,6 +1,6 @@
 async function shadersSetUp(){
     const program = await createProgram(gl, 'shaders/vert.vert', 'shaders/frag.frag');
-
+    return program;
 }
 
 async function createProgram(gl, vertexShaderPath, fragmentShaderPath) {

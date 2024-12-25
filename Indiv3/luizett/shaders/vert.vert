@@ -21,7 +21,7 @@ void main() {
     
     if (uIsTerrain)
     {
-        float height = texture(uHeightMap, aTexCoord).r * 10.0;
+        float height = texture(uHeightMap, aTexCoord).r * 0.25;
         pos = vec4(aPosition.x, height, aPosition.z, 1.0);
     }
     vec4 worldPosition = uModelMatrix * pos;

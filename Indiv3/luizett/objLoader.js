@@ -1,11 +1,11 @@
-
+const models = {};
 async function loadSceneObjects(){
-    const models = {};
     models.tree = await loadOBJ(gl, './source/tree/tree.obj');
     models.cloud = await loadOBJ(gl, './source/cloud/cloud.obj');
     models.airship = await loadOBJ(gl, './source/airship/airship.obj');
     models.balloon = await loadOBJ(gl, './source/balloon/balloon.obj');
-    models.terrain = await loadTerrain();
+   // models.terrain = await loadTerrain();
+   models.terrain = await loadOBJ(gl, './source/terrain/terrain.obj');
 }
 
 

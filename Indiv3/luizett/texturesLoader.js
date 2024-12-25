@@ -1,13 +1,14 @@
+const textures = {};
 async function loadSceneTextures() {
-    const textures = {};
+    
+    textures.tree = loadTexture(gl, './source/tree/tree.png', gl.TEXTURE0);
     //textures.snow = await loadTexture(gl, 'textures/texture1.jpg');
-    textures.airship = loadTexture(gl, './source/airship/airship.png', gl.TEXTURE0);
-    textures.airship_normalmap = loadTexture(gl, './source/airship/normalmap.png', gl.TEXTURE1);
-    textures.terrain = loadTexture(gl, './source/terrain/snow.png', gl.TEXTURE2);
-    textures.terrain_heightmap = loadTexture(gl, './source/terrain/heightmap.png', gl.TEXTURE3);
-    textures.balloon = loadTexture(gl, './source/balloon/balloon.png', gl.TEXTURE4);
-    textures.cloud = loadTexture(gl, './source/cloud/cloud.png', gl.TEXTURE5);
-    textures.tree = loadTexture(gl, './source/tree/tree.png', gl.TEXTURE6);
+    textures.airship = loadTexture(gl, './source/airship/airship.png', gl.TEXTURE1);
+    textures.cloud = loadTexture(gl, './source/cloud/cloud.png', gl.TEXTURE2);
+    textures.balloon = loadTexture(gl, './source/balloon/balloon.png', gl.TEXTURE3);
+    textures.terrain = loadTexture(gl, './source/terrain/snow.png', gl.TEXTURE4);
+    textures.terrain_heightmap = loadTexture(gl, './source/terrain/heightmap.png', gl.TEXTURE5);
+    textures.airship_normalmap = loadTexture(gl, './source/airship/normalmap.png', gl.TEXTURE6);
 }
 
 // async function loadTexture(gl, url) {
