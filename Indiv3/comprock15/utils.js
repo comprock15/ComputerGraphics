@@ -131,12 +131,20 @@ export async function loadOBJ(gl, objPath) {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
+  const modelMatrixBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, modelMatrixBuffer);
+
+  const modelNormalBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, modelNormalBuffer);
+
   // Возвращаем объект с созданными буферами
   return {
     vertexBuffer,
     normalBuffer,
     uvBuffer,
     indexBuffer,
+    modelMatrixBuffer,
+    modelNormalBuffer,
     indices
   };
 }

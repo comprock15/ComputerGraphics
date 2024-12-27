@@ -91,14 +91,15 @@ async function setScene(gl) {
                 position: vec3.fromValues(0, 0, 0),
                 rotation: vec3.create(),
                 scale: vec3.fromValues(1.0, 1.0, 1.0),
-                program: program, // чашка с Фонгом
+                program: program,
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
                     specular: [1, 1, 1],
                     shininess: 1.0,
                     roughness: 0.3,
-                }
+                },
+                numberOfInstances: 5
             },
             {
                 model: terrain,
@@ -106,14 +107,15 @@ async function setScene(gl) {
                 position: vec3.fromValues(0, -40, 0),
                 rotation: vec3.create(),
                 scale: vec3.fromValues(100.0, 1.0, 100.0),
-                program: program, // чашка с Фонгом
+                program: program,
                 material: {
                     ambient: [0.2, 0.2, 0.2],
                     diffuse: [0.8, 0.8, 0.8],
                     specular: [0.5, 0.5, 0.5],
                     shininess: 32.0,
                     roughness: 0.9,
-                }
+                },
+                numberOfInstances: 1
             }
         ],
         lights: {
@@ -135,30 +137,67 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
     // Отрисовка объектов сцены
     scene.objects.forEach(obj => {
         gl.useProgram(obj.program);
-  
-        // Создание и настройка матрицы модели
-        const modelMatrix = mat4.create();
-        mat4.translate(modelMatrix, modelMatrix, obj.position);
-        mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
-        mat4.rotateY(modelMatrix, modelMatrix, obj.rotation[1]);
-        mat4.rotateZ(modelMatrix, modelMatrix, obj.rotation[2]);
-        mat4.scale(modelMatrix, modelMatrix, obj.scale);
-  
-        // Вычисление нормальной матрицы
-        const normalMatrix = mat4.create();
-        mat4.invert(normalMatrix, modelMatrix);
-        mat4.transpose(normalMatrix, normalMatrix);
-  
+        
+        const modelMatrices = new Float32Array(16 * obj.numberOfInstances);
+        const normalMatrices = new Float32Array(16 * obj.numberOfInstances);
+
+        for (let i = 0; i < obj.numberOfInstances; ++i) {
+            // Создание и настройка матрицы модели
+            const modelMatrix = mat4.create();
+            let pos =  vec3.fromValues(...obj.position);
+            pos[0] += i*4;
+            mat4.translate(modelMatrix, modelMatrix, pos);
+            mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
+            mat4.rotateY(modelMatrix, modelMatrix, obj.rotation[1]);
+            mat4.rotateZ(modelMatrix, modelMatrix, obj.rotation[2]);
+            mat4.scale(modelMatrix, modelMatrix, obj.scale);
+            modelMatrices.set(modelMatrix, i * 16);
+
+            // Вычисление нормальной матрицы
+            const normalMatrix = mat4.create();
+            mat4.invert(normalMatrix, modelMatrix);
+            mat4.transpose(normalMatrix, normalMatrix);
+            normalMatrices.set(normalMatrix, i * 16);
+        }
+
         // Передача матриц в шейдер
-        const uModelMatrix = gl.getUniformLocation(obj.program, 'uModelMatrix');
         const uViewMatrix = gl.getUniformLocation(obj.program, 'uViewMatrix');
         const uProjectionMatrix = gl.getUniformLocation(obj.program, 'uProjectionMatrix');
-        const uNormalMatrix = gl.getUniformLocation(obj.program, 'uNormalMatrix');
+        const aNormalMatrix = gl.getAttribLocation(obj.program, 'aNormalMatrix');
+        const aModelMatrix = gl.getAttribLocation(obj.program, 'aModelMatrix');
   
-        gl.uniformMatrix4fv(uModelMatrix, false, modelMatrix);
         gl.uniformMatrix4fv(uViewMatrix, false, viewMatrix);
         gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
-        gl.uniformMatrix4fv(uNormalMatrix, false, normalMatrix);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.modelMatrixBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, modelMatrices, gl.DYNAMIC_DRAW);
+        for (let i = 0; i < 4; ++i) {
+            gl.enableVertexAttribArray(aModelMatrix + i);
+            gl.vertexAttribPointer(
+                aModelMatrix + i,
+                4, // кол-во элементов в столбце
+                gl.FLOAT,
+                false,
+                16 * Float32Array.BYTES_PER_ELEMENT, // шаг между последовательными элементами
+                i * 4 * Float32Array.BYTES_PER_ELEMENT // начальный оффсет
+            );
+            gl.vertexAttribDivisor(aModelMatrix + i, 1); // Обновляем один раз в экземпляр
+        }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, obj.model.modelNormalBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, normalMatrices, gl.DYNAMIC_DRAW);
+        for (let i = 0; i < 4; ++i) {
+            gl.enableVertexAttribArray(aNormalMatrix + i);
+            gl.vertexAttribPointer(
+                aNormalMatrix + i,
+                4, // кол-во элементов в столбце
+                gl.FLOAT,
+                false,
+                16 * Float32Array.BYTES_PER_ELEMENT, // шаг между последовательными элементами
+                i * 4 * Float32Array.BYTES_PER_ELEMENT // начальный оффсет
+            );
+            gl.vertexAttribDivisor(aNormalMatrix + i, 1); // Обновляем один раз в экземпляр
+        }
   
         // Привязка текстуры и передача в шейдер
         const uTexture = gl.getUniformLocation(obj.program, 'uTexture');
@@ -213,6 +252,6 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
   
         // Отрисовка модели
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.model.indexBuffer);
-        gl.drawElements(gl.TRIANGLES, obj.model.indices.length, gl.UNSIGNED_SHORT, 0);
+        gl.drawElementsInstanced(gl.TRIANGLES, obj.model.indices.length, gl.UNSIGNED_SHORT, 0, obj.numberOfInstances);
       });
 }
