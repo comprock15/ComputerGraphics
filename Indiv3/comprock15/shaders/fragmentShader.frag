@@ -6,10 +6,12 @@ in vec3 vFragPos;
 in vec2 vTexCoord;
 
 uniform sampler2D uTexture;
+
 uniform struct Material {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+    float shininess;
 } uMaterial;
 
 uniform struct AmbientLight {
@@ -24,33 +26,26 @@ uniform struct DirectionalLight {
 
 out vec4 fragColor;
 
-// Функция для "уровней" освещения
-float toonShading(float intensity) {
-    if (intensity > 0.95) return 1.0; // Яркий свет
-    if (intensity > 0.5) return 0.7;  // Средний свет
-    if (intensity > 0.25) return 0.4; // Тусклый свет
-    return 0.15;                      // Тень
-}
-
-// Расчёт направленного света
-vec3 calculateDirectionalLight(vec3 normal) {
+vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos){
     vec3 lightDirection = normalize(-uDirectionalLight.direction);
     float diffuseStrength = max(dot(normal, lightDirection), 0.0);
-    vec3 diffuse = toonShading(diffuseStrength) * uDirectionalLight.color * uMaterial.diffuse;
+    vec3 diffuse = diffuseStrength * uDirectionalLight.color * uMaterial.diffuse;
+    
+    vec3 viewDirection = normalize(-fragPos);
+    vec3 reflectDirection = reflect(-lightDirection, normal);
+    float specularStrength = pow(max(dot(viewDirection, reflectDirection), 0.0), uMaterial.shininess);
+    vec3 specular = specularStrength * uDirectionalLight.color * uMaterial.specular;
 
-    return diffuse * uDirectionalLight.intensity;
+    return (diffuse + specular) * uDirectionalLight.intensity;
 }
 
-
-// Основная функция фрагментного шейдера
 void main() {
     vec3 normal = normalize(vNormal);
-    vec3 ambient = uAmbientLight.color * uMaterial.ambient;
 
-    vec3 directionalLightResult = calculateDirectionalLight(normal);
+    vec3 ambient = uAmbientLight.color * uMaterial.ambient;
+    vec3 directionalLightResult = calculateDirectionalLight(normal, vFragPos);
 
     vec4 textureColor = texture(uTexture, vTexCoord);
     vec3 totalLight = ambient + directionalLightResult;
-
-    fragColor = vec4(totalLight * textureColor.rgb, 1.0);
+    fragColor = vec4(totalLight * textureColor.rgb , 1.0);
 }

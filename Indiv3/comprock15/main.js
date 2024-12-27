@@ -15,72 +15,36 @@ async function main() {
     throw new Error('WebGL2 not supported');
     }
 
-//   // Функция для настройки размера канваса и области отображения
-//   const setCanvasSize = () => {
-//     canvas.width = window.innerWidth;
-//     canvas.height = window.innerHeight;
-//   };
-
-//   // Установка начального размера канваса и обработчик изменения размера окна
-//   setCanvasSize();
-//   window.addEventListener('resize', setCanvasSize);
-
-//   // Загрузка и компиляция шейдерных программ
-//   const phongProgram = await createProgram(gl, 'shaders/phong.vert', 'shaders/phong.frag');
-//   const toonProgram = await createProgram(gl, 'shaders/toon.vert', 'shaders/toon.frag');
-//   const orenNayar = await createProgram(gl, 'shaders/orenNayar.vert', 'shaders/orenNayar.frag');
-
     const scene = await setScene(gl);
   
     const camera = {
-        cameraPosition: vec3.fromValues(0, 5, -40),
+        cameraPosition: vec3.fromValues(0, -10, -40),
         // Углы поворота камеры вокруг осей
         cameraRotation: vec3.fromValues(20 * Math.PI/180, Math.PI, 0),
         cameraSpeed: 0.5,
         cameraRotationSpeed: 0.02,
     };
 
-    // Управление камерой с помощью клавиш
-    // document.addEventListener('keydown', (event) => {
-    //     switch (event.key) {
-    //         case 'ц':
-    //         case 'w': camera.cameraPosition[1] -= camera.cameraSpeed; break; // Вниз по Y
-    //         case 'ы':
-    //         case 's': camera.cameraPosition[1] += camera.cameraSpeed; break; // Вверх по Y
-    //         case 'ф':
-    //         case 'a': camera.cameraPosition[0] += camera.cameraSpeed; break; // Вправо по X
-    //         case 'в':
-    //         case 'd': camera.cameraPosition[0] -= camera.cameraSpeed; break; // Влево по X
-    //         case 'й':
-    //         case 'q': camera.cameraPosition[2] += camera.cameraSpeed; break; // Вверх по Z
-    //         case 'у':
-    //         case 'e': camera.cameraPosition[2] -= camera.cameraSpeed; break; // Вниз по Z
-    //         case 'ArrowUp': camera.cameraRotation[0] += camera.cameraRotationSpeed; break;
-    //         case 'ArrowDown': camera.cameraRotation[0] -= camera.cameraRotationSpeed; break;
-    //         case 'ArrowLeft': camera.cameraRotation[1] += camera.cameraRotationSpeed; break;
-    //         case 'ArrowRight': camera.cameraRotation[1] -= camera.cameraRotationSpeed; break;
-    //     }
-    // });
-
-
     document.addEventListener('keydown', (event) => {
         switch (event.key) {
             case 'ц':
-            case 'w': scene.objects[0].position[1] += camera.cameraSpeed; break; // Вниз по Y
+            case 'w': scene.objects[0].position[2] += camera.cameraSpeed; break; // Вперед по Z
             case 'ы':
-            case 's': scene.objects[0].position[1] -= camera.cameraSpeed; break; // Вверх по Y
+            case 's': scene.objects[0].position[2] -= camera.cameraSpeed; break; // Назад по Z
             case 'ф':
             case 'a': scene.objects[0].position[0] += camera.cameraSpeed; break; // Вправо по X
             case 'в':
             case 'd': scene.objects[0].position[0] -= camera.cameraSpeed; break; // Влево по X
-            case 'й':
-            case 'q': scene.objects[0].position[2] += camera.cameraSpeed; break; // Вверх по Z
-            case 'у':
-            case 'e': scene.objects[0].position[2] -= camera.cameraSpeed; break; // Вниз по Z
+            
             case 'ArrowUp': camera.cameraRotation[0] += camera.cameraRotationSpeed; break;
             case 'ArrowDown': camera.cameraRotation[0] -= camera.cameraRotationSpeed; break;
             case 'ArrowLeft': camera.cameraRotation[1] += camera.cameraRotationSpeed; break;
             case 'ArrowRight': camera.cameraRotation[1] -= camera.cameraRotationSpeed; break;
+        }
+        
+        switch (event.code) {
+            case 'Space': scene.objects[0].position[1] += camera.cameraSpeed; break; // Вверх по Y
+            case 'ControlLeft': scene.objects[0].position[1] -= camera.cameraSpeed; break; // Вниз по Y
         }
     });
 
@@ -114,7 +78,7 @@ async function main() {
 async function setScene(gl) {
     const program = await createProgram(gl, 'shaders/vertexShader.vert', 'shaders/fragmentShader.frag');
 
-    const zeppelin = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
+    const zeppelin = await loadOBJ(gl, "./models/zeppelin/untitled.obj");
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const terrain = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     terrain.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
@@ -129,10 +93,10 @@ async function setScene(gl) {
                 scale: vec3.fromValues(1.0, 1.0, 1.0),
                 program: program, // чашка с Фонгом
                 material: {
-                    ambient: [0.2, 0.2, 0.2],
-                    diffuse: [0.8, 0.8, 0.8],
-                    specular: [0.5, 0.5, 0.5],
-                    shininess: 32.0,
+                    ambient: [1, 1, 1],
+                    diffuse: [1, 1, 1],
+                    specular: [1, 1, 1],
+                    shininess: 1.0,
                     roughness: 0.3,
                 }
             },
@@ -148,7 +112,7 @@ async function setScene(gl) {
                     diffuse: [0.8, 0.8, 0.8],
                     specular: [0.5, 0.5, 0.5],
                     shininess: 32.0,
-                    roughness: 0.3,
+                    roughness: 0.9,
                 }
             }
         ],
@@ -217,21 +181,11 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
           const uRoughness = gl.getUniformLocation(obj.program, 'uMaterial.roughness');
           if (uRoughness)
             gl.uniform1f(uRoughness, obj.material.roughness)
-        //   const uF0 = gl.getUniformLocation(obj.program, 'uMaterial.F0');
-        //   if (uF0)
-        //     gl.uniform3fv(uF0, obj.material.F0);
         }
   
         // Передача источников света
         const uAmbientLightColor = gl.getUniformLocation(obj.program, 'uAmbientLight.color');
         gl.uniform3fv(uAmbientLightColor, scene.lights.ambientLight.color);
-  
-        // const uPointLightPosition = gl.getUniformLocation(obj.program, 'uPointLight.position');
-        // gl.uniform3fv(uPointLightPosition, lights.pointLight.position);
-        // const uPointLightColor = gl.getUniformLocation(obj.program, 'uPointLight.color');
-        // gl.uniform3fv(uPointLightColor, lights.pointLight.color);
-        // const uPointLightIntensity = gl.getUniformLocation(obj.program, 'uPointLight.intensity');
-        // gl.uniform1f(uPointLightIntensity, lights.pointLight.intensity);
   
         const uDirectionalLightDirection = gl.getUniformLocation(obj.program, 'uDirectionalLight.direction');
         gl.uniform3fv(uDirectionalLightDirection, scene.lights.directionalLight.direction);
