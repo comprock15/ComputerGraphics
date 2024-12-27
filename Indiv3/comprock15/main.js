@@ -82,13 +82,17 @@ async function setScene(gl) {
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const terrain = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     terrain.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    const cloud = await loadOBJ(gl, "./models/zeppelin/untitled.obj");
+    cloud.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    const balloon = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
+    balloon.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
 
     const scene = {
         objects: [
             {
                 model: zeppelin,
                 texture: zeppelin.texture,
-                position: vec3.fromValues(0, 0, 0),
+                positions: [vec3.fromValues(0, 0, 0)],
                 rotation: vec3.create(),
                 scale: vec3.fromValues(1.0, 1.0, 1.0),
                 program: program,
@@ -99,12 +103,12 @@ async function setScene(gl) {
                     shininess: 1.0,
                     roughness: 0.3,
                 },
-                numberOfInstances: 5
+                numberOfInstances: 1
             },
             {
                 model: terrain,
                 texture: terrain.texture,
-                position: vec3.fromValues(0, -40, 0),
+                positions: [vec3.fromValues(0, -40, 0)],
                 rotation: vec3.create(),
                 scale: vec3.fromValues(100.0, 1.0, 100.0),
                 program: program,
@@ -116,6 +120,39 @@ async function setScene(gl) {
                     roughness: 0.9,
                 },
                 numberOfInstances: 1
+            },
+            {
+                model: cloud,
+                texture: cloud.texture,
+                positions: [vec3.fromValues(0, 30, 0)],
+                rotation: vec3.create(),
+                scale: vec3.fromValues(1.0, 1.0, 1.0),
+                program: program,
+                material: {
+                    ambient: [1, 1, 1],
+                    diffuse: [1, 1, 1],
+                    specular: [1, 1, 1],
+                    shininess: 1.0,
+                    roughness: 1.0,
+                },
+                numberOfInstances: 10,
+                isCloud: true
+            },
+            {
+                model: balloon,
+                texture: balloon.texture,
+                positions: [vec3.fromValues(0, 15, 0)],
+                rotation: vec3.fromValues(0, 0.5, 0),
+                scale: vec3.fromValues(1.0, 1.0, 1.0),
+                program: program,
+                material: {
+                    ambient: [1, 1, 1],
+                    diffuse: [1, 1, 1],
+                    specular: [1, 1, 1],
+                    shininess: 1.0,
+                    roughness: 1.0,
+                },
+                numberOfInstances: 5
             }
         ],
         lights: {
@@ -130,11 +167,27 @@ async function setScene(gl) {
         }
     }
 
+    scene.objects.forEach((obj) => {
+        if (obj.numberOfInstances > 1) {
+            obj.angles = [];
+            for (let i = 0; i < obj.numberOfInstances; ++i) {
+                let pos = vec3.fromValues(...obj.positions[0]);
+                pos[0] += 30 * (Math.random() - 0.5);
+                pos[1] += 10 * (Math.random() - 0.5);
+                pos[2] += 30 * (Math.random() - 0.5);
+                obj.positions[i + 1] = pos;
+                obj.angles[i] = 2 * Math.PI * Math.random();
+            }
+            obj.positions.shift();
+        }
+    })
+
     return scene;
 }
 
 async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
     // Отрисовка объектов сцены
+    const time = Date.now() * 0.000025;
     scene.objects.forEach(obj => {
         gl.useProgram(obj.program);
         
@@ -144,8 +197,20 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
         for (let i = 0; i < obj.numberOfInstances; ++i) {
             // Создание и настройка матрицы модели
             const modelMatrix = mat4.create();
-            let pos =  vec3.fromValues(...obj.position);
-            pos[0] += i*4;
+            let pos =  vec3.fromValues(...obj.positions[i]);
+            if (obj.numberOfInstances > 1 && obj.isCloud) {
+                
+                const r = 20;
+                const r1 = 10;
+                //const angle = 2 * i * Math.PI / obj.numberOfInstances;
+                const angle = obj.angles[i];
+                pos[0] = pos[0] + r * Math.sin((3*time + Math.PI/2) + angle);
+                pos[2] = pos[2] + r * Math.sin(2*time + angle);
+                //pos[1] = pos[0];
+                //x=13(cos(t)−cos(6,5t)/6,5),y=13(sin(t)−sin(6,5t)/6,5) t∈[0;4π]
+                //pos[0] += r * (Math.cos(time + angle) - Math.cos(r1 * time + angle)/r1);
+                //pos[2] += r * (Math.sin(time + angle) - Math.sin(r1 * time + angle)/r1);
+            }
             mat4.translate(modelMatrix, modelMatrix, pos);
             mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
             mat4.rotateY(modelMatrix, modelMatrix, obj.rotation[1]);
