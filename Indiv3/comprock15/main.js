@@ -210,6 +210,8 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
                 //x=13(cos(t)−cos(6,5t)/6,5),y=13(sin(t)−sin(6,5t)/6,5) t∈[0;4π]
                 //pos[0] += r * (Math.cos(time + angle) - Math.cos(r1 * time + angle)/r1);
                 //pos[2] += r * (Math.sin(time + angle) - Math.sin(r1 * time + angle)/r1);
+                const shimmer = Math.max(1.0, 10 * Math.sin(100*time + angle));
+                obj.material.ambient = vec3.fromValues(shimmer, shimmer, shimmer);
             }
             mat4.translate(modelMatrix, modelMatrix, pos);
             mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
