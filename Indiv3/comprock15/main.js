@@ -18,33 +18,33 @@ async function main() {
     const scene = await setScene(gl);
   
     const camera = {
-        cameraPosition: vec3.fromValues(0, -10, -40),
+        position: vec3.fromValues(0, -10, -40),
         // Углы поворота камеры вокруг осей
-        cameraRotation: vec3.fromValues(20 * Math.PI/180, Math.PI, 0),
-        cameraSpeed: 0.5,
-        cameraRotationSpeed: 0.02,
+        rotation: vec3.fromValues(20 * Math.PI/180, Math.PI, 0),
+        speed: 0.5,
+        rotationSpeed: 0.02,
     };
 
     document.addEventListener('keydown', (event) => {
         switch (event.key) {
             case 'ц':
-            case 'w': scene.objects[0].position[2] += camera.cameraSpeed; break; // Вперед по Z
+            case 'w': scene.objects[0].positions[0][2] += camera.speed; break; // Вперед по Z
             case 'ы':
-            case 's': scene.objects[0].position[2] -= camera.cameraSpeed; break; // Назад по Z
+            case 's': scene.objects[0].positions[0][2] -= camera.speed; break; // Назад по Z
             case 'ф':
-            case 'a': scene.objects[0].position[0] += camera.cameraSpeed; break; // Вправо по X
+            case 'a': scene.objects[0].positions[0][0] += camera.speed; break; // Вправо по X
             case 'в':
-            case 'd': scene.objects[0].position[0] -= camera.cameraSpeed; break; // Влево по X
+            case 'd': scene.objects[0].positions[0][0] -= camera.speed; break; // Влево по X
             
-            case 'ArrowUp': camera.cameraRotation[0] += camera.cameraRotationSpeed; break;
-            case 'ArrowDown': camera.cameraRotation[0] -= camera.cameraRotationSpeed; break;
-            case 'ArrowLeft': camera.cameraRotation[1] += camera.cameraRotationSpeed; break;
-            case 'ArrowRight': camera.cameraRotation[1] -= camera.cameraRotationSpeed; break;
+            case 'ArrowUp': camera.rotation[0] += camera.rotationSpeed; break;
+            case 'ArrowDown': camera.rotation[0] -= camera.rotationSpeed; break;
+            case 'ArrowLeft': camera.rotation[1] += camera.rotationSpeed; break;
+            case 'ArrowRight': camera.rotation[1] -= camera.rotationSpeed; break;
         }
         
         switch (event.code) {
-            case 'Space': scene.objects[0].position[1] += camera.cameraSpeed; break; // Вверх по Y
-            case 'ControlLeft': scene.objects[0].position[1] -= camera.cameraSpeed; break; // Вниз по Y
+            case 'Space': scene.objects[0].positions[0][1] += camera.speed; break; // Вверх по Y
+            case 'ControlLeft': scene.objects[0].positions[0][1] -= camera.speed; break; // Вниз по Y
         }
     });
 
@@ -62,10 +62,10 @@ async function main() {
         mat4.perspective(projectionMatrix, 45 * Math.PI / 180, canvas.width / canvas.height, 0.1, 1000.0);
 
         viewMatrix = mat4.create();
-        mat4.translate(viewMatrix, viewMatrix, camera.cameraPosition);
-        mat4.rotateX(viewMatrix, viewMatrix, camera.cameraRotation[0]);
-        mat4.rotateY(viewMatrix, viewMatrix, camera.cameraRotation[1]);
-        mat4.rotateZ(viewMatrix, viewMatrix, camera.cameraRotation[2]);
+        mat4.translate(viewMatrix, viewMatrix, camera.position);
+        mat4.rotateX(viewMatrix, viewMatrix, camera.rotation[0]);
+        mat4.rotateY(viewMatrix, viewMatrix, camera.rotation[1]);
+        mat4.rotateZ(viewMatrix, viewMatrix, camera.rotation[2]);
         
         drawScene(gl, scene, viewMatrix, projectionMatrix);
 
@@ -86,6 +86,8 @@ async function setScene(gl) {
     cloud.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const balloon = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     balloon.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    const tree = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
+    tree.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
 
     const scene = {
         objects: [
@@ -135,7 +137,7 @@ async function setScene(gl) {
                     shininess: 1.0,
                     roughness: 1.0,
                 },
-                numberOfInstances: 10,
+                numberOfInstances: 100,
                 isCloud: true
             },
             {
@@ -153,6 +155,22 @@ async function setScene(gl) {
                     roughness: 1.0,
                 },
                 numberOfInstances: 5
+            },
+            {
+                model: tree,
+                texture: tree.texture,
+                positions: [vec3.fromValues(10, -15, 30)],
+                rotation: vec3.fromValues(0, 0.5, 0),
+                scale: vec3.fromValues(1.0, 1.0, 1.0),
+                program: program,
+                material: {
+                    ambient: [1, 1, 1],
+                    diffuse: [1, 1, 1],
+                    specular: [1, 1, 1],
+                    shininess: 1.0,
+                    roughness: 1.0,
+                },
+                numberOfInstances: 1
             }
         ],
         lights: {
@@ -172,9 +190,9 @@ async function setScene(gl) {
             obj.angles = [];
             for (let i = 0; i < obj.numberOfInstances; ++i) {
                 let pos = vec3.fromValues(...obj.positions[0]);
-                pos[0] += 30 * (Math.random() - 0.5);
+                pos[0] += 50 * (Math.random() - 0.5);
                 pos[1] += 10 * (Math.random() - 0.5);
-                pos[2] += 30 * (Math.random() - 0.5);
+                pos[2] += 50 * (Math.random() - 0.5);
                 obj.positions[i + 1] = pos;
                 obj.angles[i] = 2 * Math.PI * Math.random();
             }
