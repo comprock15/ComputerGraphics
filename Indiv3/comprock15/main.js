@@ -4,6 +4,8 @@ import { loadShader, loadOBJ, loadTexture, createProgram } from './utils.js';
 // Точка входа после полной загрузки Document Object Model
 document.addEventListener('DOMContentLoaded', main);
 
+const startTime = Date.now();
+
 // Основная функция программы
 async function main() {
     const canvas = document.getElementById('glcanvas');
@@ -77,6 +79,7 @@ async function main() {
 
 async function setScene(gl) {
     const program = await createProgram(gl, 'shaders/vertexShader.vert', 'shaders/fragmentShader.frag');
+    const programWaving = await createProgram(gl, 'shaders/waving.vert', 'shaders/fragmentShader.frag');
 
     const zeppelin = await loadOBJ(gl, "./models/zeppelin/untitled.obj");
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
@@ -161,8 +164,8 @@ async function setScene(gl) {
                 texture: tree.texture,
                 positions: [vec3.fromValues(10, -15, 30)],
                 rotation: vec3.fromValues(0, 0.5, 0),
-                scale: vec3.fromValues(1.0, 1.0, 1.0),
-                program: program,
+                scale: vec3.fromValues(1.0, 3.0, 1.0),
+                program: programWaving,
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
@@ -206,7 +209,7 @@ async function setScene(gl) {
 
 async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
     // Отрисовка объектов сцены
-    const time = Date.now() * 0.000025;
+    const time = (Date.now() - startTime) / 50000;
     scene.objects.forEach(obj => {
         gl.useProgram(obj.program);
         
@@ -248,6 +251,12 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
         const uProjectionMatrix = gl.getUniformLocation(obj.program, 'uProjectionMatrix');
         const aNormalMatrix = gl.getAttribLocation(obj.program, 'aNormalMatrix');
         const aModelMatrix = gl.getAttribLocation(obj.program, 'aModelMatrix');
+
+        // Передача текущего времени для колыханий
+        const uTime = gl.getUniformLocation(obj.program, 'uTime');
+        if (uTime) {
+            gl.uniform1f(uTime, time);
+        }
   
         gl.uniformMatrix4fv(uViewMatrix, false, viewMatrix);
         gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
