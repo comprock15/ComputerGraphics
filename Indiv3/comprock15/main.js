@@ -180,6 +180,7 @@ async function setScene(gl) {
             }
             obj.positions.shift();
         }
+        obj.ambientBuffer = gl.createBuffer();
     })
 
     return scene;
@@ -193,25 +194,21 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
         
         const modelMatrices = new Float32Array(16 * obj.numberOfInstances);
         const normalMatrices = new Float32Array(16 * obj.numberOfInstances);
+        const ambients = new Float32Array(3 * obj.numberOfInstances);
 
         for (let i = 0; i < obj.numberOfInstances; ++i) {
+            ambients.set(obj.material.ambient, i * 3);
             // Создание и настройка матрицы модели
             const modelMatrix = mat4.create();
             let pos =  vec3.fromValues(...obj.positions[i]);
             if (obj.numberOfInstances > 1 && obj.isCloud) {
-                
                 const r = 20;
-                const r1 = 10;
-                //const angle = 2 * i * Math.PI / obj.numberOfInstances;
-                const angle = obj.angles[i];
-                pos[0] = pos[0] + r * Math.sin((3*time + Math.PI/2) + angle);
-                pos[2] = pos[2] + r * Math.sin(2*time + angle);
-                //pos[1] = pos[0];
-                //x=13(cos(t)−cos(6,5t)/6,5),y=13(sin(t)−sin(6,5t)/6,5) t∈[0;4π]
-                //pos[0] += r * (Math.cos(time + angle) - Math.cos(r1 * time + angle)/r1);
-                //pos[2] += r * (Math.sin(time + angle) - Math.sin(r1 * time + angle)/r1);
-                const shimmer = Math.max(1.0, 10 * Math.sin(100*time + angle));
-                obj.material.ambient = vec3.fromValues(shimmer, shimmer, shimmer);
+
+                pos[0] = pos[0] + r * Math.sin((3*time + Math.PI/2) + obj.angles[i]);
+                pos[2] = pos[2] + r * Math.sin(2*time + obj.angles[i]);
+
+                const shimmer = Math.max(1.0, 10 * Math.sin(100*time + obj.angles[i]));
+                ambients.set(vec3.fromValues(shimmer, shimmer, shimmer), i * 3);
             }
             mat4.translate(modelMatrix, modelMatrix, pos);
             mat4.rotateX(modelMatrix, modelMatrix, obj.rotation[0]);
@@ -226,6 +223,7 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
             mat4.transpose(normalMatrix, normalMatrix);
             normalMatrices.set(normalMatrix, i * 16);
         }
+        //console.log(ambients);
 
         // Передача матриц в шейдер
         const uViewMatrix = gl.getUniformLocation(obj.program, 'uViewMatrix');
@@ -274,8 +272,13 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
   
         // Передача материала в шейдер
         if (obj.material) {
-          const uAmbientColor = gl.getUniformLocation(obj.program, 'uMaterial.ambient');
-          gl.uniform3fv(uAmbientColor, obj.material.ambient);
+          const aAmbient = gl.getAttribLocation(obj.program, 'aAmbient');
+          gl.bindBuffer(gl.ARRAY_BUFFER, obj.ambientBuffer);
+          gl.bufferData(gl.ARRAY_BUFFER, ambients, gl.DYNAMIC_DRAW);
+          gl.vertexAttribPointer(aAmbient, 3, gl.FLOAT, false, 0, 0);
+          gl.vertexAttribDivisor(aAmbient, 1); // Обновляем один раз в экземпляр
+          gl.enableVertexAttribArray(aAmbient);
+
           const uDiffuseColor = gl.getUniformLocation(obj.program, 'uMaterial.diffuse');
           gl.uniform3fv(uDiffuseColor, obj.material.diffuse);
           const uSpecularColor = gl.getUniformLocation(obj.program, 'uMaterial.specular');

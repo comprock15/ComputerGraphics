@@ -4,11 +4,11 @@ precision mediump float;
 in vec3 vNormal;
 in vec3 vFragPos;
 in vec2 vTexCoord;
+in vec3 vAmbient;
 
 uniform sampler2D uTexture;
 
 uniform struct Material {
-    vec3 ambient;
     vec3 diffuse;
     vec3 specular;
     float shininess;
@@ -42,7 +42,7 @@ vec3 calculateDirectionalLight(vec3 normal, vec3 fragPos){
 void main() {
     vec3 normal = normalize(vNormal);
 
-    vec3 ambient = uAmbientLight.color * uMaterial.ambient;
+    vec3 ambient = uAmbientLight.color * vAmbient;
     vec3 directionalLightResult = calculateDirectionalLight(normal, vFragPos);
 
     vec4 textureColor = texture(uTexture, vTexCoord);
