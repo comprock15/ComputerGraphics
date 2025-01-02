@@ -7,7 +7,32 @@
     <title>INDIV3</title>
 </head>
 <body>
-    <canvas id="glcanvas" width="1000" height="600"></canvas>
+    <table>
+        <tr>
+            <td>
+                <canvas id="glcanvas" width="1000" height="600"></canvas>
+            </td>
+            <td>
+                <table cellspacing="20">
+                    <tr>
+                        <th colspan="2">Управление</th>
+                    </tr>
+                    <tr>
+                        <th>WASD, Left Ctrl, Space</th>
+                        <td>Передвижение дирижабля</td>
+                    </tr>
+                    <tr>
+                        <th>Arrows</th>
+                        <td>Поворот камеры</td>
+                    </tr>
+                    <tr>
+                        <th>C</th>
+                        <td>Переключение камеры</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
     <script type="module" src="main.js"></script>
 </body>

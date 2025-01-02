@@ -65,7 +65,7 @@ async function main() {
             case 'ArrowRight': camera[0].rotation[1] -= camera[0].rotationSpeed; break;
 
             case 'с':
-            case 'c': selectedCameraIndex = (selectedCameraIndex + 1) % 2; break;
+            case 'c': selectedCameraIndex = (selectedCameraIndex + 1) % camera.length; break;
         }
         
         switch (event.code) {
