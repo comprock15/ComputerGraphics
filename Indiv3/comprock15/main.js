@@ -87,8 +87,8 @@ async function setScene(gl) {
     terrain.texture = await loadTexture(gl, './models/terrain/terrain.jpg');
     const cloud = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     cloud.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
-    const balloon = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
-    balloon.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    const balloon = await loadOBJ(gl, "./models/balloon/balloon.obj");
+    balloon.texture = await loadTexture(gl, './models/balloon/balloon.png');
     const tree = await loadOBJ(gl, "./models/christmas-tree/christmas-tree.obj");
     tree.texture = await loadTexture(gl, './models/christmas-tree/christmas-tree.png');
 
@@ -104,7 +104,7 @@ async function setScene(gl) {
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
-                    specular: [1, 1, 1],
+                    specular: [0.1, 0.1, 0.1],
                     shininess: 1.0,
                     roughness: 0.3,
                 },
@@ -120,7 +120,7 @@ async function setScene(gl) {
                 material: {
                     ambient: [0.2, 0.2, 0.2],
                     diffuse: [0.8, 0.8, 0.8],
-                    specular: [0.5, 0.5, 0.5],
+                    specular: [0.1, 0.1, 0.1],
                     shininess: 32.0,
                     roughness: 0.9,
                 },
@@ -136,7 +136,7 @@ async function setScene(gl) {
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
-                    specular: [1, 1, 1],
+                    specular: [0.1, 0.1, 0.1],
                     shininess: 1.0,
                     roughness: 1.0,
                 },
@@ -146,16 +146,16 @@ async function setScene(gl) {
             {
                 model: balloon,
                 texture: balloon.texture,
-                positions: [vec3.fromValues(0, 15, 0)],
+                positions: [vec3.fromValues(0, 5, 0)],
                 rotation: vec3.fromValues(0, 0.5, 0),
-                scale: vec3.fromValues(1.0, 1.0, 1.0),
-                program: program,
+                scale: vec3.fromValues(1.5, 1.5, 1.5),
+                program: programWaving,
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
-                    specular: [1, 1, 1],
-                    shininess: 1.0,
-                    roughness: 1.0,
+                    specular: [0.1, 0.1, 0.1],
+                    shininess: 1,
+                    roughness: 0,
                 },
                 numberOfInstances: 5
             },
@@ -169,7 +169,7 @@ async function setScene(gl) {
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
-                    specular: [1, 1, 1],
+                    specular: [0.1, 0.1, 0.1],
                     shininess: 1.0,
                     roughness: 1.0,
                 },
