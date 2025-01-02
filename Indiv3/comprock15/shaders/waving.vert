@@ -18,7 +18,7 @@ out vec3 vAmbient;
 
 void main() {
     // Настройки колыхания
-    float waveStrength = 0.2;
+    float waveStrength = 0.05;
     float waveSpeed = 70.0;
     vec4 position = vec4(aPosition, 1.0);
     position.x += waveStrength * sin(position.z * 5.0 + uTime * waveSpeed);

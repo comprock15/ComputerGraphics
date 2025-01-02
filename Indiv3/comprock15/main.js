@@ -89,8 +89,8 @@ async function setScene(gl) {
     cloud.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const balloon = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     balloon.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
-    const tree = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
-    tree.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    const tree = await loadOBJ(gl, "./models/christmas-tree/christmas-tree.obj");
+    tree.texture = await loadTexture(gl, './models/christmas-tree/christmas-tree.png');
 
     const scene = {
         objects: [
@@ -163,8 +163,8 @@ async function setScene(gl) {
                 model: tree,
                 texture: tree.texture,
                 positions: [vec3.fromValues(10, -15, 30)],
-                rotation: vec3.fromValues(0, 0.5, 0),
-                scale: vec3.fromValues(1.0, 3.0, 1.0),
+                rotation: vec3.fromValues(0, 0, 0),
+                scale: vec3.fromValues(5.0, 5.0, 5.0),
                 program: programWaving,
                 material: {
                     ambient: [1, 1, 1],
@@ -181,7 +181,7 @@ async function setScene(gl) {
                 color: [0.1, 0.1, 0.1]
             },
             directionalLight: {
-                direction: vec3.fromValues(20, -20, -20),
+                direction: vec3.fromValues(15, -10, 10),
                 color: vec3.fromValues(1, 1, 1),
                 intensity: 1.0
             }
