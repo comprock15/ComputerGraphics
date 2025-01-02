@@ -19,34 +19,64 @@ async function main() {
 
     const scene = await setScene(gl);
   
-    const camera = {
-        position: vec3.fromValues(0, -10, -50),
-        // Углы поворота камеры вокруг осей
-        rotation: vec3.fromValues(10 * Math.PI/180, Math.PI, 0),
-        speed: 0.5,
-        rotationSpeed: 0.02,
-    };
+    const camera = [{
+            position: vec3.fromValues(0, -10, -50),
+            // Углы поворота камеры вокруг осей
+            rotation: vec3.fromValues(10 * Math.PI/180, Math.PI, 0),
+            speed: 0.5,
+            rotationSpeed: 0.02,
+        }, {
+            position: vec3.fromValues(scene.objects[0].positions[0][0], scene.objects[0].positions[0][1] - 7, scene.objects[0].positions[0][2]),
+            // Углы поворота камеры вокруг осей
+            rotation: vec3.fromValues(Math.PI / 2, Math.PI, 0),
+            speed: 1.0,
+            rotationSpeed: 0.02,
+        },
+];
+
+    let selectedCameraIndex = 0;
 
     document.addEventListener('keydown', (event) => {
         switch (event.key) {
             case 'ц':
-            case 'w': scene.objects[0].positions[0][2] += camera.speed; break; // Вперед по Z
+            case 'w': 
+                scene.objects[0].positions[0][2] += camera[1].speed; 
+                camera[1].position[1] -= camera[1].speed; 
+                break; // Вперед по Z
             case 'ы':
-            case 's': scene.objects[0].positions[0][2] -= camera.speed; break; // Назад по Z
+            case 's': 
+                scene.objects[0].positions[0][2] -= camera[1].speed;
+                camera[1].position[1] += camera[1].speed; 
+                break; // Назад по Z
             case 'ф':
-            case 'a': scene.objects[0].positions[0][0] += camera.speed; break; // Вправо по X
+            case 'a': 
+                scene.objects[0].positions[0][0] += camera[1].speed;
+                camera[1].position[0] += camera[1].speed; 
+                break; // Влево по X
             case 'в':
-            case 'd': scene.objects[0].positions[0][0] -= camera.speed; break; // Влево по X
+            case 'd': 
+                scene.objects[0].positions[0][0] -= camera[1].speed;
+                camera[1].position[0] -= camera[1].speed;
+                break; // Вправо по X
             
-            case 'ArrowUp': camera.rotation[0] += camera.rotationSpeed; break;
-            case 'ArrowDown': camera.rotation[0] -= camera.rotationSpeed; break;
-            case 'ArrowLeft': camera.rotation[1] += camera.rotationSpeed; break;
-            case 'ArrowRight': camera.rotation[1] -= camera.rotationSpeed; break;
+            case 'ArrowUp': camera[0].rotation[0] += camera[0].rotationSpeed; break;
+            case 'ArrowDown': camera[0].rotation[0] -= camera[0].rotationSpeed; break;
+            case 'ArrowLeft': camera[0].rotation[1] += camera[0].rotationSpeed; break;
+            case 'ArrowRight': camera[0].rotation[1] -= camera[0].rotationSpeed; break;
+
+            case 'с':
+            case 'c': selectedCameraIndex = (selectedCameraIndex + 1) % 2; break;
         }
         
         switch (event.code) {
-            case 'Space': scene.objects[0].positions[0][1] += camera.speed; break; // Вверх по Y
-            case 'ControlLeft': scene.objects[0].positions[0][1] -= camera.speed; break; // Вниз по Y
+            case 'Space': 
+                scene.objects[0].positions[0][1] += camera[1].speed;
+                camera[1].position[2] -= camera[1].speed;
+                break; // Вверх по Y
+            case 'ControlLeft': 
+                scene.objects[0].positions[0][1] -= camera[1].speed;
+                camera[1].position[2] += camera[1].speed; 
+                break; // Вниз по Y
         }
     });
 
@@ -64,10 +94,10 @@ async function main() {
         mat4.perspective(projectionMatrix, 45 * Math.PI / 180, canvas.width / canvas.height, 0.1, 1000.0);
 
         viewMatrix = mat4.create();
-        mat4.translate(viewMatrix, viewMatrix, camera.position);
-        mat4.rotateX(viewMatrix, viewMatrix, camera.rotation[0]);
-        mat4.rotateY(viewMatrix, viewMatrix, camera.rotation[1]);
-        mat4.rotateZ(viewMatrix, viewMatrix, camera.rotation[2]);
+        mat4.translate(viewMatrix, viewMatrix, camera[selectedCameraIndex].position);
+        mat4.rotateX(viewMatrix, viewMatrix, camera[selectedCameraIndex].rotation[0]);
+        mat4.rotateY(viewMatrix, viewMatrix, camera[selectedCameraIndex].rotation[1]);
+        mat4.rotateZ(viewMatrix, viewMatrix, camera[selectedCameraIndex].rotation[2]);
         
         drawScene(gl, scene, viewMatrix, projectionMatrix);
 
@@ -125,10 +155,10 @@ async function setScene(gl) {
                 scale: vec3.fromValues(100.0, 1.0, 100.0),
                 program: program,
                 material: {
-                    ambient: [0.2, 0.2, 0.2],
+                    ambient: [1, 1, 1],
                     diffuse: [0.8, 0.8, 0.8],
                     specular: [0.1, 0.1, 0.1],
-                    shininess: 32.0,
+                    shininess: 1.0,
                     roughness: 0.9,
                 },
                 numberOfInstances: 1
