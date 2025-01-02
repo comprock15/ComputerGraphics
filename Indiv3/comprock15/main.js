@@ -80,15 +80,21 @@ async function main() {
 async function setScene(gl) {
     const program = await createProgram(gl, 'shaders/vertexShader.vert', 'shaders/fragmentShader.frag');
     const programWaving = await createProgram(gl, 'shaders/waving.vert', 'shaders/fragmentShader.frag');
+    const programNormalMap = await createProgram(gl, 'shaders/vertexShader.vert', 'shaders/normalmap.frag');
 
     const zeppelin = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    zeppelin.normalmap = await loadTexture(gl, './models/zeppelin/zeppelin_normal_map.png');
+
     const terrain = await loadOBJ(gl, "./models/terrain/terrain.obj");
     terrain.texture = await loadTexture(gl, './models/terrain/terrain.jpg');
+
     const cloud = await loadOBJ(gl, "./models/cloud/cloud.obj");
     cloud.texture = await loadTexture(gl, './models/cloud/cloud.png');
+
     const balloon = await loadOBJ(gl, "./models/balloon/balloon.obj");
     balloon.texture = await loadTexture(gl, './models/balloon/balloon.png');
+
     const tree = await loadOBJ(gl, "./models/christmas-tree/christmas-tree.obj");
     tree.texture = await loadTexture(gl, './models/christmas-tree/christmas-tree.png');
 
@@ -97,10 +103,11 @@ async function setScene(gl) {
             {
                 model: zeppelin,
                 texture: zeppelin.texture,
+                normalmap: zeppelin.normalmap,
                 positions: [vec3.fromValues(0, 0, 0)],
                 rotation: vec3.create(),
                 scale: vec3.fromValues(2.0, 2.0, 2.0),
-                program: program,
+                program: programNormalMap,
                 material: {
                     ambient: [1, 1, 1],
                     diffuse: [1, 1, 1],
@@ -296,6 +303,14 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, obj.texture);
         gl.uniform1i(uTexture, 0);
+
+        // Привязка карты нормалей и передача в шейдер
+        const uNormalMap = gl.getUniformLocation(obj.program, 'uNormalMap');
+        if (uNormalMap) {
+            gl.activeTexture(gl.TEXTURE1);
+            gl.bindTexture(gl.TEXTURE_2D, obj.normalmap);
+            gl.uniform1i(uNormalMap, 1);
+        }
   
         // Передача материала в шейдер
         if (obj.material) {
