@@ -56,7 +56,7 @@ async function main() {
     //Основной цикл отрисовки
     function render() {
         // Очистка экрана и буфера глубины
-        gl.clearColor(0.1, 0.1, 0.1, 1.0);
+        gl.clearColor(0.3, 0.3, 0.5, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.enable(gl.DEPTH_TEST);
 
@@ -83,9 +83,9 @@ async function setScene(gl) {
 
     const zeppelin = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
-    const terrain = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
-    terrain.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
-    const cloud = await loadOBJ(gl, "./models/zeppelin/untitled.obj");
+    const terrain = await loadOBJ(gl, "./models/terrain/terrain.obj");
+    terrain.texture = await loadTexture(gl, './models/terrain/terrain.jpg');
+    const cloud = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     cloud.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const balloon = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     balloon.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
@@ -113,7 +113,7 @@ async function setScene(gl) {
             {
                 model: terrain,
                 texture: terrain.texture,
-                positions: [vec3.fromValues(0, -40, 0)],
+                positions: [vec3.fromValues(0, -15, 0)],
                 rotation: vec3.create(),
                 scale: vec3.fromValues(100.0, 1.0, 100.0),
                 program: program,
@@ -178,7 +178,7 @@ async function setScene(gl) {
         ],
         lights: {
             ambientLight: {
-                color: [0.1, 0.1, 0.1]
+                color: [0.3, 0.3, 0.4]
             },
             directionalLight: {
                 direction: vec3.fromValues(15, -10, 10),
