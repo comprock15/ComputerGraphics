@@ -81,7 +81,7 @@ async function setScene(gl) {
     const program = await createProgram(gl, 'shaders/vertexShader.vert', 'shaders/fragmentShader.frag');
     const programWaving = await createProgram(gl, 'shaders/waving.vert', 'shaders/fragmentShader.frag');
 
-    const zeppelin = await loadOBJ(gl, "./models/zeppelin/untitled.obj");
+    const zeppelin = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const terrain = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
     terrain.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
@@ -99,7 +99,7 @@ async function setScene(gl) {
                 texture: zeppelin.texture,
                 positions: [vec3.fromValues(0, 0, 0)],
                 rotation: vec3.create(),
-                scale: vec3.fromValues(1.0, 1.0, 1.0),
+                scale: vec3.fromValues(2.0, 2.0, 2.0),
                 program: program,
                 material: {
                     ambient: [1, 1, 1],
