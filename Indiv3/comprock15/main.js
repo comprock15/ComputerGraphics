@@ -20,9 +20,9 @@ async function main() {
     const scene = await setScene(gl);
   
     const camera = {
-        position: vec3.fromValues(0, -10, -40),
+        position: vec3.fromValues(0, -10, -50),
         // Углы поворота камеры вокруг осей
-        rotation: vec3.fromValues(20 * Math.PI/180, Math.PI, 0),
+        rotation: vec3.fromValues(10 * Math.PI/180, Math.PI, 0),
         speed: 0.5,
         rotationSpeed: 0.02,
     };
@@ -85,8 +85,8 @@ async function setScene(gl) {
     zeppelin.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
     const terrain = await loadOBJ(gl, "./models/terrain/terrain.obj");
     terrain.texture = await loadTexture(gl, './models/terrain/terrain.jpg');
-    const cloud = await loadOBJ(gl, "./models/zeppelin/zeppelin.obj");
-    cloud.texture = await loadTexture(gl, './models/zeppelin/zeppelin.png');
+    const cloud = await loadOBJ(gl, "./models/cloud/cloud.obj");
+    cloud.texture = await loadTexture(gl, './models/cloud/cloud.png');
     const balloon = await loadOBJ(gl, "./models/balloon/balloon.obj");
     balloon.texture = await loadTexture(gl, './models/balloon/balloon.png');
     const tree = await loadOBJ(gl, "./models/christmas-tree/christmas-tree.obj");
@@ -131,7 +131,7 @@ async function setScene(gl) {
                 texture: cloud.texture,
                 positions: [vec3.fromValues(0, 30, 0)],
                 rotation: vec3.create(),
-                scale: vec3.fromValues(1.0, 1.0, 1.0),
+                scale: vec3.fromValues(2.0, 2.0, 2.0),
                 program: program,
                 material: {
                     ambient: [1, 1, 1],
@@ -187,15 +187,15 @@ async function setScene(gl) {
             }
         }
     }
-
+    const sceneSize = 100;
     scene.objects.forEach((obj) => {
         if (obj.numberOfInstances > 1) {
             obj.angles = [];
             for (let i = 0; i < obj.numberOfInstances; ++i) {
                 let pos = vec3.fromValues(...obj.positions[0]);
-                pos[0] += 50 * (Math.random() - 0.5);
+                pos[0] += sceneSize * (Math.random() - 0.5);
                 pos[1] += 10 * (Math.random() - 0.5);
-                pos[2] += 50 * (Math.random() - 0.5);
+                pos[2] += sceneSize * (Math.random() - 0.5);
                 obj.positions[i + 1] = pos;
                 obj.angles[i] = 2 * Math.PI * Math.random();
             }
@@ -228,7 +228,7 @@ async function drawScene(gl, scene, viewMatrix, projectionMatrix) {
                 pos[0] = pos[0] + r * Math.sin((3*time + Math.PI/2) + obj.angles[i]);
                 pos[2] = pos[2] + r * Math.sin(2*time + obj.angles[i]);
 
-                const shimmer = Math.max(1.0, 10 * Math.sin(100*time + obj.angles[i]));
+                const shimmer = Math.max(1.0, 3 * Math.sin(100*time + obj.angles[i]));
                 ambients.set(vec3.fromValues(shimmer, shimmer, shimmer), i * 3);
             }
             mat4.translate(modelMatrix, modelMatrix, pos);
