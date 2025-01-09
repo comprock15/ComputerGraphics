@@ -96,7 +96,7 @@ export class Object3D {
         };
 
         gl.uniform3fv(dirLightLoc.direction, [-0.5, -1.0, -0.5])
-        gl.uniform3fv(dirLightLoc.color, [1.0, 1.0, 1.0]); 
+        gl.uniform3fv(dirLightLoc.color, [1.0, 1.0, 1.0]);
         gl.uniform1f(dirLightLoc.intensity, 1.2);
 
 
@@ -127,7 +127,6 @@ export class Airship {
 
     update(deltaTime, camera) {
         const moveSpeed = 1.5;
-        const rotateSpeed = 0.7;
 
         if (keys["w"]) vec3.scaleAndAdd(this.position, this.position, [camera.front[0], 0, camera.front[2]], moveSpeed * deltaTime);
         if (keys["s"]) vec3.scaleAndAdd(this.position, this.position, [camera.front[0], 0, camera.front[2]], -moveSpeed * deltaTime);
@@ -139,14 +138,7 @@ export class Airship {
             const forward = vec3.fromValues(camera.front[0], 0, camera.front[2]);
             vec3.normalize(forward, forward);
 
-            const targetYaw = -Math.atan2(forward[2], forward[0]);
-            var deltaYaw = targetYaw - this.rotation[1];
-
-            if (deltaYaw > Math.PI) deltaYaw -= 2 * Math.PI;
-            if (deltaYaw < -Math.PI) deltaYaw += 2 * Math.PI;
-
-            if (Math.abs(deltaYaw) >= 1e-2)
-                this.rotation[1] += deltaYaw * deltaTime * rotateSpeed;
+            this.rotation[1] = -Math.atan2(forward[2], forward[0]);
         }
 
         const target = vec3.create();
@@ -281,6 +273,7 @@ async function main() {
 
     const numClouds = 20;
     const cloudMatrices = new Float32Array(16 * numClouds);
+
     for (var i = 0; i < numClouds; ++i) {
         const cloudMatrix = mat4.create();
         mat4.translate(cloudMatrix, cloudMatrix, [Math.random() * 60 - 15, -Math.random() * 4 + 8, Math.random() * 60 - 15]);
@@ -290,8 +283,42 @@ async function main() {
         cloudMatrices.set(cloudMatrix, i * 16);
     }
 
+    const cloudSpeeds = Array.from({ length: numClouds }, () => Math.random() * 0.2 + 0.05);
+
+    const cloudPositions = Array.from({ length: numClouds }, () => ({
+        x: Math.random() * 60 - 15,
+        y: -Math.random() * 4 + 8,
+        z: Math.random() * 60 - 15,
+        angle: Math.random() * Math.PI * 2, // начальный угол
+    }));
+
+    function updateCloudMatrices(deltaTime) {
+        for (let i = 0; i < numClouds; ++i) {
+            const offset = i * 16;
+            const cloudMatrix = cloudMatrices.subarray(offset, offset + 16);
+
+            const cloud = cloudPositions[i];
+            
+            cloud.angle += cloudSpeeds[i] * deltaTime;
+
+            cloud.x += Math.sin(cloud.angle) * 0.1;
+            cloud.z += Math.cos(cloud.angle) * 0.1;
+
+            if (cloud.x > 30 || cloud.x < -30 || cloud.z > 30 || cloud.z < -30) {
+                cloud.x = Math.random() * 60 - 15;
+                cloud.z = Math.random() * 60 - 15;
+                cloud.angle = Math.random() * Math.PI * 2;
+            }
+
+            mat4.identity(cloudMatrix);
+            mat4.translate(cloudMatrix, cloudMatrix, [cloud.x, cloud.y, cloud.z]);
+            mat4.rotateY(cloudMatrix, cloudMatrix, cloud.angle);
+        }
+    }
+
     gl.clearColor(0.1, 0.1, 0.1, 1.0);
     gl.enable(gl.DEPTH_TEST);
+
     async function render(time) {
         resizeCanvasToDisplaySize(canvas);
         const deltaTime = (time - lastFrame) / 1000.0;
@@ -324,6 +351,8 @@ async function main() {
 
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+        updateCloudMatrices(deltaTime);
 
         cloudObject.render(cloudMatrices, viewMatrix, projectionMatrix, numClouds);
 
